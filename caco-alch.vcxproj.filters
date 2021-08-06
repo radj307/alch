@@ -38,9 +38,15 @@
     <ClInclude Include="UserAssist.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Potion.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSettings.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ingredients.txt">
+    <Text Include="caco-ingredient-list.dat">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
