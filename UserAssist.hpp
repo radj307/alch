@@ -15,29 +15,27 @@ namespace caco_alch {
 	 * @function handle_arguments(opt::Param&&)
 	 * @brief Handles program execution.
 	 * @param args	- rvalue reference of an opt::Param instance.
-	 * @return 0	- Successful execution.
+	 * @returns int - see main() documentation
 	 */
-	inline int handle_arguments(opt::Param&& args, Alchemy&& alch)
+	inline int handle_arguments(opt::Param&& args, Alchemy&& alch, GameSettings&& gs)
 	{
-		if ( args.getFlag('l') )
-			alch.print_list_to(std::cout, args.getFlag('a'), args.getFlag('q'), args.getFlag('v'));
-		if ( args.getFlag('s') )
+		const Alchemy::Format _format{ args.getFlag('q'), args.getFlag('v'), args.getFlag('e'), args.getFlag('a'), 3u, [&args]() { const auto v{ str::stoui(args.getv("precision")) }; if ( v != 0.0 ) return v; return 2u; }( ), [&args]() -> unsigned short { const auto v{ str::stous(args.getv("color")) }; if ( v != 0 ) return v; return Color::_f_white; }( ) };
+
+		if ( args.getFlag('l') ) // List mode
+			alch.print_list_to(std::cout, _format);
+		if ( args.getFlag('b') ) { // Build mode
+			alch.print_build_to(std::cout, args._param, std::forward<GameSettings>(gs), _format);
+		}
+		else if ( args.getFlag('s') ) // Search mode
 			for ( auto& it : args._param )
-				alch.print_search_to(std::cout, it, args.getFlag('q'), args.getFlag('v'));
-		//std::cout << Color::f_green << "Search results for: \'" << it << "'\n" << Color::f_red << "{\n" << Color::reset << alch.search(it, args.getFlag('q'), args.getFlag('v')).rdbuf() << Color::f_red << "}" << Color::reset << std::endl;
-		if ( args.getFlag('i') ) {
-			std::cout << sys::msg << "[Not Implemented]" << std::endl;
-			// TODO: implement interactive mode
-		}
-		else if ( args.getFlag('b') ) {
-			std::cout << sys::msg << "[Not Implemented]" << std::endl;
-			// TODO: implement build mode
-		}
+				alch.print_search_to(std::cout, it, _format);
 		return 0;
 	}
 
+	inline int handle_arguments(std::tuple<opt::Param, Alchemy, GameSettings>&& pr) { return handle_arguments(std::forward<opt::Param>(std::get<0>(pr)), std::forward<Alchemy>(std::get<1>(pr)), std::forward<GameSettings>(std::get<2>(pr))); }
+
 	// @brief Contains the list of valid commandline arguments for the alch program.
-	inline const opt::Matcher _matcher{ { 'l', 's', 'a', 'h', 'i', 'q', 'v', 'b' }, { { "load", true }, { "validate", false }, { "color", true }, { "ini", true } } };
+	inline const opt::Matcher _matcher{ { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'e', 'C' }, { { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-modav-alchemy", true }, { "ini-default-duration", true }, { "ini-reset", false } } };
 
 	/**
 	 * @namespace Help
@@ -49,15 +47,16 @@ namespace caco_alch {
 		 * @brief Provides a convenient extensible help display.
 		 */
 		struct Helper {
+			using Cont = std::map<std::string, std::string>;
 			std::string _usage;
-			std::unordered_map<std::string, std::string> _doc;
+			Cont _doc;
 			/**
 			 * @constructor Helper(const std::string&, std::map<std::string, std::string>&&)
 			 * @brief Default constructor, takes a string containing usage instructions, and a map of all commandline parameters and a short description of them.
 			 * @param usage_str	- Brief string showing the commandline syntax for this program.
 			 * @param doc		- A map where the key represents the commandline option, and the value is the documentation for that option.
 			 */
-			Helper(const std::string& usage_str, std::unordered_map<std::string, std::string>&& doc) : _usage{ usage_str }, _doc{ std::move(doc) } { validate(); }
+			Helper(const std::string& usage_str, Cont&& doc) : _usage{ usage_str }, _doc{ std::move(doc) } { validate(); }
 
 			/**
 			 * @function validate()
@@ -110,22 +109,26 @@ namespace caco_alch {
 			{ "-l", "List all ingredients." },
 			{ "-a", "Lists all ingredients and a list of all known effects." },
 			{ "-s", "Searches the ingredient & effect lists for all additional parameters, and prints a result to STDOUT" },
-			{ "-i", "(Not implemented) Interactive potion-builder mode." },
+			{ "-e", "Exact mode, does not allow partial search matches." },
 			{ "-q", "Quiet output, only shows effects that match the search string in search results." },
 			{ "-v", "Verbose output, shows magnitude for ingredient effects." },
 			{ "-b", "(Incompatible with -s) Build mode, accepts up to 4 ingredient names and shows the result of combining them." },
+			{ "-R", "(Not Implemented) Reverse order." }, // TODO
 			{ "--load <file>", "Allows specifying an alternative ingredient registry file." },
 			{ "--validate", "Checks if the target file can be loaded successfully, and contains valid data. Specifying this option will cause all other options to be ignored." },
 			{ "--color <string_color>", "Change the color of ingredient names. String colors must include either an 'f' (foreground) or 'b' (background), then the name of the desired color." },
-			{ "--ini <file>", "Allows specifying an alternative INI file. INI file is only loaded if it exists, otherwise default settings are used." },
-			{ "--write_ini", "Writes a new INI file with default values." },
+			{ "--precision <uint>", "Set the floating-point precision value when printing numbers. (Default: 2)" },
+			{ "--ini-modav-alchemy <uint>", "(Experimental) Set the alchemy skill level." },
+			{ "--ini-default-duration <uint>", "(Experimental) Set the default duration to a value in seconds." },
+			{ "--ini <file>", "(Experimental) Load a specific INI file." },
+			{ "--ini-reset", "(Experimental) Reset / Write a new INI config file." },
 			}); ///< @brief Help documentation used by default.
 
-			/**
-			 * @function print_help(const Helper& = _default_doc)
-			 * @brief Display help information.
-			 * @param documentation	- Documentation to display
-			 */
+		/**
+		 * @function print_help(const Helper& = _default_doc)
+		 * @brief Display help information.
+		 * @param documentation	- Documentation to display
+		 */
 		void print(const Helper& documentation = _default_doc)
 		{
 			std::cout << documentation << std::endl;

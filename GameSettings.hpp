@@ -9,6 +9,11 @@ namespace caco_alch {
 		size_t _alchemy_skill{ 15u };			///< @brief The player's current, or assumed, skill level in Alchemy.
 		size_t _duration{ 1u };					///< @brief Default potion duration.
 
+		/**
+		 * @brief Calculate the resulting magnitude of a potion with a given base magnitude (this is the unmodified strongest effect magnitude out of all included ingredients)
+		 * @param base_mag	- The base magnitude value to use. This should be equal to the magnitude of the strongest ingredient effect used in the potion.
+		 * @returns double
+		 */
 		double potion_calc_magnitude(const double base_mag) const { return std::round(base_mag * 4.0 * _fAlchemyIngredientInitMult * ( 1.0 + ( _fAlchemySkillFactor - 1.0 ) * ( _alchemy_skill / 100 ) )); }
 
 		GameSettings() = default;

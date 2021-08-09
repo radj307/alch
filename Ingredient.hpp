@@ -36,6 +36,14 @@ namespace caco_alch {
 		 */
 		Ingredient(const std::string& name, const std::array<Effect, 4>& effects) : _name{ name }, _effects{ effects } {}
 
+		friend std::ostream& operator<<(std::ostream& os, const Ingredient& ingr)
+		{
+			os << '\t' << ingr._name << '\n';
+			for ( auto& fx : ingr._effects )
+				os << "\t\t" << fx << '\n';
+			return os;
+		}
+
 		bool operator==(const Ingredient& o) { return ( _name == o._name ) && array_match(_effects, o._effects); }
 		bool operator!=(const Ingredient& o) { return ( _name != o._name ) && !array_match(_effects, o._effects); }
 		bool operator<(const Ingredient& o)

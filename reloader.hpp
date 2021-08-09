@@ -1,7 +1,10 @@
 #pragma once
+#include <iostream>
 #include <algorithm>
 #include <file.h>
 #include <xINI.hpp>
+#include <reparse.hpp>
+#include <sysapi.h>
 #include "Alchemy.hpp"
 
 namespace caco_alch {
@@ -25,53 +28,6 @@ namespace caco_alch {
 	}
 
 	/**
-	 * @function parseFileContent(const std::string&)
-	 * @brief Parse a stringstream containing valid ingredient registry data.
-	 * @param ss	- Stringstream rvalue.
-	 * @returns Alchemy::IngrList
-	 */
-	inline Alchemy::IngrList parseFileContent(std::stringstream&& ss)
-	{
-		if ( ss.fail() ) throw std::exception("Cannot parse stringstream -- Failbit is set!");
-
-		Alchemy::IngrList ingredients;
-
-		std::string tmp_name;
-		std::array<Effect, 4> tmp_fx;
-		size_t insert_at{ 0 };
-
-		bool insert_into = false;
-
-		for ( std::string ln{ }; std::getline(ss, ln); ) {
-			ln = strip_line(ln);
-			const auto is_open{ ln.find('{') != std::string::npos }, is_close{ ln.find('}') != std::string::npos };
-			if ( is_open )
-				insert_into = true;
-			else if ( is_close ) {
-				if ( std::find_if(ingredients.begin(), ingredients.end(), [&tmp_name](Alchemy::IngrList::value_type ingr) { return ingr._name == tmp_name; }) == ingredients.end() ) {
-					ingredients.emplace_back(Ingredient(tmp_name, tmp_fx));
-				}
-				tmp_name = "";
-				tmp_fx = { };
-				insert_at = 0;
-				insert_into = false;
-			}
-			else if ( insert_into ) {
-				const auto eqPos{ ln.find('=') };
-				if ( eqPos != std::string::npos ) { // add effect with magnitude
-					const auto tmp_name{ strip_line(ln.substr(0, eqPos)) }, mag{ strip_line(ln.substr(eqPos + 1)) };
-					const auto num{ std::stod(mag) };
-					tmp_fx.at(insert_at++) = { tmp_name, num };
-				}
-				else // add effect without magnitude
-					tmp_fx.at(insert_at++) = { ln, -0.0 };
-			}
-			else tmp_name = ln;
-		}
-		return ingredients;
-	}
-
-	/**
 	 * @function loadFromFile(const std::string&)
 	 * @brief Load an ingredient list from a file.
 	 * @param filename	- Name of target file.
@@ -79,8 +35,46 @@ namespace caco_alch {
 	 */
 	inline Alchemy::IngrList loadFromFile(const std::string& filename)
 	{
-		auto ss{ file::read(filename) };
-		return parseFileContent(std::move(ss));
+		std::stringstream ss{ file::read(filename) };
+		if ( !ss.fail() ) {
+			const auto find_elem{ [](reparse::Elem::Cont traits, const std::string& name) -> std::string {
+				const auto pos{ std::find_if(traits.begin(), traits.end(), [&name](reparse::Elem::Cont::value_type v) { return str::tolower(v.name()) == name; }) };
+				if ( pos != traits.end() && pos->isVar() )
+					return pos->value();
+				return { };
+			} };
+			const auto get_fx{ [&find_elem](reparse::Elem::Cont::value_type& elem)->std::array<Effect, 4> {
+				if ( elem.isVar() ) throw std::exception("Unrecognized File Format");
+				const auto vec{ elem.getVec() };
+				std::array<Effect, 4> arr;
+				for ( size_t i{ 0 }; i < vec.size() && i < 4u; ++i ) {
+					if ( vec.at(i).isVar() ) throw std::exception("Unrecognized File Format");
+					if ( const auto traits{ vec.at(i).getVec() }; traits.size() >= 2 ) {
+						const double mag{ str::stod(find_elem(traits, "magnitude")) };
+						const unsigned dur{ str::stoui(find_elem(traits, "duration")) };
+						arr[i] = Effect{ vec.at(i).name(), mag, dur };
+					}
+				}
+				return arr;
+			} };
+			Alchemy::IngrList ingredients;
+			const auto push{ [&ingredients](const std::string& name, const std::array<Effect, 4>& fx) {
+				for ( auto& it : ingredients )
+					if ( it._name == name )
+						return false;
+				ingredients.push_back({ name, fx });
+				return true;
+			} };
+			for ( auto& elem : reparse::parse(std::move(ss)) ) {
+				if ( !push(elem.name(), get_fx(elem)) ) {
+#ifdef ENABLE_DEBUG
+					std::cout << sys::warn << "Found duplicate element: \'" << elem.name() << '\'' << std::endl;
+#endif
+				}
+			}
+			return ingredients;
+		}
+		throw std::exception(( "Couldn't find \'" + filename + "\'" ).c_str());
 	}
 
 	/**
