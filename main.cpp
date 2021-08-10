@@ -15,7 +15,6 @@
 #include <sysapi.h>
 #include <xINI.hpp>
 #include "reloader.hpp"
- //#include "Loader.hpp"
 #include "Alchemy.hpp"
 #include "UserAssist.hpp"
 
@@ -39,10 +38,10 @@ std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 int main(const int argc, char* argv[])
 {
 	// TODO:
+	// Implement logical operators to display results that have multiple traits.
 	// Implement duration processing in Potion.hpp now that reparse is being used for the registry.
-	// Implement '-r' recursive search (incompatible with '-e'), allow matches for any individual word
+	// Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
 	// Implement "-R" arg to reverse sorted output
-	// Implement the ability to change INI settings from the commandline (Ex: alchemy skill level, duration)
 	try
 	{
 #ifndef ENABLE_DEBUG
@@ -71,20 +70,13 @@ int main(const int argc, char* argv[])
 std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 {
 	// parse arguments
-	opt::Param args(argc, argv, _matcher);
+	opt::Param args(argc, argv, std::move(_matcher));
 #ifndef ENABLE_DEBUG
 	if ( args.size(true) == 0 ) { // print help if no valid parameters found.
 		Help::print();
 		throw std::exception("No valid parameters detected.");
 	}
 #endif
-	if ( args.getFlag('C') ) {
-		std::stringstream ss;
-		ss << std::cin.rdbuf();
-		for ( std::string ln{ }; std::getline(ss, ln);  ) {
-
-		}
-	}
 	if ( args.getFlag('h') )
 		Help::print();
 	// resolve file target for ingredient registry & INI
@@ -127,10 +119,6 @@ std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 	bool do_write_ini{ false };
 	if ( args.check_opt("ini-modav-alchemy") ) {
 		gs._alchemy_skill = [&args]() { const auto v{ str::stoui(args.getv("ini-modav-alchemy")) }; if ( v != 0u ) return v; return 15u; }( );
-		do_write_ini = true;
-	}
-	if ( args.check_opt("ini-default-duration") ) {
-		gs._duration = [&args]() { const auto v{ str::stoui(args.getv("ini-default-duration")) }; if ( v != 0u ) return v; return 15u; }( );
 		do_write_ini = true;
 	}
 	if ( do_write_ini ) {

@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <file.h>
+#include <sysapi.h>
 #include <xINI.hpp>
 #include "Alchemy.hpp"
 

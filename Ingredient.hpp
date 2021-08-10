@@ -23,8 +23,7 @@ namespace caco_alch {
 	 * @struct Ingredient
 	 * @brief Contains information about an ingredient, and what effects it has.
 	 */
-	struct Ingredient {
-		std::string _name;				///< @brief This ingredient's name.
+	struct Ingredient : ObjectBase {
 		std::array<Effect, 4> _effects;	///< @brief This ingredient's effects.
 
 		Ingredient() = default;
@@ -34,13 +33,13 @@ namespace caco_alch {
 		 * @param name		- The name of this Ingredient.
 		 * @param effects	- The effects belonging to this Ingredient.
 		 */
-		Ingredient(const std::string& name, const std::array<Effect, 4>& effects) : _name{ name }, _effects{ effects } {}
+		Ingredient(const std::string& name, const std::array<Effect, 4>& effects) : ObjectBase(name), _effects{ effects } {}
 
 		friend std::ostream& operator<<(std::ostream& os, const Ingredient& ingr)
 		{
 			os << '\t' << ingr._name << '\n';
 			for ( auto& fx : ingr._effects )
-				os << "\t\t" << fx << '\n';
+				os << "\t\t" << fx._name << '\t' << fx._magnitude << '\t' << fx._duration << "s\n";
 			return os;
 		}
 

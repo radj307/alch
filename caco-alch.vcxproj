@@ -154,16 +154,16 @@
   <ItemGroup>
     <None Include="..\..\_repo\shared library\SharedLib\SharedLib.vcxitems" />
     <None Include="caco-alch.ini" />
+    <None Include="caco-ingredient-list.dat.v2" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alchemy.hpp" />
-    <ClInclude Include="Common.hpp" />
     <ClInclude Include="Effect.hpp" />
     <ClInclude Include="GameSettings.hpp" />
-    <ClInclude Include="ObjectTemplate.hpp" />
+    <ClInclude Include="ObjectBase.hpp" />
     <ClInclude Include="Potion.hpp" />
     <ClInclude Include="reloader.hpp" />
     <ClInclude Include="resource.h" />
@@ -172,7 +172,7 @@
     <ClInclude Include="Loader.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="caco-ingredient-list.dat" />
+    <Text Include="caco-ingredient-list.dat.v1" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="caco-alch.rc" />
