@@ -4,6 +4,7 @@
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
     <ItemsProjectGuid>{fc2e44f0-3525-476a-91ff-97fe78b57ec7}</ItemsProjectGuid>
+    <ItemsProjectName>caco_alch</ItemsProjectName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -23,7 +24,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Effect.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSettings.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Ingredient.hpp" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Loader.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Potion.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)reloader.hpp" />

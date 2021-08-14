@@ -4,7 +4,7 @@
  * @brief Program entry point.
  */
 
-//#define DEBUG_SWITCH ///< @brief Define this in debug configuration to switch to debug mode.
+ //#define DEBUG_SWITCH ///< @brief Define this in debug configuration to switch to debug mode.
 #if defined(DEBUG_SWITCH) && defined(_DEBUG)
 #define ENABLE_DEBUG
 #include <xRand.h>
@@ -19,6 +19,8 @@
 #include "UserAssist.hpp"
 
 #include "GameSettings.hpp"
+
+#include <exceptionGNU.hpp>
 
 using namespace caco_alch;
 
@@ -70,9 +72,9 @@ int main(const int argc, char* argv[])
 std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 {
 	// parse arguments
-	opt::Param args(argc, argv, _matcher);
+	opt::Param args(argc, argv, std::move(_matcher));
 #ifndef ENABLE_DEBUG
-	if ( args.empty() ) { // print help if no valid parameters found.
+	if ( args.size(true) == 0 ) { // print help if no valid parameters found.
 		Help::print();
 		throw std::exception("No valid parameters detected.");
 	}
@@ -89,7 +91,7 @@ std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 	}( ) };
 	const std::string
 		_DEF_INI{ [&loc]() -> std::string { const auto dPos{ loc.second.rfind('.') }; if ( dPos != std::string::npos ) return loc.second.substr(0, dPos) + ".ini"; return { }; }( ) },
-		_DEF_FILE{ loc.first.empty() ? "caco-ingredient-list.dat" : loc.first + '\\' + "caco-ingredient-list.dat" }; ///< @brief Replace the exe name in loc with the default name of the ingredient registry file.
+		_DEF_FILE{ loc.first + '\\' + "caco-ingredient-list.dat" }; ///< @brief Replace the exe name in loc with the default name of the ingredient registry file.
 	const std::string filename{ [&args, &_DEF_FILE]() -> std::string {
 		std::string ret{ args.getv("load") };
 		if ( ret.empty() )
@@ -102,13 +104,9 @@ std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 		return ret;
 	}( ) };
 
-	if ( args.check_opt("validate") ) { // Process "--validate" opt
-		std::cout << "argv[0]" << std::setw(12u - 7u) << ' ' << argv[0] << std::endl;
-		std::cout << "filename" << std::setw(12u - 8u) << ' ' << filename << std::endl;
-		if ( validate_file(filename) )
-			std::cout << sys::msg << "Validation succeeded." << std::endl;
-		else std::cout << sys::warn << "Validation failed." << std::endl;
-	}
+	if ( args.check_opt("validate") ) // Process "--validate" opt
+		if ( !static_cast<bool>( validate_file(filename) ) )
+			throw s::exception("VALIDATE_FAILED"); // throw exception to break from handle_arguments
 
 	if ( args.check_opt("ini-reset") ) {
 		write_ini(ini_filename);

@@ -117,17 +117,7 @@ namespace caco_alch {
 	 */
 	int validate_file(const std::string& filename)
 	{
-		try {
-			const auto registry{ loadFromFile(filename) };
-			if ( !registry.empty() ) {
-				std::cout << sys::msg << "File validation succeeded." << std::endl;
-				return 0;
-			}
-			else throw std::exception();
-		} catch ( ... ) {
-			std::cout << sys::error << "File validation failed! (Does the file exist, and contain valid data?)" << std::endl;
-			return -1;
-		}
+		return !loadFromFile(filename).empty();
 	}
 
 	template<class T>
