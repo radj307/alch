@@ -24,6 +24,7 @@
     <ProjectGuid>{6f1aba7f-4bbe-4d68-a5d1-a625452cddda}</ProjectGuid>
     <RootNamespace>cacoalch</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>alch-windows</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -57,6 +58,7 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
     <Import Project="..\..\_repo\shared library\SharedLib\SharedLib.vcxitems" Label="Shared" />
+    <Import Project="..\caco_alch\caco_alch.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -73,15 +75,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>alch</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>alch</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>alch</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>alch</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -153,26 +159,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\..\_repo\shared library\SharedLib\SharedLib.vcxitems" />
-    <None Include="caco-alch.ini" />
-    <None Include="caco-ingredient-list.dat.v2" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Alchemy.hpp" />
-    <ClInclude Include="Effect.hpp" />
-    <ClInclude Include="GameSettings.hpp" />
-    <ClInclude Include="ObjectBase.hpp" />
-    <ClInclude Include="Potion.hpp" />
-    <ClInclude Include="reloader.hpp" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="UserAssist.hpp" />
-    <ClInclude Include="Ingredient.hpp" />
-    <ClInclude Include="Loader.hpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="caco-ingredient-list.dat.v1" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="caco-alch.rc" />

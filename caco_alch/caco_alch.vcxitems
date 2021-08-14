@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{fc2e44f0-3525-476a-91ff-97fe78b57ec7}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)caco-alch.ini" />
+    <None Include="$(MSBuildThisFileDirectory)caco-ingredient-list.dat.v1" />
+    <None Include="$(MSBuildThisFileDirectory)caco-ingredient-list.dat.v2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Alchemy.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Effect.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameSettings.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Ingredient.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Loader.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Potion.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)reloader.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)UserAssist.hpp" />
+  </ItemGroup>
+</Project>

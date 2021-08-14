@@ -1,0 +1,132 @@
+\hypertarget{_user_assist_8hpp}{}\doxysection{X\+:/\+\_\+\+Workspace/alch/caco-\/alch/\+User\+Assist.hpp File Reference}
+\label{_user_assist_8hpp}\index{X:/\_Workspace/alch/caco-\/alch/UserAssist.hpp@{X:/\_Workspace/alch/caco-\/alch/UserAssist.hpp}}
+
+
+Contains methods related to user-\/interaction; such as the \mbox{\hyperlink{namespace_help}{Help}} namespace, and the opt\+::\+Matcher instance used to specify valid commandline options.  
+
+
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$iomanip$>$}\newline
+{\ttfamily \#include $<$optlib.\+hpp$>$}\newline
+Include dependency graph for User\+Assist.\+hpp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_user_assist_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{_user_assist_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structcaco__alch_1_1_help_1_1_helper}{caco\+\_\+alch\+::\+Help\+::\+Helper}}
+\begin{DoxyCompactList}\small\item\em Provides a convenient extensible help display. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespace_help}{Help}}
+\begin{DoxyCompactList}\small\item\em Contains methods related to the inline terminal help display. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{_user_assist_8hpp_a3eb2f4f89db29c49346107f0fd1119de}{caco\+\_\+alch\+::handle\+\_\+arguments}} (opt\+::\+Param \&\&args, Alchemy \&\&alch)
+\begin{DoxyCompactList}\small\item\em Handles program execution. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{_user_assist_8hpp_a0294a3a64204ddf933d9d4d87a905611}{caco\+\_\+alch\+::\+Help\+::print}} (const Helper \&documentation=\+\_\+default\+\_\+doc)
+\begin{DoxyCompactList}\small\item\em Display help information. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{_user_assist_8hpp_ae97860dc6c016b1927a15e66a57434e5}\label{_user_assist_8hpp_ae97860dc6c016b1927a15e66a57434e5}} 
+const opt\+::\+Matcher {\bfseries caco\+\_\+alch\+::\+\_\+matcher} \{ \{ \textquotesingle{}l\textquotesingle{}, \textquotesingle{}s\textquotesingle{}, \textquotesingle{}a\textquotesingle{}, \textquotesingle{}h\textquotesingle{}, \textquotesingle{}q\textquotesingle{}, \textquotesingle{}v\textquotesingle{}, \textquotesingle{}b\textquotesingle{}, \textquotesingle{}e\textquotesingle{} \}, \{ \{ \char`\"{}load\char`\"{}, true \}, \{ \char`\"{}validate\char`\"{}, false \}, \{ \char`\"{}color\char`\"{}, true \}, \{ \char`\"{}precision\char`\"{}, true \} \} \}
+\item 
+\mbox{\Hypertarget{_user_assist_8hpp_a9447772aa29f1d46d40914db03e61efd}\label{_user_assist_8hpp_a9447772aa29f1d46d40914db03e61efd}} 
+const Helper \mbox{\hyperlink{_user_assist_8hpp_a9447772aa29f1d46d40914db03e61efd}{caco\+\_\+alch\+::\+Help\+::\+\_\+default\+\_\+doc}} (\char`\"{}caco-\/alch $<$\mbox{[}options\mbox{]} \mbox{[}target\mbox{]}$>$\char`\"{}, \{ \{ \char`\"{}-\/h\char`\"{}, \char`\"{}Shows this help display.\char`\"{} \}, \{ \char`\"{}-\/l\char`\"{}, \char`\"{}List all ingredients.\char`\"{} \}, \{ \char`\"{}-\/a\char`\"{}, \char`\"{}Lists all ingredients and a list of all known effects.\char`\"{} \}, \{ \char`\"{}-\/s\char`\"{}, \char`\"{}Searches the ingredient \& effect lists for all additional parameters, and prints a result to STDOUT\char`\"{} \}, \{ \char`\"{}-\/e\char`\"{}, \char`\"{}(Only works with -\/s) Exact match mode.\char`\"{} \}, \{ \char`\"{}-\/q\char`\"{}, \char`\"{}Quiet output, only shows effects that match the search string in search results.\char`\"{} \}, \{ \char`\"{}-\/v\char`\"{}, \char`\"{}Verbose output, shows magnitude for ingredient effects.\char`\"{} \}, \{ \char`\"{}-\/b\char`\"{}, \char`\"{}(Incompatible with -\/s) Build mode, accepts up to 4 ingredient names and shows the result of combining them.\char`\"{} \}, \{ \char`\"{}-\/-\/load $<$file$>$\char`\"{}, \char`\"{}Allows specifying an alternative ingredient registry file.\char`\"{} \}, \{ \char`\"{}-\/-\/validate\char`\"{}, \char`\"{}Checks if the target file can be loaded successfully, and contains valid data. Specifying this option will cause all other options to be ignored.\char`\"{} \}, \{ \char`\"{}-\/-\/color $<$string\+\_\+color$>$\char`\"{}, \char`\"{}Change the color of ingredient names. String colors must include either an \textquotesingle{}f\textquotesingle{} (foreground) or \textquotesingle{}b\textquotesingle{} (background), then the name of the desired color.\char`\"{} \}, \{ \char`\"{}-\/-\/precision $<$uint$>$\char`\"{}, \char`\"{}Set the floating-\/point precision value when printing numbers. (Default\+: 2)\char`\"{} \}, \})
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{namespace_help}{Help}} documentation used by default. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Contains methods related to user-\/interaction; such as the \mbox{\hyperlink{namespace_help}{Help}} namespace, and the opt\+::\+Matcher instance used to specify valid commandline options. 
+
+\begin{DoxyAuthor}{Author}
+radj307 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_user_assist_8hpp_a3eb2f4f89db29c49346107f0fd1119de}\label{_user_assist_8hpp_a3eb2f4f89db29c49346107f0fd1119de}} 
+\index{UserAssist.hpp@{UserAssist.hpp}!handle\_arguments@{handle\_arguments}}
+\index{handle\_arguments@{handle\_arguments}!UserAssist.hpp@{UserAssist.hpp}}
+\doxysubsubsection{\texorpdfstring{handle\_arguments()}{handle\_arguments()}}
+{\footnotesize\ttfamily int caco\+\_\+alch\+::handle\+\_\+arguments (\begin{DoxyParamCaption}\item[{opt\+::\+Param \&\&}]{args,  }\item[{\mbox{\hyperlink{classcaco__alch_1_1_alchemy}{Alchemy}} \&\&}]{alch }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Handles program execution. 
+
+@function handle\+\_\+arguments(opt\+::\+Param\&\&) 
+\begin{DoxyParams}{Parameters}
+{\em args} & -\/ rvalue reference of an opt\+::\+Param instance. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int -\/ see \mbox{\hyperlink{main_8cpp_a638b85ceffac097c2aa79b76ba8c055e}{main()}} documentation 
+\end{DoxyReturn}
+
+
+Definition at line 20 of file User\+Assist.\+hpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{_user_assist_8hpp_a3eb2f4f89db29c49346107f0fd1119de_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{_user_assist_8hpp_a3eb2f4f89db29c49346107f0fd1119de_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_user_assist_8hpp_a0294a3a64204ddf933d9d4d87a905611}\label{_user_assist_8hpp_a0294a3a64204ddf933d9d4d87a905611}} 
+\index{UserAssist.hpp@{UserAssist.hpp}!print@{print}}
+\index{print@{print}!UserAssist.hpp@{UserAssist.hpp}}
+\doxysubsubsection{\texorpdfstring{print()}{print()}}
+{\footnotesize\ttfamily void caco\+\_\+alch\+::\+Help\+::print (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structcaco__alch_1_1_help_1_1_helper}{Helper}} \&}]{documentation = {\ttfamily \+\_\+default\+\_\+doc} }\end{DoxyParamCaption})}
+
+
+
+Display help information. 
+
+@function print\+\_\+help(const Helper\& = \+\_\+default\+\_\+doc) 
+\begin{DoxyParams}{Parameters}
+{\em documentation} & -\/ Documentation to display \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 131 of file User\+Assist.\+hpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=191pt]{_user_assist_8hpp_a0294a3a64204ddf933d9d4d87a905611_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=191pt]{_user_assist_8hpp_a0294a3a64204ddf933d9d4d87a905611_icgraph}
+\end{center}
+\end{figure}

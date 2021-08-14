@@ -1,0 +1,28 @@
+1.	Open xEdit
+2.	R+Click on any plugin, select "Apply Filter". Uncheck ALL BOXES FOR EVERYTHING except "Record Signatures" & its subelement "INGR - Ingredient"
+3.	Select all of the ingredients you want to export, R+Click -> "Apply Script..." -> "AT - QuickDisplay"
+4.	Fill in the following (set all types to string) and check the "Export as .txt" button (Exported files will be found in your "/xEdit/Edit Scripts/" directory.):
+
+Effects\Effect[0]\EFID
+Effects\Effect[0]\EFIT\Magnitude
+Effects\Effect[0]\EFIT\Duration
+Effects\Effect[1]\EFID
+Effects\Effect[1]\EFIT\Magnitude
+Effects\Effect[1]\EFIT\Duration
+Effects\Effect[2]\EFID
+Effects\Effect[2]\EFIT\Magnitude
+Effects\Effect[2]\EFIT\Duration
+Effects\Effect[3]\EFID
+Effects\Effect[3]\EFIT\Magnitude
+Effects\Effect[3]\EFIT\Duration
+
+5.	Use the following Regular Expression on "Exported.txt":
+	Find:		(^.+?\")(.+?)(\"\s\[INGR\:.+?\])\r\n
+	Replace:	\2\r\n{\r\n}\r\n
+6.	Use the following Regular Expression on "Exported.txt":
+	Find:		^(\s*?Effects\\Effect...\\EFI.\:.+?")(.+?)(".+)\s*?(Effects\\Effect...\\EFIT\\Magnitude\:\s)(.+)\s+(Effects\\Effect...\\EFIT\\Duration\:\s)(.+)
+	Replace:	\t\2\r\n\t{\r\n\t\tmagnitude = \5\r\n\t\tduration = \7\r\n\t}\r\n
+7.	Use the following Regular Expression on "Exported.txt":
+	Find:		^}\s+(\s.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s)
+	Replace:	\1}\r\n
+8.	File is now in the correct format, and can be read using the reparse.hpp library.
