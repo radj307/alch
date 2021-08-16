@@ -1,23 +1,22 @@
 #pragma once
 #include <unordered_set>
-#include "Effect.hpp"
+#include "using.h"
 #include "Ingredient.hpp"
 #include "GameSettings.hpp"
 
 namespace caco_alch {
-	using PotionFX = std::vector<Effect>;
 
 	/**
 	 * @function get_common_effects(const std::vector<Ingredient>&)
 	 * @brief Retrieve a list of common effects with the magnitude of the strongest effect of that type. (Base Magnitude)
 	 * @param ingr	- List of ingredients
-	 * @returns PotionFX
+	 * @returns EffectList
 	 */
-	inline PotionFX get_common_effects(const std::vector<Ingredient>& ingr)
+	inline EffectList get_common_effects(const std::vector<Ingredient>& ingr)
 	{
 		if ( ingr.size() > 4 ) throw std::exception("Too many ingredients! (Max 4)"); else if ( ingr.size() < 2 ) throw std::exception("Not enough ingredients! (Min 2)");
-		PotionFX common, tmp;
-		const auto is_duplicate{ [](PotionFX& target, const Effect& fx) {
+		EffectList common, tmp;
+		const auto is_duplicate{ [](EffectList& target, const Effect& fx) {
 			for ( auto it{ target.begin() }; it != target.end(); ++it )
 				if ( it->_name == fx._name ) // if effect names are the same, consider it a duplicate even though the magnitudes might be different
 					return it;
@@ -48,34 +47,44 @@ namespace caco_alch {
 
 	struct PotionBase : ObjectBase {
 	protected:
-		PotionFX _base_fx;
+		EffectList _base_fx; ///< @brief The base effects of a potion, before calculating the potion magnitude.
 
 	public:
 		PotionBase(const std::string& name) : ObjectBase(name), _base_fx{ } {}
-		PotionBase(const std::string& name, const PotionFX& effects) : ObjectBase(name), _base_fx{ effects } {}
+		PotionBase(const std::string& name, const EffectList& effects) : ObjectBase(name), _base_fx{ effects } {}
 		PotionBase(const std::string& name, std::vector<Ingredient>&& ingredients) : ObjectBase(name), _base_fx{ get_common_effects(std::move(ingredients)) } {}
 		PotionBase(const std::string& name, const std::vector<Ingredient>& ingredients) : ObjectBase(name), _base_fx{ get_common_effects(ingredients) } {}
 	};
 
 	class Potion : public PotionBase {
-		PotionFX _fx;
+		EffectList _fx; ///< @brief The final effects of a potion, these are applied when using it.
 
-		static PotionFX calculate_stats(const PotionFX base, const GameSettings& gs)
+		/**
+		 * @function calculate_stats(const EffectList, GameSettings&)
+		 * @brief Calculate a potion's final stats, including the players level & perks, etc.
+		 * @param base	- Base effects.
+		 * @param gs	- Ref of a GameSettings instance.
+		 * @returns EffectList
+		 */
+		static EffectList calculate_stats(const EffectList& base, GameSettings& gs)
 		{
-			PotionFX vec;
-			for ( auto& it : base )
-				vec.push_back(Effect{ it._name, (it._magnitude > 0.0 ? gs.potion_calc_magnitude(it._magnitude) : 0.0 ), it._duration });
+			EffectList vec;
+			for ( auto& it : base ) {
+				double magnitude{ gs.calculate_magnitude(it._magnitude) };
+				unsigned int duration{ it._duration };
+				vec.push_back(Effect{ it._name, magnitude, duration });
+			}
 			return vec;
 		}
 
 	public:
-		Potion(const std::string& name, std::vector<Ingredient>&& ingredients, const GameSettings& gs = _DEFAULT_GAMESETTINGS) : PotionBase(name, std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(const std::string& name, const std::vector<Ingredient>& ingredients, const GameSettings& gs = _DEFAULT_GAMESETTINGS) : PotionBase(name, ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(std::vector<Ingredient>&& ingredients, const GameSettings& gs = _DEFAULT_GAMESETTINGS) : PotionBase("Potion", std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(const std::vector<Ingredient>& ingredients, const GameSettings& gs = _DEFAULT_GAMESETTINGS) : PotionBase("Potion", ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const std::string& name, std::vector<Ingredient>&& ingredients, GameSettings gs) : PotionBase(name, std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const std::string& name, const std::vector<Ingredient>& ingredients, GameSettings gs) : PotionBase(name, ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(std::vector<Ingredient>&& ingredients, GameSettings gs) : PotionBase("Potion", std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const std::vector<Ingredient>& ingredients, GameSettings gs) : PotionBase("Potion", ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
 
 		std::string name() const { return _name; }
-		PotionFX effects() const { return _fx; }
+		EffectList effects() const { return _fx; }
 
 		friend std::ostream& operator<<(std::ostream& os, const Potion& p)
 		{

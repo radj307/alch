@@ -30,7 +30,7 @@ namespace caco_alch {
 		return str;
 	}
 
-	inline Alchemy::IngrList parseFileContent(std::stringstream&& ss)
+	inline IngrList parseFileContent(std::stringstream& ss)
 	{
 		const auto find_elem{ [](reparse::Elem::Cont traits, const std::string& name) -> std::string {
 			const auto pos{ std::find_if(traits.begin(), traits.end(), [&name](reparse::Elem::Cont::value_type v) { return str::tolower(v.name()) == name; }) };
@@ -38,7 +38,7 @@ namespace caco_alch {
 				return pos->value();
 			return { };
 		} };
-		const auto get_fx{ [&find_elem] (reparse::Elem::Cont::value_type& elem)->std::array<Effect, 4> {
+		const auto get_fx{ [&find_elem] (reparse::Elem::Cont::value_type& elem) -> std::array<Effect, 4> {
 			if ( elem.isVar() ) throw std::exception("Unrecognized File Format");
 			const auto vec{ elem.getVec() };
 			std::array<Effect, 4> arr;
@@ -47,12 +47,21 @@ namespace caco_alch {
 				if ( const auto traits{ vec.at(i).getVec() }; traits.size() >= 2 ) {
 					const double mag{ str::stod(find_elem(traits, "magnitude")) };
 					const unsigned dur{ str::stoui(find_elem(traits, "duration")) };
-					arr[i] = Effect{ vec.at(i).name(), mag, dur };
+					const auto KWDA{ [&traits]() -> KeywordList {
+						KeywordList keywords;
+						for ( auto& it : traits )
+							if ( !it.isVar() )
+								for ( auto& kywd : it.getVec() )
+									if ( kywd.isVar() )
+										keywords.push_back(kywd.value());
+						return keywords;
+					}() };
+					arr[i] = Effect{ vec.at(i).name(), mag, dur, KWDA };
 				}
 			}
 			return arr;
 		} };
-		Alchemy::IngrList ingredients;
+		IngrList ingredients;
 		const auto push{ [&ingredients](const std::string& name, const std::array<Effect, 4>& fx) {
 			for ( auto& it : ingredients )
 				if ( it._name == name )
@@ -76,11 +85,11 @@ namespace caco_alch {
 	 * @param filename	- Name of target file.
 	 * @returns Alchemy::IngrList
 	 */
-	inline Alchemy::IngrList loadFromFile(const std::string& filename)
+	inline IngrList loadFromFile(const std::string& filename)
 	{
 		auto buffer{ file::read(filename) };
 		if ( buffer.fail() ) throw std::exception(( "Couldn't find \'" + filename + "\'" ).c_str());
-		return parseFileContent(std::move(buffer));
+		return parseFileContent(buffer);
 	}
 
 	/**
@@ -92,19 +101,19 @@ namespace caco_alch {
 	 *			true	- Success.
 	 *			false	- Failed to write to file.
 	 */
-	inline bool writeToFile(const std::string& filename, Alchemy::IngrList&& ingr)
+	inline bool writeToFile(const std::string& filename, IngrList&& ingr, const bool append = false)
 	{
 		std::stringstream ss;
 
 		for ( auto& it : ingr ) {
 			ss << it._name << "\n{\n";
 			for ( auto& fx : it._effects ) {
-				ss << fx._name << "\t\t= " << fx._magnitude;
+				ss << '\t' << fx._name << "\t\t= " << fx._magnitude << '\n';
 			}
 			ss << "}\n";
 		}
 
-		return file::write(filename, ss, false);
+		return file::write(filename, ss, append);
 	}
 
 	/**
@@ -130,12 +139,10 @@ namespace caco_alch {
 
 	GameSettings read_ini(const std::string& filename)
 	{
-		file::xINI ini{ filename };
-		return GameSettings(helper(str::stod(ini.getv("GMST", "fAlchemyIngredientInitMult")), 3.0), helper(str::stod(ini.getv("GMST", "fAlchemySkillFactor")), 3.0), helper(str::stoui(ini.getv("AV", "alchemy_skill")), 15u));
+		GameSettings gs;
+		gs.set(file::read(filename));
+		return gs;
 	}
 
-	bool write_ini(const std::string& filename, const GameSettings& gs = _DEFAULT_GAMESETTINGS, const bool append = false)
-	{
-		return file::write(filename, std::stringstream{ "[GMST]\nfAlchemyIngredientInitMult\t= " + std::to_string(gs._fAlchemyIngredientInitMult) + "\nfAlchemySkillFactor\t= " + std::to_string(gs._fAlchemySkillFactor) + "\n\n[AV]\nalchemy_skill\t= " + std::to_string(gs._alchemy_skill) + "\n\n[DEFAULTS]\n" }, append);
-	}
+	bool write_ini(const std::string& filename, const GameSettings& gs, const bool append = false) { return file::write(filename, gs(), append); }
 }

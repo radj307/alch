@@ -1,7 +1,8 @@
-1.	Open xEdit
-2.	R+Click on any plugin, select "Apply Filter". Uncheck ALL BOXES FOR EVERYTHING except "Record Signatures" & its subelement "INGR - Ingredient"
-3.	Select all of the ingredients you want to export, R+Click -> "Apply Script..." -> "AT - QuickDisplay"
-4.	Fill in the following (set all types to string) and check the "Export as .txt" button (Exported files will be found in your "/xEdit/Edit Scripts/" directory.):
+/* EXPORT INGREDIENT LIST */
+	1.	Open xEdit
+	2.	R+Click on any plugin, select "Apply Filter". Uncheck ALL BOXES FOR EVERYTHING except "Record Signatures" & its subelement "INGR - Ingredient"
+	3.	Select all of the ingredients you want to export, R+Click -> "Apply Script..." -> "AT - QuickDisplay"
+	4.	Fill in the following (set all types to string) and check the "Export as .txt" button (Exported files will be found in your "/xEdit/Edit Scripts/" directory.):
 
 Effects\Effect[0]\EFID
 Effects\Effect[0]\EFIT\Magnitude
@@ -16,13 +17,43 @@ Effects\Effect[3]\EFID
 Effects\Effect[3]\EFIT\Magnitude
 Effects\Effect[3]\EFIT\Duration
 
-5.	Use the following Regular Expression on "Exported.txt":
-	Find:		(^.+?\")(.+?)(\"\s\[INGR\:.+?\])\r\n
-	Replace:	\2\r\n{\r\n}\r\n
-6.	Use the following Regular Expression on "Exported.txt":
-	Find:		^(\s*?Effects\\Effect...\\EFI.\:.+?")(.+?)(".+)\s*?(Effects\\Effect...\\EFIT\\Magnitude\:\s)(.+)\s+(Effects\\Effect...\\EFIT\\Duration\:\s)(.+)
-	Replace:	\t\2\r\n\t{\r\n\t\tmagnitude = \5\r\n\t\tduration = \7\r\n\t}\r\n
-7.	Use the following Regular Expression on "Exported.txt":
-	Find:		^}\s+(\s.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s)
-	Replace:	\1}\r\n
-8.	File is now in the correct format, and can be read using the reparse.hpp library.
+	5.	Use the following Regular Expression on "Exported.txt":
+		Find:		(^.+?\")(.+?)(\"\s\[INGR\:.+?\])\r\n
+		Replace:	\2\r\n{\r\n}\r\n
+	6.	Use the following Regular Expression on "Exported.txt":
+		Find:		^(\s*?Effects\\Effect...\\EFI.\:.+?")(.+?)(".+)\s*?(Effects\\Effect...\\EFIT\\Magnitude\:\s)(.+)\s+(Effects\\Effect...\\EFIT\\Duration\:\s)(.+)
+		Replace:	\t\2\r\n\t{\r\n\t\tmagnitude = \5\r\n\t\tduration = \7\r\n\t}\r\n
+	7.	Use the following Regular Expression on "Exported.txt":
+		Find:		^}\s+(\s.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s+.+\s+?\s)
+		Replace:	\1}\r\n
+	8.	File is now in the correct format, and can be read using the reparse.hpp library.
+
+/* EXPORT EFFECT LIST */
+	1.	Open xEdit
+	2.	R+Click on any plugin, select "Apply Filter". Uncheck ALL BOXES FOR EVERYTHING except "Record Signatures" & its subelement "MGEF - Magic Effect"
+	3.	Select all of the ingredients you want to export, R+Click -> "Apply Script..." -> "AT - QuickDisplay"
+	4.	Fill in the following (set all types to string) and check the "Export as .txt" button (Exported files will be found in your "/xEdit/Edit Scripts/" directory.):
+
+KWDA\Keyword[0]
+KWDA\Keyword[1]
+KWDA\Keyword[2]
+KWDA\Keyword[3]
+KWDA\Keyword[4]
+KWDA\Keyword[5]
+
+	5.	Use the following Regular Expression on "Exported.txt":
+		Find:		^\s+KWDA\\Keyword\[[0-5]\]:\s*?\n
+		Replace:	
+	6.	Use the following Regular Expression on "Exported.txt":
+		Find:		^.+?\s"(.+?)"\s\[MGEF:(........)\]\s*?\n\s+?\n
+		Replace:	
+	7.	Use the following Regular Expression on "Exported.txt":
+		Find:		(^\b(?!Alch).+?\b\s.+\s+\n)(^\s+KWDA.+\s+?\n)*\r\n
+		Replace:	
+	8.	Use the following Regular Expression on "Exported.txt":
+		Find:		^Alch.+?\s"(.+?)"\s\[MGEF:(........)\]\s+?\n((^\s+KWDA\\Keyword\[.\]:\s.+\s*?\n)+)\s*?\n
+		Replace:	\1\r\n{\n\3}\n
+	9.	Use the following Regular Expression on "Exported.txt":
+		Find:		^\s+KWDA\\Keyword...:\s\b(.+?)\b\s\[KYWD:(........)\]
+		Replace:	\t\2 = \1
+	10.	File is now in the correct format, and can be read using the reparse.hpp library.

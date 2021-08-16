@@ -4,7 +4,7 @@
  * @brief Program entry point.
  */
 
-//#define DEBUG_SWITCH ///< @brief Define this in debug configuration to switch to debug mode.
+#define DEBUG_SWITCH ///< @brief Define this in debug configuration to switch to debug mode.
 #if defined(DEBUG_SWITCH) && defined(_DEBUG)
 #define ENABLE_DEBUG
 #include <xRand.h>
@@ -24,7 +24,6 @@ using namespace caco_alch;
 
 std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[]);
 
-
 /**
  * @brief Main.
  * @param argc	- (implicit)
@@ -39,7 +38,6 @@ int main(const int argc, char* argv[])
 {
 	// TODO:
 	// Implement logical operators to display results that have multiple traits.
-	// Implement duration processing in Potion.hpp now that reparse is being used for the registry.
 	// Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
 	// Implement "-R" arg to reverse sorted output
 	try
@@ -60,6 +58,59 @@ int main(const int argc, char* argv[])
 	}
 }
 
+GameSettings handle_ini_opts(const std::string& ini_filename, opt::Param& args)
+{
+	GameSettings gs; // INIT
+	if ( !file::exists(ini_filename) && !args.check_opt("ini-reset") ) return gs; // return early
+
+	else if ( file::exists(ini_filename) ) {// read the INI file if it exists
+		gs = read_ini(ini_filename); // overwrite default game settings
+		#ifdef ENABLE_DEBUG
+			std::cout << sys::log << "Successfully read game settings from INI file \"" << ini_filename << '\"' << std::endl;
+		#endif
+	}
+
+	bool update_ini_before_return{ false };
+
+	if ( args.check_opt("ini-reset") ) { // check if user wants to reset/create INI config file.
+		if ( write_ini(ini_filename, gs) )
+			std::cout << sys::msg << "Successfully wrote to \"" << ini_filename << '\"' << std::endl;
+		else std::cout << sys::warn << "Failed to write to \"" << ini_filename << '\"' << std::endl;
+	}
+
+	if ( args.check_opt("ini-alchemy-skill") ) { // check if user wants to change their alchemy skill level
+		try {
+			if ( const auto skill{ std::stod(args.getv("ini-alchemy-skill")) }; skill != gs.AlchemyAV() ) {
+				if ( gs.set_AlchemyAV(skill) )
+					std::cout << sys::msg << "Changed alchemy skill level to " << Color::f_cyan << skill << Color::reset << '\n';
+				update_ini_before_return = true;
+			}
+			else
+				std::cout << sys::msg << "Alchemy skill level was already set to " << Color::f_cyan << skill << Color::reset << '\n';
+		} catch ( std::exception& ex ) {
+			std::cout << sys::error << "An exception occurred while changing the alchemy skill level: \"" << ex.what() << '\"' << std::endl;
+		}
+	}
+	if ( args.check_opt("ini-alchemy-mod") ) {
+		try {
+			if ( const auto mod{ std::stod(args.getv("ini-alchemy-mod")) }; mod != gs.AlchemyMod() ){
+				if ( gs.set_AlchemyMod(mod) )
+					std::cout << sys::msg << "Changed alchemy skill modifier to " << Color::f_green << mod << Color::reset << '\n';
+				update_ini_before_return = true;
+			}
+			else
+				std::cout << sys::msg << "Alchemy skill modifier was already set to " << Color::f_green << mod << Color::reset << '\n';
+		} catch ( std::exception& ex ) {
+			std::cout << sys::error << "An exception occurred while changing the alchemy skill modifier: \"" << ex.what() << '\"' << std::endl;
+		}
+	}
+
+	if ( update_ini_before_return )
+		write_ini(ini_filename, gs, false);
+
+	return gs; // RETURN
+}
+
 /**
  * @function init(const int, char*[])
  * @brief Initialize the program and its assets, process interrupt opts.
@@ -70,7 +121,7 @@ int main(const int argc, char* argv[])
 std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 {
 	// parse arguments
-	opt::Param args(argc, argv, _matcher);
+	opt::Param args(argc, argv, std::move(_matcher));
 #ifndef ENABLE_DEBUG
 	if ( args.empty() ) { // print help if no valid parameters found.
 		Help::print();
@@ -98,7 +149,8 @@ std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 	}( ) }, ini_filename{ [&args, &_DEF_INI]() -> std::string {
 		std::string ret{ args.getv("ini") };
 		if ( ret.empty() )
-			ret = _DEF_INI;
+			ret = "X:\\bin\\alch.ini"; // TEMP DEBUG FIX
+		//	ret = _DEF_INI; // DEBUG
 		return ret;
 	}( ) };
 
@@ -110,28 +162,6 @@ std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 		else std::cout << sys::warn << "Validation failed." << std::endl;
 	}
 
-	if ( args.check_opt("ini-reset") ) {
-		write_ini(ini_filename);
-		exit(0);
-	}
 
-	GameSettings gs{ };
-	if ( file::exists(ini_filename) )
-		gs = read_ini(ini_filename);
-
-	// Check for stat mods
-	bool do_write_ini{ false };
-	if ( args.check_opt("ini-modav-alchemy") ) {
-		gs._alchemy_skill = [&args]() { const auto v{ str::stoui(args.getv("ini-modav-alchemy")) }; if ( v != 0u ) return v; return 15u; }( );
-		do_write_ini = true;
-	}
-	if ( do_write_ini ) {
-		write_ini(ini_filename, gs);
-		exit(0);
-	}
-
-	// Init alchemy instance
-	auto alch{ Alchemy(loadFromFile(filename)) };
-
-	return { args, alch, gs };
+	return { args, Alchemy(loadFromFile(filename)), handle_ini_opts(ini_filename, args) };
 }

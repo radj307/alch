@@ -2,9 +2,10 @@
 #include <sstream>
 #include <set>
 #include <strconv.hpp>
-#include "Effect.hpp"
+#include "using.h"
 #include "Ingredient.hpp"
 #include "Potion.hpp"
+#include "Format.hpp"
 
 /**
  * @namespace caco_alch
@@ -12,27 +13,14 @@
  */
 namespace caco_alch {
 	/**
-	 * @namespace _internal
-	 * @brief Contains methods used internally by caco_alch.
+	 * @class Alchemy
+	 * @brief Contains the ingredient registry and functions related to interacting with it.
 	 */
-	namespace _internal {
-		/**
-		 * @struct less
-		 * @brief Custom implementation of the std::less comparison object to handle caco_alch's object template.
-		 * @tparam T	- Type to compare
-		 */
-		template<class T>
-		struct less {
-			bool operator()(const T* a, const T* b) const { return a->_name < b->_name; }
-		};
-	}
 	class Alchemy {
 	public:
-		using IngrList = std::vector<Ingredient>;
-		using SortedIngrList = std::set<Ingredient*, _internal::less<Ingredient>>;
-		const std::exception not_found{ "NOT_FOUND" };
-		const std::exception invalid_param{ "INVALID_PARAMETERS" };
-	private:
+		const std::exception not_found{ "NOT_FOUND" };	///< @brief Exception thrown when a given search parameter couldn't be found
+		const std::exception invalid_param{ "INVALID_PARAMETERS" }; ///< @brief Exception thrown when a function receives an invalid parameter.
+	protected:
 		IngrList _ingr; ///< @brief Stores the list of all known ingredients.
 
 	public:
@@ -45,6 +33,7 @@ namespace caco_alch {
 		 *			false - name is not a valid ingredient.
 		 */
 		bool is_ingr(const std::string& name) { return std::any_of(_ingr.begin(), _ingr.end(), [&name](const IngrList::value_type& ingr) { return str::tolower(ingr._name) == name; }); }
+
 		/**
 		 * @function is_effect(const std::string&, const bool = false)
 		 * @brief Check if a given ingredient exists in the ingredient list.
@@ -65,10 +54,21 @@ namespace caco_alch {
 			return false;
 		}
 
+		/**
+		 * @function get_ingr_ref()
+		 * @brief Retrieve a reference to the ingredient list.
+		 * @returns IngrList&
+		 */
 		IngrList& get_ingr_ref() { return _ingr; }
-		std::set<Effect> getEffectList()
+
+		/**
+		 * @function getSortedEffectList()
+		 * @brief Retrieve a sorted list of all known effects.
+		 * @returns SortedEffectList
+		 */
+		SortedEffectList getSortedEffectList()
 		{
-			std::set<Effect> ret{ };
+			SortedEffectList ret{ };
 			for ( auto& i : _ingr )
 				for ( auto& fx : i._effects )
 					ret.insert(Effect{ fx._name, static_cast<double>(-0.0), static_cast<unsigned>(0) });
@@ -130,172 +130,6 @@ namespace caco_alch {
 		Alchemy(IngrList&& ingr) : _ingr{ std::move(ingr) } {}
 
 		/**
-		 * @struct Format
-		 * @brief Provides formatting information for some output stream methods in the Alchemy class.
-		 */
-		struct Format {
-		private:
-			bool _quiet, _verbose, _exact, _all, _file_export, _reverse_output; // see UserAssist.hpp
-			size_t _indent, _precision;
-			unsigned short _color;
-
-		public:
-			/**
-			 * @constructor Format(const bool = false, const bool = true, const bool = false, const bool = false, const size_t = 3u, const size_t = 2u, const unsigned short = Color::_f_white)
-			 * @brief Default Constructor
-			 * @param quiet		- When true, only includes effects that match part of the search string in results.
-			 * @param verbose	- When true, includes additional information about an effect's magnitude and duration.
-			 * @param exact		- When true, only includes exact matches in results.
-			 * @param all		- When true, includes all additional information in results.
-			 * @param indent	- How many space characters to include before ingredient names. This is multiplied by 2 for effect names.
-			 * @param precision	- How many decimal points of precision to use when outputting floating points.
-			 * @param color		- General color override, changes the color of Ingredient names for search, list, and build.
-			 */
-			Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const size_t indent = 3, const size_t precision = 2u, const unsigned short color = Color::_f_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _indent{ indent }, _precision{ precision }, _color{ color } {}
-
-			bool quiet() const { return _quiet; }
-			bool verbose() const { return _verbose; }
-			bool exact() const { return _exact; }
-			bool all() const { return _all; }
-			bool file_export() const { return _file_export; }
-			bool reverse_output() const { return _reverse_output; }
-			size_t indent() const { return _indent; }
-			size_t precision() const { return _precision; }
-			short color() const { return _color; }
-
-			std::tuple<std::string, std::string, std::string> get_tuple(const std::string& str, const std::string& name_lowercase) const
-			{
-				if ( !str.empty() )
-					if ( const auto dPos{ str::tolower(str).find(name_lowercase) }; dPos != std::string::npos )
-						return { str.substr(0, dPos), str.substr(dPos, name_lowercase.size()), str.substr(dPos + name_lowercase.size()) };
-				return{ str, { }, { } };
-			}
-
-			std::vector<Effect*> get_fx(std::array<Effect, 4>& arr, const std::string& name_lowercase) const
-			{
-				std::vector<Effect*> vec;
-				for ( auto it{ arr.begin() }; it != arr.end(); ++it ) {
-					if ( !_quiet )
-						vec.push_back(&*it);
-					else if ( const auto lc{ str::tolower(it->_name) }; lc == name_lowercase || ( !_exact && lc.find(name_lowercase) != std::string::npos ) ) {
-						vec.push_back(&*it);
-						if ( _exact ) break;
-					}
-				}
-				return vec;
-			}
-
-			/**
-			 * @function to_fstream(std::ostream&, const Ingredient&) const
-			 * @brief Insert a registry-formatted ingredient into an output stream.
-			 * @param os	- Target output stream.
-			 * @param ingr	- Target ingredient.
-			 * @returns std::ostream&
-			 */
-			std::ostream& to_fstream(std::ostream& os, const Ingredient& ingr) const
-			{
-				os << ingr._name << "\n{\n";
-				for ( auto& fx : ingr._effects )
-					os << '\t' << fx._name << "\n\t{\n\t\tmagnitude = " << fx._magnitude << "\n\t\tduration = " << fx._duration << "\n\t}\n";
-				os << "}\n";
-				return os;
-			}
-
-			/**
-			 * @function to_fstream(std::ostream&, const SortedIngrList&) const
-			 * @brief Insert a registry-formatted list of ingredients into an output stream.
-			 * @param os	- Target output stream.
-			 * @param ingr	- Target ingredient list.
-			 * @returns std::ostream&
-			 */
-			std::ostream& to_fstream(std::ostream& os, const SortedIngrList& ingr) const
-			{
-				if ( _reverse_output )
-					for ( auto it{ ingr.rbegin() }; it != ingr.rend(); ++it )
-						to_fstream(os, **it);
-				else
-					for ( auto it{ ingr.begin() }; it != ingr.end(); ++it )
-						to_fstream(os, **it);
-				return os;
-			}
-
-			std::ostream& to_stream(std::ostream& os, const Effect& fx, const std::string& search_str, const std::string& indentation) const
-			{
-				const auto fx_tuple{ get_tuple(fx._name, search_str) };
-				os << indentation << indentation << std::get<0>(fx_tuple) << Color::reset << Color::f_yellow << std::get<1>(fx_tuple) << Color::reset << std::get<2>(fx_tuple);
-				if ( fx._magnitude > 0.0 || _all ) {
-					if ( fx._name.size() > 30u ) // name is long
-						os << std::setw(fx._name.size()) << ' ';
-					else // name is normal length
-						os << std::setw(30 - fx._name.size()) << ' ';
-					os << Color::f_gray << fx._magnitude;
-					if ( _verbose || _all )
-						os << '\t' << fx._duration << 's';
-					os << Color::reset << '\n';
-				}
-				else os << '\n';
-				return os;
-			}
-			std::ostream& to_stream(std::ostream& os, Effect* fx, const std::string& search_str, const std::string& indentation) const
-			{
-				const auto fx_tuple{ get_tuple(fx->_name, search_str) };
-				os << indentation << indentation << std::get<0>(fx_tuple) << Color::reset << Color::f_yellow << std::get<1>(fx_tuple) << Color::reset << std::get<2>(fx_tuple);
-				if ( fx->_magnitude > 0.0 || _all ) {
-					if ( fx->_name.size() > 30u ) // name is long
-						os << std::setw(fx->_name.size()) << ' ';
-					else // name is normal length
-						os << std::setw(30 - fx->_name.size()) << ' ';
-					os << Color::f_gray << fx->_magnitude;
-					if ( _verbose || _all )
-						os << '\t' << fx->_duration << 's';
-					os << Color::reset << '\n';
-				}
-				else os << '\n';
-				return os;
-			}
-			std::ostream& to_stream(std::ostream& os, Ingredient& ingr, const std::string& search_str) const
-			{
-				const auto indentation{ std::string(_indent, ' ') }; // get indentation string
-				const auto name_tuple{ get_tuple(ingr._name, search_str) };
-				os << indentation;
-				sys::colorSet(_color);
-				os << std::get<0>(name_tuple) << Color::reset << Color::f_yellow << std::get<1>(name_tuple) << Color::reset;
-				sys::colorSet(_color);
-				os << std::get<2>(name_tuple) << Color::reset << '\n';
-				const auto effects{ get_fx(ingr._effects, search_str) };
-				for ( auto& fx : effects )
-					to_stream(os, fx, search_str, indentation);
-				return os;
-			}
-			std::ostream& to_stream(std::ostream& os, const Effect& fx, const std::string& indentation) const
-			{
-				os << indentation << indentation << fx._name << std::setw(30 - fx._name.size()) << ' ' << Color::f_gray;
-				if ( fx._magnitude > 0.0 || _all )
-					os << fx._magnitude;
-				else os << '\t';
-				if ( fx._duration > 0 || _all )
-					os << '\t' << fx._duration << 's';
-				os << Color::reset << '\n';
-				return os;
-			}
-			std::ostream& to_stream(std::ostream& os, Ingredient& ingr) const
-			{
-				const auto indentation{ std::string(_indent, ' ') }; // get indentation
-				os << indentation;
-				if ( _color != Color::_f_white )
-					sys::colorSet(_color);
-				else sys::colorSet(Color::_f_yellow);
-				os << ingr._name << Color::reset << '\n';
-				if ( !_quiet && !_all )
-					for ( auto& fx : ingr._effects )
-						to_stream(os, fx, indentation);
-				return os;
-			}
-
-			Format& operator()() { return *this; }
-		};
-
-		/**
 		 * @function print_search_to(std::ostream&, const std::string&, const bool = false, const bool = false, const size_t = 3)
 		 * @brief Retrieve a stringstream containing the information about the given target.
 		 * @param os			- Output stream to print to.
@@ -328,28 +162,6 @@ namespace caco_alch {
 					else
 						for ( auto it{ cont.begin() }; it != cont.end(); ++it )
 							fmt.to_stream(os, **it, name_lowercase);
-					/*	size_t i{ 0 };
-						for ( auto it{ cont.begin() }; it != cont.end(); ++it, ++i ) {
-							const auto name_tuple = get_tuple(( *it )->_name);
-							os << indentation;
-							sys::colorSet(fmt.color());
-							os << std::get<0>(name_tuple) << Color::reset << Color::f_yellow << std::get<1>(name_tuple) << Color::reset;
-							sys::colorSet(fmt.color());
-							os << std::get<2>(name_tuple) << Color::reset << '\n';
-							if ( !fmt.quiet() || fmt.all() ) // if quietOutput is false
-								for ( auto& fx : ( *it )->_effects ) { // iterate through ingredient's effects
-									const auto fx_tuple = get_tuple(fx._name);
-									os << indentation << indentation << std::get<0>(fx_tuple) << Color::reset << Color::f_yellow << std::get<1>(fx_tuple) << Color::reset << std::get<2>(fx_tuple);
-									print_fx_stats(fx);
-								}
-							else if ( const auto matching_fx{ get_quiet_fx(( *it )->_effects, fmt.exact()) }; !matching_fx.empty() ) // if quietOutput is true
-								for ( auto fx{ matching_fx.begin() }; fx != matching_fx.end(); ++fx ) {
-									const auto fx_tuple = get_tuple(( *fx )->_name);
-									os << indentation << indentation << std::get<0>(fx_tuple) << Color::f_yellow << std::get<1>(fx_tuple) << Color::reset << std::get<2>(fx_tuple);
-									print_fx_stats(**fx);
-								}
-							const auto not_last_element{ i < cont.size() - 1 };
-						}*/
 					os << Color::f_red << "}" << Color::reset << std::endl;
 				}
 				os.precision(precision); // reset output stream precision
@@ -406,7 +218,7 @@ namespace caco_alch {
 		 * @param fmt	- Alchemy Format object, controls how the results appear in the output stream.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_build_to(std::ostream& os, IngrList&& cont, const GameSettings& gs, const Format& fmt = { })
+		std::ostream& print_build_to(std::ostream& os, IngrList cont, const GameSettings& gs, const Format& fmt = { })
 		{
 			const auto verbose{ [&os, &fmt](Effect& fx) {
 				if ( ( fx._magnitude != 0.0 && ( fmt.verbose() || !fmt.quiet() ) ) || fmt.all() ) {
@@ -414,7 +226,8 @@ namespace caco_alch {
 						os << std::setw(fx._name.size()) << ' ';
 					else // name is normal length
 						os << std::setw(30 - fx._name.size()) << ' ';
-					os << Color::f_gray << fx._magnitude << std::setw(10 - std::to_string(fx._magnitude).size()) << " / " << fx._duration << 's' << Color::reset << '\n';
+					const auto mag_str{ [&fx, &fmt]() -> std::string { auto str{ std::to_string(fx._magnitude) }; if ( const auto dPos{ str.find('.') }; str::pos_valid(dPos) ) str = str.substr(0u, dPos + fmt.precision() + 1); return str; }( ) };
+					os << Color::f_gray << mag_str << std::setw(mag_str.size() < 16 ? 16 - mag_str.size() : mag_str.size() + 1) << ' ' << fx._duration << "s\n" << Color::reset; // << std::setw(10 - std::to_string(fx._magnitude).size()) << " / " << fx._duration << 's' << Color::reset << '\n';
 				}
 				else os << '\n';
 			} };
@@ -426,9 +239,13 @@ namespace caco_alch {
 				os.precision(fmt.precision());
 				os << std::fixed;
 
-				Potion potion{ std::forward<IngrList>(cont), gs };
+				Potion potion{ cont, gs };
 
-				os << Color::f_green << "Potion Builder [Alchemy Skill: " << Color::f_cyan << gs._alchemy_skill << Color::f_green << ']' << Color::reset << '\n';
+				const auto base_skill{ gs.AlchemyAV() };
+				os << Color::f_green << "Potion Builder [Alchemy Skill: " << Color::f_cyan << base_skill;
+				if ( const auto mod{ gs.AlchemyMod() }; mod > 0.0 )
+					os << Color::reset << "(" << Color::f_green << base_skill + mod << Color::reset << ")";
+				os << Color::f_green << ']' << Color::reset << '\n';
 				for ( auto& it : cont )
 					os << indentation << Color::f_yellow << it._name << '\n';
 
@@ -471,7 +288,7 @@ namespace caco_alch {
 				else os << sys::warn << "Couldn't find ingredient: \"" << it << "\"\n";
 			}
 			if ( cont.size() > 4 ) cont.erase(cont.begin() + 4u, cont.end());
-			return print_build_to(os, std::move(cont), gs, fmt);
+			return print_build_to(os, std::forward<std::vector<Ingredient>>(cont), gs, fmt);
 		}
 
 		/**
@@ -480,5 +297,10 @@ namespace caco_alch {
 		 * @returns IngrList
 		 */
 		IngrList ingredients() const { return _ingr; }
+
+		EffectList effects() const
+		{
+
+		}
 	};
 }

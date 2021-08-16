@@ -1,0 +1,454 @@
+Resist Magic
+{
+	00065A3A = MagicAlchResistMagic
+	000F8A4E = MagicAlchBeneficial
+}
+Resist Fire
+{
+	00065A37 = MagicAlchResistFire
+	000F8A4E = MagicAlchBeneficial
+}
+Resist Frost
+{
+	00065A38 = MagicAlchResistFrost
+	000F8A4E = MagicAlchBeneficial
+}
+Resist Shock
+{
+	00065A39 = MagicAlchResistShock
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Archery
+{
+	00065A21 = MagicAlchFortifyMarksman
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Heavy Armor
+{
+	00065A23 = MagicAlchFortifyHeavyArmor
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Conjuration
+{
+	00065A2A = MagicAlchFortifyConjuration
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Restoration
+{
+	00065A2D = MagicAlchFortifyRestoration
+	000F8A4E = MagicAlchBeneficial
+}
+Invisibility
+{
+	0001EA6F = MagicInvisibility
+	000F8A4E = MagicAlchBeneficial
+	000F8A4F = MagicAlchDurationBased
+}
+Damage Stamina Regen
+{
+	00042509 = MagicAlchHarmful
+}
+Weakness to Fire
+{
+	00042509 = MagicAlchHarmful
+	00074F4E = MagicAlchWeaknessFire
+}
+Weakness to Frost
+{
+	00042509 = MagicAlchHarmful
+	00074F4F = MagicAlchWeaknessFrost
+}
+Weakness to Shock
+{
+	00042509 = MagicAlchHarmful
+	00074F50 = MagicAlchWeaknessShock
+}
+Paralysis
+{
+	0001EA70 = MagicParalysis
+	00042509 = MagicAlchHarmful
+}
+Weakness to Magic
+{
+	00042509 = MagicAlchHarmful
+	00074F51 = MagicAlchWeaknessMagic
+}
+Resist Poison
+{
+	000F8A4E = MagicAlchBeneficial
+	0010EB5F = MagicAlchResistPoison
+}
+Weakness to Poison
+{
+	00042509 = MagicAlchHarmful
+	0506EE3A = USKPMagicAlchWeaknessPoison
+}
+Fortify Persuasion
+{
+	00065A29 = MagicAlchFortifySpeechcraft
+	000F8A4E = MagicAlchBeneficial
+}
+Frenzy
+{
+	00078098 = MagicInfluence
+}
+Restore Health
+{
+	00042503 = MagicAlchRestoreHealth
+	000F8A4E = MagicAlchBeneficial
+}
+Restore Magicka
+{
+	00042508 = MagicAlchRestoreMagicka
+	000F8A4E = MagicAlchBeneficial
+}
+Restore Stamina
+{
+	00042504 = MagicAlchRestoreStamina
+	000F8A4E = MagicAlchBeneficial
+}
+Resist Magic
+{
+	00065A3A = MagicAlchResistMagic
+	000F8A4E = MagicAlchBeneficial
+}
+Damage Magicka
+{
+	00042509 = MagicAlchHarmful
+	0010F9DE = MagicAlchDamageMagicka
+}
+Damage Stamina
+{
+	00042509 = MagicAlchHarmful
+	0010F9DC = MagicAlchDamageStamina
+}
+Waterbreathing
+{
+	000F8A4E = MagicAlchBeneficial
+	000F8A4F = MagicAlchDurationBased
+}
+Resist Fire
+{
+	00065A37 = MagicAlchResistFire
+	000F8A4E = MagicAlchBeneficial
+}
+Resist Frost
+{
+	00065A38 = MagicAlchResistFrost
+	000F8A4E = MagicAlchBeneficial
+}
+Resist Shock
+{
+	00065A39 = MagicAlchResistShock
+	000F8A4E = MagicAlchBeneficial
+}
+Health Fortification
+{
+	00065A31 = MagicAlchFortifyHealth
+	000F8A4E = MagicAlchBeneficial
+}
+Magicka Fortification
+{
+	00065A33 = MagicAlchFortifyMagicka
+	000F8A4E = MagicAlchBeneficial
+}
+Stamina Fortification
+{
+	00065A32 = MagicAlchFortifyStamina
+	000F8A4E = MagicAlchBeneficial
+}
+Feather
+{
+	00065A2F = MagicAlchFortifyCarryWeight
+	000F8A4E = MagicAlchBeneficial
+}
+Health Regeneration
+{
+	00065A30 = MagicAlchFortifyHealRate
+	000F8A4E = MagicAlchBeneficial
+}
+Magicka Regeneration
+{
+	00065A34 = MagicAlchFortifyMagickaRate
+	000F8A4E = MagicAlchBeneficial
+}
+Stamina Regeneration
+{
+	00065A35 = MagicAlchFortifyStaminaRate
+	000F8A4E = MagicAlchBeneficial
+}
+Health
+{
+	00042503 = MagicAlchRestoreHealth
+	000F8A4E = MagicAlchBeneficial
+}
+Stamina
+{
+	00042504 = MagicAlchRestoreStamina
+	000F8A4E = MagicAlchBeneficial
+}
+Magicka
+{
+	00042508 = MagicAlchRestoreMagicka
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Alchemy
+{
+	00065A28 = MagicAlchFortifyAlchemy
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify One-handed
+{
+	00065A1F = MagicAlchFortifyOneHanded
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Two-handed
+{
+	00065A20 = MagicAlchFortifyTwoHanded
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Marksman
+{
+	00065A21 = MagicAlchFortifyMarksman
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Block
+{
+	00065A1E = MagicAlchFortifyBlock
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Smithing
+{
+	00065A22 = MagicAlchFortifySmithing
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Heavy Armor
+{
+	00065A23 = MagicAlchFortifyHeavyArmor
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Light Armor
+{
+	00065A24 = MagicAlchFortifyLightArmor
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Pickpocket
+{
+	00065A25 = MagicAlchFortifyPickPocket
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Lockpicking
+{
+	00065A26 = MagicAlchFortifyLockpicking
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Sneak
+{
+	00065A27 = MagicAlchFortifySneak
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Barter
+{
+	00065A29 = MagicAlchFortifySpeechcraft
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Alteration
+{
+	00065A1D = MagicAlchFortifyAlteration
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Conjuration
+{
+	00065A2A = MagicAlchFortifyConjuration
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Destruction
+{
+	00065A2B = MagicAlchFortifyDestruction
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Illusion
+{
+	00065A2C = MagicAlchFortifyIllusion
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Restoration
+{
+	00065A2D = MagicAlchFortifyRestoration
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Enchanting
+{
+	00065A2E = MagicAlchFortifyEnchanting
+	000F8A4E = MagicAlchBeneficial
+}
+Invisibility
+{
+	0001EA6F = MagicInvisibility
+	000F8A4E = MagicAlchBeneficial
+	000F8A4F = MagicAlchDurationBased
+}
+Damage Health
+{
+	00042509 = MagicAlchHarmful
+	0010F9DD = MagicAlchDamageHealth
+}
+Fear
+{
+	00042509 = MagicAlchHarmful
+	00078098 = MagicInfluence
+}
+Fatigue
+{
+	00042509 = MagicAlchHarmful
+	000F8A4F = MagicAlchDurationBased
+	7E07A153 = MagicAlchFatigue_CACO
+}
+Slow
+{
+	00042509 = MagicAlchHarmful
+	000B729E = MagicSlow
+	000F8A4F = MagicAlchDurationBased
+}
+Ravage Health
+{
+	00042509 = MagicAlchHarmful
+}
+Silence
+{
+	00042509 = MagicAlchHarmful
+	000F8A4F = MagicAlchDurationBased
+	7E07A150 = MagicAlchSilence_CACO
+}
+Frenzy
+{
+	00042509 = MagicAlchHarmful
+	00078098 = MagicInfluence
+}
+Damage Magicka Regen
+{
+	00042509 = MagicAlchHarmful
+	7E07A152 = MagicAlchDamageMagickaRegen_CACO
+}
+Damage Stamina Regen
+{
+	00042509 = MagicAlchHarmful
+}
+Fire Aversion
+{
+	00042509 = MagicAlchHarmful
+	00074F4E = MagicAlchWeaknessFire
+}
+Frost Aversion
+{
+	00042509 = MagicAlchHarmful
+	00074F4F = MagicAlchWeaknessFrost
+}
+Shock Aversion
+{
+	00042509 = MagicAlchHarmful
+	00074F50 = MagicAlchWeaknessShock
+}
+Paralysis
+{
+	0001EA70 = MagicParalysis
+	00042509 = MagicAlchHarmful
+	000F8A4F = MagicAlchDurationBased
+}
+Magic Aversion
+{
+	00042509 = MagicAlchHarmful
+	00074F51 = MagicAlchWeaknessMagic
+}
+Resist Poison
+{
+	000F8A4E = MagicAlchBeneficial
+	0010EB5F = MagicAlchResistPoison
+}
+Poison Aversion
+{
+	00042509 = MagicAlchHarmful
+}
+Cure Disease
+{
+	000F8A4E = MagicAlchBeneficial
+	7E90B902 = MagicAlchCureDisease_CACO
+}
+Fortify Speech
+{
+	00065A29 = MagicAlchFortifySpeechcraft
+	000F8A4E = MagicAlchBeneficial
+}
+Frenzy
+{
+	00078098 = MagicInfluence
+}
+Restore Health
+{
+	00042503 = MagicAlchRestoreHealth
+	000F8A4E = MagicAlchBeneficial
+}
+Restore Magicka
+{
+	00042508 = MagicAlchRestoreMagicka
+	000F8A4E = MagicAlchBeneficial
+}
+Restore Stamina
+{
+	00042504 = MagicAlchRestoreStamina
+	000F8A4E = MagicAlchBeneficial
+}
+Cure Poison
+{
+	000F8A4E = MagicAlchBeneficial
+	7E90B903 = MagicAlchCurePoison_CACO
+}
+Lingering Damage Health
+{
+	00042509 = MagicAlchHarmful
+}
+Lingering Damage Undead
+{
+	00042509 = MagicAlchHarmful
+}
+Damage Undead
+{
+	00042509 = MagicAlchHarmful
+	0010F9DD = MagicAlchDamageHealth
+}
+Frenzy
+{
+	00078098 = MagicInfluence
+}
+Waterwalking
+{
+	000F8A4E = MagicAlchBeneficial
+	000F8A4F = MagicAlchDurationBased
+}
+Poison Aversion
+{
+	00042509 = MagicAlchHarmful
+	0506EE3A = USKPMagicAlchWeaknessPoison
+}
+Night Eye
+{
+	000AD7C6 = MagicNightEye
+	000F8A4E = MagicAlchBeneficial
+	000F8A4F = MagicAlchDurationBased
+}
+Fortify Archery
+{
+	00065A21 = MagicAlchFortifyMarksman
+	000F8A4E = MagicAlchBeneficial
+}
+Fortify Enchanting
+{
+	00065A2E = MagicAlchFortifyEnchanting
+	000F8A4E = MagicAlchBeneficial
+}
+Lingering Damage Undead
+{
+	00042509 = MagicAlchHarmful
+}
+DLC1PCVampireAbsorbHealthConcAimed "Drain Health" [MGEF:0200A26B]
+	00101BDE = MagicVampireDrain

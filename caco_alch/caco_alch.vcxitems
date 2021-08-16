@@ -16,17 +16,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)caco-alch.ini" />
-    <None Include="$(MSBuildThisFileDirectory)caco-ingredient-list.dat.v1" />
-    <None Include="$(MSBuildThisFileDirectory)caco-ingredient-list.dat.v2" />
+    <None Include="$(MSBuildThisFileDirectory)caco-ingredient-list.dat" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Alchemy.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Effect.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Format.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSettings.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Ingredient.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Keyword.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Perks.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Potion.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)reloader.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)UserAssist.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)using.h" />
   </ItemGroup>
 </Project>

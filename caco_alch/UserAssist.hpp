@@ -19,12 +19,22 @@ namespace caco_alch {
 	 */
 	inline int handle_arguments(opt::Param&& args, Alchemy&& alch, GameSettings&& gs)
 	{
-		const Alchemy::Format _format{ args.getFlag('q'), args.getFlag('v'), args.getFlag('e'), args.getFlag('a'), args.getFlag('E'), args.getFlag('R'), 3u, [&args]() { const auto v{ str::stoui(args.getv("precision")) }; if ( v != 0.0 ) return v; return 2u; }( ), [&args]() -> unsigned short { const auto v{ str::stous(args.getv("color")) }; if ( v != 0 ) return v; return Color::_f_white; }( ) };
+		const Format _format{
+			args.getFlag('q'),	// quiet
+			args.getFlag('v'),	// verbose
+			args.getFlag('e'),	// exact
+			args.getFlag('a'),	// all
+			args.getFlag('E'),	// export
+			args.getFlag('R'),	// reverse
+			3u,					// indent
+			[&args]() { const auto v{ str::stoui(args.getv("precision")) }; if ( v != 0.0 ) return v; return 2u; }( ),
+			[&args]() -> unsigned short { const auto v{ Color::strToColor(args.getv("color")) }; if ( v != 0 ) return v; return Color::_f_white; }( )
+		};
 
 		if ( args.getFlag('C') ) {
 			std::stringstream buffer;
 			buffer << std::cin.rdbuf();
-			alch.print_build_to(std::cout, parseFileContent(std::move(buffer)), std::forward<GameSettings>(gs), _format).flush();
+			alch.print_build_to(std::cout, parseFileContent(buffer), std::forward<GameSettings>(gs), _format).flush();
 		}
 		else {
 			if ( args.getFlag('l') ) // List mode
@@ -41,7 +51,7 @@ namespace caco_alch {
 	inline int handle_arguments(std::tuple<opt::Param, Alchemy, GameSettings>&& pr) { return handle_arguments(std::forward<opt::Param>(std::get<0>(pr)), std::forward<Alchemy>(std::get<1>(pr)), std::forward<GameSettings>(std::get<2>(pr))); }
 
 	// @brief Contains the list of valid commandline arguments for the alch program.
-	inline const opt::Matcher _matcher{ { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'e', 'C', 'E' }, { { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-modav-alchemy", true }, { "ini-reset", false } } };
+	inline opt::Matcher _matcher{ { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'e', 'C', 'E' }, { { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-alchemy-skill", true }, { "ini-alchemy-mod", true }, { "ini-reset", false } } };
 
 	/**
 	 * @namespace Help
@@ -131,16 +141,17 @@ namespace caco_alch {
 			{ "-q", "Quiet output, only shows effects that match the search string in search results." },
 			{ "-v", "Verbose output, shows extended stat information." },
 			{ "-b", "(Incompatible with -s) Build mode, accepts up to 4 ingredient names and shows the result of combining them." },
-			{ "-R", "(Not Implemented) Reverse order." }, // TODO
+			//{ "-R", "(Not Implemented) Reverse order." }, // TODO
 			{ "-C", "Receive an ingredient list from STDIN. (ex. \"cat <file> | caco-alch\")" },
 			{ "-E", "File export mode, prints results in the format used by the parser so they can be read in again using '-C'." },
 			{ "--load <file>", "Allows specifying an alternative ingredient registry file." },
 			{ "--validate", "Checks if the target file can be loaded successfully, and contains valid data. Specifying this option will cause all other options to be ignored." },
 			{ "--color <string_color>", "Change the color of ingredient names. String colors must include either an 'f' (foreground) or 'b' (background), then the name of the desired color." },
 			{ "--precision <uint>", "Set the floating-point precision value when printing numbers. (Default: 2)" },
-			{ "--ini-modav-alchemy <uint>", "(Experimental) Set the alchemy skill level." },
-			{ "--ini <file>", "(Experimental) Load a specific INI file." },
-			{ "--ini-reset", "(Experimental) Reset / Write a new INI config file." },
+			{ "--ini-alchemy-skill <uint>", "Sets the alchemy skill level used when in build mode." },
+			{ "--ini-alchemy-mod <uint>", "Sets the amount of the fortify alchemy effect added to the base skill." },
+			{ "--ini <file>", "Load a specific INI file." },
+			{ "--ini-reset", "Reset / Create an INI config file. (Used by the potion builder to calculate stats.)" },
 			}); ///< @brief Help documentation used by default.
 
 		/**
