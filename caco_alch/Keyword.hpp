@@ -6,7 +6,7 @@ namespace caco_alch {
 		std::string _form_id;
 
 		Keyword(const std::string& name, const std::string& formID) : ObjectBase(name), _form_id{ formID } {}
-		Keyword(const std::string& name) : ObjectBase(name), _form_id{} {}
+		explicit Keyword(const std::string& name) : ObjectBase(name) {}
 
 		bool operator==(const Keyword& o) const { return _form_id == o._form_id; }
 		bool operator!=(const Keyword& o) const { return _form_id != o._form_id; }
@@ -21,7 +21,8 @@ namespace caco_alch {
 		}
 	};
 	using KeywordList = std::vector<Keyword>;
-	std::ostream& operator<<(std::ostream& os, const KeywordList& KWDA)
+
+	inline std::ostream& operator<<(std::ostream& os, const KeywordList& KWDA)
 	{
 		const auto indentation{ std::string(2u, '\t') };
 		os << indentation << "Keywords\n" << indentation << "{\n";

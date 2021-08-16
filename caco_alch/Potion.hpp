@@ -1,5 +1,6 @@
 #pragma once
-#include <unordered_set>
+#include <utility>
+
 #include "using.h"
 #include "Ingredient.hpp"
 #include "GameSettings.hpp"
@@ -16,7 +17,7 @@ namespace caco_alch {
 	{
 		if ( ingr.size() > 4 ) throw std::exception("Too many ingredients! (Max 4)"); else if ( ingr.size() < 2 ) throw std::exception("Not enough ingredients! (Min 2)");
 		EffectList common, tmp;
-		const auto is_duplicate{ [](EffectList& target, const Effect& fx) {
+		constexpr auto is_duplicate{ [](EffectList& target, const Effect& fx) {
 			for ( auto it{ target.begin() }; it != target.end(); ++it )
 				if ( it->_name == fx._name ) // if effect names are the same, consider it a duplicate even though the magnitudes might be different
 					return it;
@@ -50,8 +51,8 @@ namespace caco_alch {
 		EffectList _base_fx; ///< @brief The base effects of a potion, before calculating the potion magnitude.
 
 	public:
-		PotionBase(const std::string& name) : ObjectBase(name), _base_fx{ } {}
-		PotionBase(const std::string& name, const EffectList& effects) : ObjectBase(name), _base_fx{ effects } {}
+		explicit PotionBase(const std::string& name) : ObjectBase(name) {}
+		PotionBase(const std::string& name, EffectList effects) : ObjectBase(name), _base_fx{ std::move(effects) } {}
 		PotionBase(const std::string& name, std::vector<Ingredient>&& ingredients) : ObjectBase(name), _base_fx{ get_common_effects(std::move(ingredients)) } {}
 		PotionBase(const std::string& name, const std::vector<Ingredient>& ingredients) : ObjectBase(name), _base_fx{ get_common_effects(ingredients) } {}
 	};
@@ -66,25 +67,25 @@ namespace caco_alch {
 		 * @param gs	- Ref of a GameSettings instance.
 		 * @returns EffectList
 		 */
-		static EffectList calculate_stats(const EffectList& base, GameSettings& gs)
+		static EffectList calculate_stats(const EffectList& base, const GameSettings& gs)
 		{
 			EffectList vec;
 			for ( auto& it : base ) {
-				double magnitude{ gs.calculate_magnitude(it._magnitude) };
-				unsigned int duration{ it._duration };
+				const double magnitude{ gs.calculate_magnitude(it._magnitude) };
+				const unsigned int duration{ it._duration };
 				vec.push_back(Effect{ it._name, magnitude, duration });
 			}
 			return vec;
 		}
 
 	public:
-		Potion(const std::string& name, std::vector<Ingredient>&& ingredients, GameSettings gs) : PotionBase(name, std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(const std::string& name, const std::vector<Ingredient>& ingredients, GameSettings gs) : PotionBase(name, ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(std::vector<Ingredient>&& ingredients, GameSettings gs) : PotionBase("Potion", std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(const std::vector<Ingredient>& ingredients, GameSettings gs) : PotionBase("Potion", ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const std::string& name, std::vector<Ingredient>&& ingredients, const GameSettings& gs) : PotionBase(name, std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const std::string& name, const std::vector<Ingredient>& ingredients, const GameSettings& gs) : PotionBase(name, ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(std::vector<Ingredient>&& ingredients, const GameSettings& gs) : PotionBase("Potion", std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const std::vector<Ingredient>& ingredients, const GameSettings& gs) : PotionBase("Potion", ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
 
-		std::string name() const { return _name; }
-		EffectList effects() const { return _fx; }
+		[[nodiscard]] std::string name() const { return _name; }
+		[[nodiscard]] EffectList effects() const { return _fx; }
 
 		friend std::ostream& operator<<(std::ostream& os, const Potion& p)
 		{

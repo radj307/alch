@@ -9,12 +9,15 @@
 #include <iostream>
 #include <iomanip>
 #include <optlib.hpp>
+#include <utility>
 
 namespace caco_alch {
 	/**
 	 * @function handle_arguments(opt::Param&&)
 	 * @brief Handles program execution.
 	 * @param args	- rvalue reference of an opt::Param instance.
+	 * @param alch	- Alchemy instance rvalue.
+	 * @param gs	- Gamesettings instance rvalue.
 	 * @returns int - see main() documentation
 	 */
 	inline int handle_arguments(opt::Param&& args, Alchemy&& alch, GameSettings&& gs)
@@ -64,7 +67,7 @@ namespace caco_alch {
 		 */
 		struct Helper : ObjectBase {
 		private:
-			template<class T, typename = typename std::enable_if<std::is_same<T, std::string>::value>::type> struct more { bool operator()(const T& a, const T& b) const {
+			template<class T, typename = std::enable_if_t<std::is_same_v<T, std::string>>> struct more { bool operator()(const T& a, const T& b) const {
 				if ( a.at(1) == '-' && b.at(1) != '-' )
 					return false;
 				else if ( a.at(1) != '-' && b.at(1) == '-' )
@@ -78,11 +81,11 @@ namespace caco_alch {
 			/**
 			 * @constructor Helper(const std::string&, std::map<std::string, std::string>&&)
 			 * @brief Default constructor, takes a string containing usage instructions, and a map of all commandline parameters and a short description of them.
+			 * @param prog_name	- The string to show as the program name in the usage display. (ex. USAGE: <prog_name> <argument-syntax>)
 			 * @param usage_str	- Brief string showing the commandline syntax for this program.
 			 * @param doc		- A map where the key represents the commandline option, and the value is the documentation for that option.
 			 */
-			Helper(const std::string& prog_name, const std::string& usage_str, Cont&& doc) : ObjectBase(prog_name), _usage { usage_str }, _doc{ std::move(doc) } { validate(); }
-			Helper(const std::string& prog_name, const std::string& usage_str, const Cont& doc) : ObjectBase(prog_name), _usage { usage_str }, _doc{ doc } { validate(); }
+			Helper(const std::string& prog_name, std::string usage_str, Cont doc) : ObjectBase(prog_name), _usage { std::move(usage_str) }, _doc{ std::move(doc) } { validate(); }
 
 			/**
 			 * @function validate()
@@ -92,18 +95,17 @@ namespace caco_alch {
 			{
 				for ( auto it{ _doc.begin() }; it != _doc.end(); ++it ) {
 					auto& key{ it->first };
-					auto& doc{ it->second };
+					const auto& doc{ it->second };
 					if ( key.empty() ) // If key is empty, delete entry
 						_doc.erase(it);
-					else { // key isn't empty
-						const auto fst_char{ key.at(0) };
-						if ( fst_char != '-' ) { // if key does not have a dash prefix
-							const auto tmp = *it;
+					else {                                                         // key isn't empty
+						if ( const auto fst_char{ key.at(0) }; fst_char != '-' ) { // if key does not have a dash prefix
+
 							_doc.erase(it);
 							std::string mod{ '-' };
 							if ( key.size() > 1 ) // is longopt
 								mod += '-';
-							_doc[mod + tmp.first] = tmp.second;
+							_doc[mod + key] = doc;
 						}
 					}
 				}
@@ -121,10 +123,9 @@ namespace caco_alch {
 				os << "Usage:\n  " << h._name << ' ' << h._usage << "\nOptions:\n";
 				// get longest key name, use as indent
 				std::streamsize indent{ 0 };
-				for ( auto& it : h._doc )
-					if ( const auto size{ it.first.size() }; size > indent )
+				for ( const auto& [key, doc] : h._doc )
+					if ( const auto size{ key.size() }; size > indent )
 						indent = static_cast<std::streamsize>(size);
-				const auto wrap_at{ []() { const auto v{ sys::getScreenBufferSize()._x }; return v - v / 10; }() };
 				for ( auto& [key, doc] : h._doc )
 					os << "  " << std::left << std::setw(indent + 2ll) << key << doc << '\n';
 				os.flush();
@@ -141,7 +142,7 @@ namespace caco_alch {
 			{ "-q", "Quiet output, only shows effects that match the search string in search results." },
 			{ "-v", "Verbose output, shows extended stat information." },
 			{ "-b", "(Incompatible with -s) Build mode, accepts up to 4 ingredient names and shows the result of combining them." },
-			//{ "-R", "(Not Implemented) Reverse order." }, // TODO
+			{ "-R", "(Not Implemented) Reverse order." }, // TODO
 			{ "-C", "Receive an ingredient list from STDIN. (ex. \"cat <file> | caco-alch\")" },
 			{ "-E", "File export mode, prints results in the format used by the parser so they can be read in again using '-C'." },
 			{ "--load <file>", "Allows specifying an alternative ingredient registry file." },
@@ -159,7 +160,7 @@ namespace caco_alch {
 		 * @brief Display help information.
 		 * @param documentation	- Documentation to display
 		 */
-		void print(const Helper& documentation = _default_doc)
+		inline void print(const Helper& documentation = _default_doc)
 		{
 			std::cout << documentation << std::endl;
 		}

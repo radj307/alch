@@ -1,12 +1,10 @@
 #pragma once
-#include <sstream>
 #include <set>
 #include <iomanip>
 #include <sysapi.h>
 #include <strconv.hpp>
 #include "using.h"
 #include "Ingredient.hpp"
-#include "Potion.hpp"
 
 namespace caco_alch {
 
@@ -24,27 +22,29 @@ namespace caco_alch {
 		/**
 		 * @constructor Format(const bool = false, const bool = true, const bool = false, const bool = false, const size_t = 3u, const size_t = 2u, const unsigned short = Color::_f_white)
 		 * @brief Default Constructor
-		 * @param quiet		- When true, only includes effects that match part of the search string in results.
-		 * @param verbose	- When true, includes additional information about an effect's magnitude and duration.
-		 * @param exact		- When true, only includes exact matches in results.
-		 * @param all		- When true, includes all additional information in results.
-		 * @param indent	- How many space characters to include before ingredient names. This is multiplied by 2 for effect names.
-		 * @param precision	- How many decimal points of precision to use when outputting floating points.
-		 * @param color		- General color override, changes the color of Ingredient names for search, list, and build.
+		 * @param quiet				- When true, only includes effects that match part of the search string in results.
+		 * @param verbose			- When true, includes additional information about an effect's magnitude and duration.
+		 * @param exact				- When true, only includes exact matches in results.
+		 * @param all				- When true, includes all additional information in results.
+		 * @param file_export		- When true, output is formatted in the registry format to allow piping output to a file, then back in again.
+		 * @param reverse_output	- When true, prints output in the opposite order as it would normally be printed. (Alphabetical by default)
+		 * @param indent			- How many space characters to include before ingredient names. This is multiplied by 2 for effect names.
+		 * @param precision			- How many decimal points of precision to use when outputting floating points.
+		 * @param color				- General color override, changes the color of Ingredient names for search, list, and build.
 		 */
-		Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const size_t indent = 3, const size_t precision = 2u, const unsigned short color = Color::_f_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _indent{ indent }, _precision{ precision }, _color{ color } {}
+		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const size_t indent = 3, const size_t precision = 2u, const unsigned short color = Color::_f_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _indent{ indent }, _precision{ precision }, _color{ color } {}
 
-		bool quiet() const { return _quiet; }
-		bool verbose() const { return _verbose; }
-		bool exact() const { return _exact; }
-		bool all() const { return _all; }
-		bool file_export() const { return _file_export; }
-		bool reverse_output() const { return _reverse_output; }
-		size_t indent() const { return _indent; }
-		size_t precision() const { return _precision; }
-		short color() const { return _color; }
+		[[nodiscard]] bool quiet() const { return _quiet; }
+		[[nodiscard]] bool verbose() const { return _verbose; }
+		[[nodiscard]] bool exact() const { return _exact; }
+		[[nodiscard]] bool all() const { return _all; }
+		[[nodiscard]] bool file_export() const { return _file_export; }
+		[[nodiscard]] bool reverse_output() const { return _reverse_output; }
+		[[nodiscard]] size_t indent() const { return _indent; }
+		[[nodiscard]] size_t precision() const { return _precision; }
+		[[nodiscard]] unsigned short color() const { return _color; }
 
-		std::tuple<std::string, std::string, std::string> get_tuple(const std::string& str, const std::string& name_lowercase) const
+		[[nodiscard]] std::tuple<std::string, std::string, std::string> get_tuple(const std::string& str, const std::string& name_lowercase) const
 		{
 			if ( !str.empty() )
 				if ( const auto dPos{ str::tolower(str).find(name_lowercase) }; dPos != std::string::npos )
@@ -73,7 +73,7 @@ namespace caco_alch {
 		 * @param ingr	- Target ingredient.
 		 * @returns std::ostream&
 		 */
-		std::ostream& to_fstream(std::ostream& os, const Ingredient& ingr) const
+		static std::ostream& to_fstream(std::ostream& os, const Ingredient& ingr)
 		{
 			os << ingr._name << "\n{\n";
 			for ( auto& fx : ingr._effects )
@@ -177,7 +177,7 @@ namespace caco_alch {
 			os << Color::reset << '\n';
 			return os;
 		}
-		std::ostream& to_stream(std::ostream& os, Ingredient& ingr) const
+		std::ostream& to_stream(std::ostream& os, const Ingredient& ingr) const
 		{
 			const auto indentation{ std::string(_indent, ' ') }; // get indentation
 			os << indentation;

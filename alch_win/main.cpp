@@ -22,7 +22,7 @@
 
 using namespace caco_alch;
 
-std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[]);
+std::tuple<opt::Param, Alchemy, GameSettings> init(int argc, char* argv[]);
 
 /**
  * @brief Main.
@@ -36,10 +36,8 @@ std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
  */
 int main(const int argc, char* argv[])
 {
-	// TODO:
-	// Implement logical operators to display results that have multiple traits.
-	// Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
-	// Implement "-R" arg to reverse sorted output
+	// TODO: Implement logical operators to display results that have multiple traits.
+	// TODO: Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
 	try
 	{
 #ifndef ENABLE_DEBUG
@@ -58,7 +56,7 @@ int main(const int argc, char* argv[])
 	}
 }
 
-GameSettings handle_ini_opts(const std::string& ini_filename, opt::Param& args)
+GameSettings handle_ini_opts(const std::string& ini_filename, const opt::Param& args)
 {
 	GameSettings gs; // INIT
 	if ( !file::exists(ini_filename) && !args.check_opt("ini-reset") ) return gs; // return early
@@ -139,14 +137,14 @@ std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[])
 		return { };
 	}( ) };
 	const std::string
-		_DEF_INI{ [&loc]() -> std::string { const auto dPos{ loc.second.rfind('.') }; if ( dPos != std::string::npos ) return loc.second.substr(0, dPos) + ".ini"; return { }; }( ) },
-		_DEF_FILE{ loc.first.empty() ? "caco-ingredient-list.dat" : loc.first + '\\' + "caco-ingredient-list.dat" }; ///< @brief Replace the exe name in loc with the default name of the ingredient registry file.
-	const std::string filename{ [&args, &_DEF_FILE]() -> std::string {
+		DEF_INI{ [&loc]() -> std::string { if ( const auto dPos{ loc.second.rfind('.') }; dPos != std::string::npos ) return loc.second.substr(0, dPos) + ".ini"; return { }; }( ) },
+		DEF_FILE{ loc.first.empty() ? "caco-ingredient-list.dat" : loc.first + '\\' + "caco-ingredient-list.dat" }; ///< @brief Replace the exe name in loc with the default name of the ingredient registry file.
+	const std::string filename{ [&args, &DEF_FILE]() -> std::string {
 		std::string ret{ args.getv("load") };
 		if ( ret.empty() )
-			ret = _DEF_FILE;
+			ret = DEF_FILE;
 		return ret;
-	}( ) }, ini_filename{ [&args, &_DEF_INI]() -> std::string {
+	}( ) }, ini_filename{ [&args]() -> std::string {
 		std::string ret{ args.getv("ini") };
 		if ( ret.empty() )
 			ret = "X:\\bin\\alch.ini"; // TEMP DEBUG FIX

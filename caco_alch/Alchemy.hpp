@@ -1,5 +1,4 @@
 #pragma once
-#include <sstream>
 #include <set>
 #include <strconv.hpp>
 #include "using.h"
@@ -46,7 +45,7 @@ namespace caco_alch {
 		bool is_effect(const std::string& name, const bool fuzzy_search = false)
 		{
 			for ( auto& it : _ingr ) {
-				for ( auto& fx : it._effects ) {
+				for ( const auto& fx : it._effects ) {
 					if ( str::tolower(fx._name) == name || (fuzzy_search && str::tolower(fx._name).find(name) != std::string::npos) )
 						return true;
 				}
@@ -78,18 +77,20 @@ namespace caco_alch {
 		/**
 		 * @function find_ingr(const std::string&, const size_t = 0)
 		 * @brief Retrieve a case-insensitive match from the ingredient list.
-		 * @param name	- Name to search for.
+		 * @param name			- Name to search for.
+		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @param off	- Position in the list to start search from.
 		 * @returns IngrList::iterator
 		 */
-		IngrList::iterator find_ingr(const std::string& name, const bool fuzzy_search, const size_t off = 0)
+		IngrList::iterator find_ingr(const std::string& name, const bool fuzzy_search, const int off = 0)
 		{
 			return std::find_if(_ingr.begin() + off, _ingr.end(), [&name](const IngrList::value_type& ingr) -> bool { return str::tolower(ingr._name) == name; });
 		}
 		/**
 		 * @function get_ingr_list(const std::string&)
 		 * @brief Retrieve all ingredients that have a given string in their name.
-		 * @param name	- Name to search for.
+		 * @param name			- Name to search for.
+		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @returns std::vector<Ingredient>
 		 */
 		SortedIngrList get_ingr_list(const std::string& name, const bool fuzzy_search)
@@ -98,12 +99,13 @@ namespace caco_alch {
 			for ( auto& it : _ingr )
 				if ( str::tolower(it._name) == name || ( fuzzy_search && str::tolower(it._name).find(name) != std::string::npos ) )
 					set.insert(&it);
-			return std::move(set);
+			return set;
 		}
 		/**
 		 * @function find_ingr_with_effect(const std::string& name)
 		 * @brief Retrieve all ingredients that have a given effect.
-		 * @param name	- Name to search for.
+		 * @param name			- Name to search for.
+		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @returns std::vector<Ingredient>
 		 */
 		SortedIngrList find_ingr_with_effect(std::string name, const bool fuzzy_search)
@@ -111,44 +113,41 @@ namespace caco_alch {
 			name = str::tolower(name);
 			SortedIngrList set;
 			for ( auto& it : _ingr ) {
-				for ( auto& fx : it._effects ) {
-					const auto lc{ str::tolower(fx._name) };
-					if ( lc == name || ( fuzzy_search && lc.find(name) != std::string::npos ) ) {
+				for ( const auto& fx : it._effects ) {
+					if ( const auto lc{ str::tolower(fx._name) }; lc == name || ( fuzzy_search && lc.find(name) != std::string::npos ) ) {
 						set.insert(&it);
 						break; // from nested loop
 					}
 				}
 			}
-			return std::move(set);
+			return set;
 		}
 
 		/**
 		 * @constructor Alchemy(std::pair<EffectList, IngrList>&&)
 		 * @brief Default Constructor
-		 * @param map	- rvalue ref of loadFromFile output.
+		 * @param ingr	- rvalue ref of loadFromFile output.
 		 */
-		Alchemy(IngrList&& ingr) : _ingr{ std::move(ingr) } {}
+		explicit Alchemy(IngrList&& ingr) : _ingr{ std::move(ingr) } {}
 
 		/**
 		 * @function print_search_to(std::ostream&, const std::string&, const bool = false, const bool = false, const size_t = 3)
 		 * @brief Retrieve a stringstream containing the information about the given target.
 		 * @param os			- Output stream to print to.
 		 * @param name			- Name of the target ingredient, or target effect. This is NOT case-sensitive.
-		 * @param quietOutput	- When true, does not print the effects of any ingredients that are included in search results.
-		 * @param verboseOutput	- When true and quietOutput is false, prints the magnitude of effects.
-		 * @param indent		- Target indentation, in space chars.
+		 * @param fmt			- Format instance, used to format the text output.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_search_to(std::ostream& os, const std::string& name, const Format& fmt = { })
+		std::ostream& print_search_to(std::ostream& os, const std::string& name, const Format& fmt = Format{ })
 		{
-			SortedIngrList cont;
 			const auto name_lowercase{ str::tolower(name) };
-			if ( auto&& tmp{ find_ingr_with_effect(name_lowercase, !fmt.exact()) }; !tmp.empty() )
-				cont = std::move(tmp);
-			else if ( auto&& tmp{ get_ingr_list(name_lowercase, !fmt.exact()) }; !tmp.empty() )
-				cont = std::move(tmp);
-
-			if ( !cont.empty() ) {
+			if ( SortedIngrList cont{ [&fmt, &name_lowercase, this]() -> const SortedIngrList {
+				if ( const auto&& tmp{ find_ingr_with_effect(name_lowercase, !fmt.exact()) }; !tmp.empty() )
+					return tmp;
+				if ( const auto&& tmp{ find_ingr_with_effect(name_lowercase, !fmt.exact()) }; !tmp.empty() )
+					return tmp;
+				return {};
+			}() }; !cont.empty() ) {
 				os << std::fixed; // Set forced standard notation
 				const auto precision{ os.precision() }; // copy current output stream precision
 				os.precision(fmt.precision()); // Set floating-point-precision.
@@ -175,13 +174,10 @@ namespace caco_alch {
 		 * @function print_list_to(std::ostream&, const bool, const bool = false, const bool = false, const size_t = 3)
 		 * @brief Insert the ingredient list into an output stream.
 		 * @param os				- Target Output Stream.
-		 * @param showEffectList	- When true, inserts an additional list of all known effects without ingredients.
-		 * @param quietOutput		- When true, doesn't show effects in the ingredient list.
-		 * @param verboseOutput		- When true, inserts effect magnitude for each effect.
-		 * @param indent			- How many space chars to insert before the ingredient name, and half as many space chars to insert before effect names.
+		 * @param fmt				- Format instance, used to format the text output.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_list_to(std::ostream& os, const Format& fmt = { })
+		std::ostream& print_list_to(std::ostream& os, const Format& fmt = Format{ })
 		{
 			SortedIngrList set;
 			for ( auto it{ _ingr.begin() }; it != _ingr.end(); ++it )
@@ -218,7 +214,7 @@ namespace caco_alch {
 		 * @param fmt	- Alchemy Format object, controls how the results appear in the output stream.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_build_to(std::ostream& os, IngrList cont, const GameSettings& gs, const Format& fmt = { })
+		std::ostream& print_build_to(std::ostream& os, IngrList cont, const GameSettings& gs, const Format& fmt = Format{ }) const
 		{
 			const auto verbose{ [&os, &fmt](Effect& fx) {
 				if ( ( fx._magnitude != 0.0 && ( fmt.verbose() || !fmt.quiet() ) ) || fmt.all() ) {
@@ -239,7 +235,7 @@ namespace caco_alch {
 				os.precision(fmt.precision());
 				os << std::fixed;
 
-				Potion potion{ cont, gs };
+				const Potion potion{ cont, gs };
 
 				const auto base_skill{ gs.AlchemyAV() };
 				os << Color::f_green << "Potion Builder [Alchemy Skill: " << Color::f_cyan << base_skill;
@@ -249,8 +245,7 @@ namespace caco_alch {
 				for ( auto& it : cont )
 					os << indentation << Color::f_yellow << it._name << '\n';
 
-				const auto name{ potion.name() };
-				if ( !name.empty() )
+				if ( const auto name{ potion.name() }; !name.empty() )
 					os << name << '\n'; // name
 
 				os << Color::f_red << '{' << Color::reset << '\n'; // Open body
@@ -277,7 +272,7 @@ namespace caco_alch {
 		 * @param fmt	- Alchemy Format object, controls how the results appear in the output stream.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_build_to(std::ostream& os, const std::vector<std::string>& names, const GameSettings& gs, const Format& fmt = { })
+		std::ostream& print_build_to(std::ostream& os, const std::vector<std::string>& names, const GameSettings& gs, const Format& fmt = Format{ })
 		{
 			if ( names.size() > 4 ) throw std::exception("Too many ingredients! (Build Mode Max 4)"); else if ( names.size() < 2 ) throw std::exception("Not enough ingredients! (Build Mode Min 2)");
 			std::vector<Ingredient> cont;
@@ -296,11 +291,6 @@ namespace caco_alch {
 		 * @brief Retrieve the list of all known ingredients.
 		 * @returns IngrList
 		 */
-		IngrList ingredients() const { return _ingr; }
-
-		EffectList effects() const
-		{
-
-		}
+		[[nodiscard]] IngrList ingredients() const { return _ingr; }
 	};
 }

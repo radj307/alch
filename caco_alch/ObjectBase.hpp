@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <ostream>
+#include <utility>
 
 namespace caco_alch {
 	struct ObjectBase {
@@ -12,7 +12,7 @@ namespace caco_alch {
 		 * @brief Default constructor for an object base.
 		 * @param name - This object's name
 		 */
-		ObjectBase(const std::string& name) : _name{ name } {}
+		explicit ObjectBase(std::string name) : _name{ std::move(name) } {}
 
 		bool operator<(const ObjectBase& o) const { return _name < o._name; }
 		bool operator>(const ObjectBase& o) const { return _name > o._name; }

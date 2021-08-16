@@ -7,7 +7,7 @@ namespace build_registry {
 	inline EffectList parseFileContent(std::stringstream& ss)
 	{
 		EffectList fx;
-		const auto get_kywd{ [](const reparse::Elem::Cont& sub) -> KeywordList {
+		constexpr auto get_kywd{ [](const reparse::Elem::Cont& sub) -> KeywordList {
 			KeywordList kywd;
 			for ( auto& it : sub )
 				if ( it.isVar() )

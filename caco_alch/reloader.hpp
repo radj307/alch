@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include <algorithm>
 #include <file.h>
 #include <xINI.hpp>
@@ -15,26 +14,24 @@ namespace caco_alch {
 	 * @function strip_line(std::string, const Param&)
 	 * @brief Removes comments and preceeding/trailing whitespace from a given string.
 	 * @param str	- Input string.
-	 * @param cfg	- Configuration.
 	 * @returns std::string
 	 */
 	inline std::string strip_line(std::string str)
 	{
 		if ( const auto dPos{ str.find_first_of("#;") }; !str.empty() && dPos != std::string::npos ) // remove comments first
-			str.erase(str.begin() + dPos, str.end());
+			str.erase(dPos + str.begin(), str.end());
 		if ( const auto first{ str.find_first_not_of(" \t\r\n\v") }; !str.empty() && first != std::string::npos )
 			str.erase(std::remove_if(str.begin(), str.begin() + first, isspace), str.begin() + first); // remove from beginning of string to 1 before first non-whitespace char
 		else return{ };
 		if ( const auto last{ str.find_last_not_of(" \t\r\n\v") }; !str.empty() && last != std::string::npos )
-			str.erase(std::remove_if(str.begin() + last, str.end(), isspace), str.end()); // remove from 1 after last non-whitespace char to the end of the string
+			str.erase(std::remove_if(last + str.begin(), str.end(), isspace), str.end()); // remove from 1 after last non-whitespace char to the end of the string
 		return str;
 	}
 
 	inline IngrList parseFileContent(std::stringstream& ss)
 	{
-		const auto find_elem{ [](reparse::Elem::Cont traits, const std::string& name) -> std::string {
-			const auto pos{ std::find_if(traits.begin(), traits.end(), [&name](reparse::Elem::Cont::value_type v) { return str::tolower(v.name()) == name; }) };
-			if ( pos != traits.end() && pos->isVar() )
+		constexpr auto find_elem{ [](reparse::Elem::Cont traits, const std::string& name) -> std::string {
+			if ( const auto pos{ std::find_if(traits.begin(), traits.end(), [&name](const reparse::Elem::Cont::value_type& v) { return str::tolower(v.name()) == name; }) }; pos != traits.end() && pos->isVar() )
 				return pos->value();
 			return { };
 		} };
@@ -53,7 +50,7 @@ namespace caco_alch {
 							if ( !it.isVar() )
 								for ( auto& kywd : it.getVec() )
 									if ( kywd.isVar() )
-										keywords.push_back(kywd.value());
+										keywords.push_back(static_cast<const Keyword>(kywd.value()));
 						return keywords;
 					}() };
 					arr[i] = Effect{ vec.at(i).name(), mag, dur, KWDA };
@@ -97,6 +94,7 @@ namespace caco_alch {
 	 * @brief Write an ingredient list to a file.
 	 * @param filename	- Target file.
 	 * @param ingr		- rvalue ref of an IngrList instance.
+	 * @param append	- When true, does not overwrite file contents with ingredient list, instead appends to file.
 	 * @returns bool
 	 *			true	- Success.
 	 *			false	- Failed to write to file.
@@ -124,7 +122,7 @@ namespace caco_alch {
 	 *			0 - Success.
 	 *			1 - Failure.
 	 */
-	int validate_file(const std::string& filename)
+	inline int validate_file(const std::string& filename)
 	{
 		return !loadFromFile(filename).empty();
 	}
@@ -137,12 +135,12 @@ namespace caco_alch {
 		return o;
 	}
 
-	GameSettings read_ini(const std::string& filename)
+	inline GameSettings read_ini(const std::string& filename)
 	{
 		GameSettings gs;
 		gs.set(file::read(filename));
 		return gs;
 	}
 
-	bool write_ini(const std::string& filename, const GameSettings& gs, const bool append = false) { return file::write(filename, gs(), append); }
+	inline bool write_ini(const std::string& filename, const GameSettings& gs, const bool append = false) { return file::write(filename, gs(), append); }
 }
