@@ -30,6 +30,7 @@ using namespace caco_alch;
  */
 int main(const int argc, char* argv[], char* envp[])
 {
+	// TODO: Implement the 'E' file-export option for build mode
 	// TODO: Add a "request" system to the potion-building mechanic that allows the user to request an automatically-generated potion of a certain type.
 	// TODO: Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
 	try {
