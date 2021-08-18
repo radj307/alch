@@ -13,8 +13,8 @@
 
 namespace caco_alch {
 	/**
-	 * @function handle_arguments(opt::Param&&)
-	 * @brief Handles program execution.
+	 * @function handle_arguments(opt::Param&&, Alchemy&&, GameSettings&&)
+	 * @brief Handles primary program execution. Arguments can be retrieved from the init() function.
 	 * @param args	- rvalue reference of an opt::Param instance.
 	 * @param alch	- Alchemy instance rvalue.
 	 * @param gs	- Gamesettings instance rvalue.
@@ -29,6 +29,7 @@ namespace caco_alch {
 			args.getFlag('a'),	// all
 			args.getFlag('E'),	// export
 			args.getFlag('R'),	// reverse
+			args.getFlag('c'),	// allow color
 			3u,					// indent
 			[&args]() { const auto v{ str::stoui(args.getv("precision")) }; if ( v != 0.0 ) return v; return 2u; }( ),
 			[&args]() -> unsigned short { const auto v{ Color::strToColor(args.getv("color")) }; if ( v != 0 ) return v; return Color::_f_white; }( )
@@ -53,9 +54,6 @@ namespace caco_alch {
 
 	inline int handle_arguments(std::tuple<opt::Param, Alchemy, GameSettings>&& pr) { return handle_arguments(std::forward<opt::Param>(std::get<0>(pr)), std::forward<Alchemy>(std::get<1>(pr)), std::forward<GameSettings>(std::get<2>(pr))); }
 
-	// @brief Contains the list of valid commandline arguments for the alch program.
-	inline opt::Matcher _matcher{ { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'e', 'C', 'E' }, { { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-alchemy-skill", true }, { "ini-alchemy-mod", true }, { "ini-reset", false } } };
-
 	/**
 	 * @namespace Help
 	 * @brief Contains methods related to the inline terminal help display.
@@ -75,7 +73,7 @@ namespace caco_alch {
 				else return a < b;
 			} };
 		public:
-			using Cont = std::map < std::string, std::string, more<std::string>> ;
+			using Cont = std::map<std::string, std::string, more<std::string>>;
 			std::string _usage;
 			Cont _doc;
 			/**
@@ -97,11 +95,11 @@ namespace caco_alch {
 					auto& key{ it->first };
 					const auto& doc{ it->second };
 					if ( key.empty() ) // If key is empty, delete entry
-						_doc.erase(it);
+						_doc.erase(it, it);
 					else {                                                         // key isn't empty
 						if ( const auto fst_char{ key.at(0) }; fst_char != '-' ) { // if key does not have a dash prefix
 
-							_doc.erase(it);
+							_doc.erase(it, it);
 							std::string mod{ '-' };
 							if ( key.size() > 1 ) // is longopt
 								mod += '-';
@@ -133,7 +131,25 @@ namespace caco_alch {
 			}
 		};
 
-		const Helper _default_doc("caco-alch", "<[options] [target]>", {
+		/**
+		 * @function print_help(const Helper& = _default_doc)
+		 * @brief Display help information.
+		 * @param documentation	- Documentation to display
+		 */
+		inline void print(const Helper& documentation)
+		{
+			std::cout << documentation << std::endl;
+		}
+	}
+
+	/**
+	 * @struct DefaultObjects
+	 * @brief Contains the overridable default objects and values used in various parts of the program.
+	 */
+	struct DefaultObjects {
+		// @brief Contains the list of valid commandline arguments for the alch program.
+		opt::Matcher _matcher{  { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'c', 'e', 'C', 'E' }, { { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-load", true } }  };
+		Help::Helper _help_doc{"caco-alch", "<[options] [target]>", {
 			{ "-h", "Shows this help display." },
 			{ "-l", "List all ingredients." },
 			{ "-a", "Lists all ingredients and a list of all known effects." },
@@ -142,6 +158,7 @@ namespace caco_alch {
 			{ "-q", "Quiet output, only shows effects that match the search string in search results." },
 			{ "-v", "Verbose output, shows extended stat information." },
 			{ "-b", "(Incompatible with -s) Build mode, accepts up to 4 ingredient names and shows the result of combining them." },
+			{ "-c", "Colorize effects based on whether they are positive or negative by checking their keywords." },
 			{ "-R", "(Not Implemented) Reverse order." }, // TODO
 			{ "-C", "Receive an ingredient list from STDIN. (ex. \"cat <file> | caco-alch\")" },
 			{ "-E", "File export mode, prints results in the format used by the parser so they can be read in again using '-C'." },
@@ -149,20 +166,19 @@ namespace caco_alch {
 			{ "--validate", "Checks if the target file can be loaded successfully, and contains valid data. Specifying this option will cause all other options to be ignored." },
 			{ "--color <string_color>", "Change the color of ingredient names. String colors must include either an 'f' (foreground) or 'b' (background), then the name of the desired color." },
 			{ "--precision <uint>", "Set the floating-point precision value when printing numbers. (Default: 2)" },
-			{ "--ini-alchemy-skill <uint>", "Sets the alchemy skill level used when in build mode." },
-			{ "--ini-alchemy-mod <uint>", "Sets the amount of the fortify alchemy effect added to the base skill." },
-			{ "--ini <file>", "Load a specific INI file." },
+			{ "--ini <<setting>:<value>>", "Change a value in the INI file. (Try \"cat <ini file>\" for variable names)" },
 			{ "--ini-reset", "Reset / Create an INI config file. (Used by the potion builder to calculate stats.)" },
-			}); ///< @brief Help documentation used by default.
-
-		/**
-		 * @function print_help(const Helper& = _default_doc)
-		 * @brief Display help information.
-		 * @param documentation	- Documentation to display
-		 */
-		inline void print(const Helper& documentation = _default_doc)
-		{
-			std::cout << documentation << std::endl;
-		}
-	}
+			{ "--ini-load <filepath>", "Load a specific INI file." },
+		}};
+		GameSettings::Cont _settings{
+			{ "fAlchemyIngredientInitMult", 3.0 },
+			{ "fAlchemySkillFactor", 3.0 },
+			{ "fAlchemyAV", 15.0 },
+			{ "fAlchemyMod", 0.0 },
+			{ "fPerkAlchemyMasteryRank", 0.0 },		// valid: 0, 1, or 2
+			{ "bPerkPoisoner", false },
+			{ "bPerkAdvancedLab", false },
+			{ "sPerkPhysicianType", std::string("") },
+		};
+	};
 }

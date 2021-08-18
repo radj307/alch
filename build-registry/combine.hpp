@@ -1,57 +1,83 @@
 #pragma once
+#include <iostream>
 #include <reloader.hpp>
 
 namespace build_registry {
 	using namespace caco_alch;
 
-	inline EffectList parseFileContent(std::stringstream& ss)
+	/**
+	 * @function parseFileContent(std::stringstream&)
+	 * @brief Parse a stringstream into a sorted effect list.
+	 * @param ss	- Stringstream with file contents.
+	 * @returns SortedEffectList
+	 */
+	inline SortedEffectList parseFileContent(std::stringstream& ss)
 	{
-		EffectList fx;
-		constexpr auto get_kywd{ [](const reparse::Elem::Cont& sub) -> KeywordList {
-			KeywordList kywd;
+		SortedEffectList fx;
+		constexpr auto get_kwda{ [](const reparse::Elem::Cont& sub) -> KeywordList {
+			KeywordList KWDA;
 			for ( auto& it : sub )
 				if ( it.isVar() )
-					kywd.push_back({ it.value(), it.name() });
-			return kywd;
+					KWDA.insert({ it.value(), it.name() });
+			return KWDA;
 		} };
-		const auto push{ [&fx](const std::string& name, const KeywordList& keywords ) -> bool {
-			for ( auto& it : fx )
-				if ( it._name == name )
-					return false;
-			fx.push_back(Effect(name, keywords));
-			return true;
+		const auto push{ [&fx](const std::string& name, const KeywordList& keywords ) {
+			const auto [existing, state]{ fx.insert(Effect(name, keywords)) };
+			if ( !state ) { // if insert failed
+				auto elem { fx.extract(existing) }; // extract the existing element
+				for ( auto& KYWD : keywords ) // push all keywords to existing element's keywords list
+					elem.value()._keywords.insert(KYWD);
+				fx.insert(std::move(elem)); // insert existing element back into set
+			}
 		} };
-		for ( auto& elem : reparse::parse(std::forward<std::stringstream>(ss)) ) {
+		for ( auto& elem : reparse::parse(std::forward<std::stringstream>(ss)) )
 			if ( !elem.isVar() )
-				if ( !push(elem.name(), get_kywd(elem.getVec())) ) {
-				#ifdef ENABLE_DEBUG
-					std::cout << sys::warn << "Found duplicate effect: \'" << elem.name() << '\'' << std::endl;
-				#endif
-				}
-		}
+				push(elem.name(), get_kwda(elem.getVec()));
+			else
+				std::cout << sys::warn << "Found invalid element: \"" << elem.name() << "\"\n";
 		return fx;
 	}
 
-	inline EffectList loadFromFile(const std::string& filename)
+	/**
+	 * @function loadFromFile(const std::string&)
+	 * @brief Wrapper for the parseFileContent() function that
+	 * @param filename	- Target filename.
+	 * @returns SortedEffectList
+	 */
+	inline SortedEffectList loadFromFile(const std::string& filename)
 	{
 		std::stringstream buffer{ file::read(filename) };
 		if ( buffer.fail() ) throw std::exception(("Couldn't find \'" + filename + "\'").c_str());
 		return parseFileContent(buffer);
 	}
 
-	inline KeywordList getKeywords(const EffectList& KYWD_REGISTRY, const Effect& effect)
+	/**
+	 * @function getKeywords(const SortedEffectList&, const Effect&)
+	 * @brief Retrieve the keyword list for a given effect.
+	 * @param KYWD_REGISTRY	- The keyword registry to use as a lookup table.
+	 * @param effect		- The effect to search for.
+	 * @returns KeywordList
+	 */
+	inline KeywordList getKeywords(const SortedEffectList& KYWD_REGISTRY, const Effect& effect)
 	{
 		for ( auto& it : KYWD_REGISTRY )
-			if ( it._name == effect._name )
+			if ( str::tolower(it._name) == str::tolower(effect._name) )
 				return it._keywords;
 		return { };
 	}
 
-	inline IngrList merge_effect_keywords(IngrList& ingr, EffectList&& fx)
+	/**
+	 * @function merge_effect_keywords(IngrList&, SortedEffectList&&)
+	 * @brief Merges an ingredient list with a keyword registry
+	 * @param ingr	- The ingredient registry object.
+	 * @param fx	- The effect-keyword registry object.
+	 * @returns IngrList
+	 */
+	inline IngrList merge_effect_keywords(IngrList& ingr, SortedEffectList&& fx)
 	{
 		for ( auto& it : ingr )
 			for ( auto& effect : it._effects )
-				if ( const auto KYWD{ getKeywords(std::forward<EffectList>(fx), effect) }; !KYWD.empty() )
+				if ( const auto KYWD{ getKeywords(std::forward<SortedEffectList>(fx), effect) }; !KYWD.empty() )
 					effect._keywords = KYWD;
 			#ifdef ENABLE_DEBUG
 				else

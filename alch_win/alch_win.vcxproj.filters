@@ -7,6 +7,12 @@
     <Filter Include="Source Files">
       <UniqueIdentifier>{daa1a579-7341-4e30-8b1d-5b197cfa91e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{08333f16-a877-4906-9ff6-073644b1ce70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{7897edbf-7e06-49a4-a11e-ce3069fcb0b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -27,5 +33,13 @@
     <ClInclude Include="resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="init.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="alch.ini">
+      <Filter>config</Filter>
+    </None>
   </ItemGroup>
 </Project>

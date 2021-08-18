@@ -56,4 +56,5 @@ KWDA\Keyword[5]
 	9.	Use the following Regular Expression on "Exported.txt":
 		Find:		^\s+KWDA\\Keyword...:\s\b(.+?)\b\s\[KYWD:(........)\]
 		Replace:	\t\2 = \1
-	10.	File is now in the correct format, and can be read using the reparse.hpp library.
+	10.	Remove the trailing entry at the end of the file.
+	11.	File is now in the correct format, and can be read using the reparse.hpp library.

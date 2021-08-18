@@ -50,7 +50,7 @@ namespace caco_alch {
 							if ( !it.isVar() )
 								for ( auto& kywd : it.getVec() )
 									if ( kywd.isVar() )
-										keywords.push_back(static_cast<const Keyword>(kywd.value()));
+										keywords.insert(static_cast<const Keyword>(kywd.value()));
 						return keywords;
 					}() };
 					arr[i] = Effect{ vec.at(i).name(), mag, dur, KWDA };
@@ -122,7 +122,7 @@ namespace caco_alch {
 	 *			0 - Success.
 	 *			1 - Failure.
 	 */
-	inline int validate_file(const std::string& filename)
+	inline bool validate_file(const std::string& filename)
 	{
 		return !loadFromFile(filename).empty();
 	}
@@ -134,13 +134,4 @@ namespace caco_alch {
 			return v;
 		return o;
 	}
-
-	inline GameSettings read_ini(const std::string& filename)
-	{
-		GameSettings gs;
-		gs.set(file::read(filename));
-		return gs;
-	}
-
-	inline bool write_ini(const std::string& filename, const GameSettings& gs, const bool append = false) { return file::write(filename, gs(), append); }
 }

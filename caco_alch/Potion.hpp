@@ -46,6 +46,10 @@ namespace caco_alch {
 		return common;
 	}
 
+	/**
+	 * @struct PotionBase
+	 * @brief Contains the base effects of a potion, before using GameSettings to calculate the expected resulting magnitude for each effect.
+	 */
 	struct PotionBase : ObjectBase {
 	protected:
 		EffectList _base_fx; ///< @brief The base effects of a potion, before calculating the potion magnitude.
@@ -57,7 +61,11 @@ namespace caco_alch {
 		PotionBase(const std::string& name, const std::vector<Ingredient>& ingredients) : ObjectBase(name), _base_fx{ get_common_effects(ingredients) } {}
 	};
 
-	class Potion : public PotionBase {
+	/**
+	 * @class Potion
+	 * @brief Represents a player-made potion, and contains the expected final effects of using it.
+	 */
+	class Potion final : public PotionBase {
 		EffectList _fx; ///< @brief The final effects of a potion, these are applied when using it.
 
 		/**
@@ -70,11 +78,8 @@ namespace caco_alch {
 		static EffectList calculate_stats(const EffectList& base, const GameSettings& gs)
 		{
 			EffectList vec;
-			for ( auto& it : base ) {
-				const double magnitude{ gs.calculate_magnitude(it._magnitude) };
-				const unsigned int duration{ it._duration };
-				vec.push_back(Effect{ it._name, magnitude, duration });
-			}
+			for ( auto& it : base )
+				vec.push_back(gs.calculate(it));
 			return vec;
 		}
 
@@ -84,8 +89,24 @@ namespace caco_alch {
 		Potion(std::vector<Ingredient>&& ingredients, const GameSettings& gs) : PotionBase("Potion", std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
 		Potion(const std::vector<Ingredient>& ingredients, const GameSettings& gs) : PotionBase("Potion", ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
 
+		/**
+		 * @function name() const
+		 * @brief Retrieve the name of this potion.
+		 * @returns std::string
+		 */
 		[[nodiscard]] std::string name() const { return _name; }
+		/**
+		 * @function effects() const
+		 * @brief Retrieve the effects of this potion.
+		 * @returns EffectList
+		 */
 		[[nodiscard]] EffectList effects() const { return _fx; }
+		/**
+		 * @function base_effects() const
+		 * @brief Retrieve the base effects of this potion.
+		 * @returns EffectList
+		 */
+		[[nodiscard]] EffectList base_effects() const { return _base_fx; }
 
 		friend std::ostream& operator<<(std::ostream& os, const Potion& p)
 		{

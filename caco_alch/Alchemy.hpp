@@ -31,7 +31,7 @@ namespace caco_alch {
 		 *			true  - name is a valid ingredient.
 		 *			false - name is not a valid ingredient.
 		 */
-		bool is_ingr(const std::string& name) { return std::any_of(_ingr.begin(), _ingr.end(), [&name](const IngrList::value_type& ingr) { return str::tolower(ingr._name) == name; }); }
+		[[nodiscard]] bool is_ingr(const std::string& name) { return std::any_of(_ingr.begin(), _ingr.end(), [&name](const IngrList::value_type& ingr) { return str::tolower(ingr._name) == name; }); }
 
 		/**
 		 * @function is_effect(const std::string&, const bool = false)
@@ -42,7 +42,7 @@ namespace caco_alch {
 		 *			true  - name is a valid effect.
 		 *			false - name is not a valid effect.
 		 */
-		bool is_effect(const std::string& name, const bool fuzzy_search = false)
+		[[nodiscard]] bool is_effect(const std::string& name, const bool fuzzy_search = false)
 		{
 			for ( auto& it : _ingr ) {
 				for ( const auto& fx : it._effects ) {
@@ -54,24 +54,37 @@ namespace caco_alch {
 		}
 
 		/**
-		 * @function get_ingr_ref()
-		 * @brief Retrieve a reference to the ingredient list.
-		 * @returns IngrList&
+		 * @function ingredients() const
+		 * @brief Retrieve the list of all known ingredients.
+		 * @returns IngrList
 		 */
-		IngrList& get_ingr_ref() { return _ingr; }
+		[[nodiscard]] IngrList ingredients() const { return _ingr; }
 
 		/**
 		 * @function getSortedEffectList()
 		 * @brief Retrieve a sorted list of all known effects.
 		 * @returns SortedEffectList
 		 */
-		SortedEffectList getSortedEffectList()
+		[[nodiscard]] SortedEffectList getSortedEffectList()
 		{
 			SortedEffectList ret{ };
 			for ( auto& i : _ingr )
 				for ( auto& fx : i._effects )
-					ret.insert(Effect{ fx._name, static_cast<double>(-0.0), static_cast<unsigned>(0) });
+					ret.insert(Effect{ fx._name, -0.0, 0u });
 			return ret;
+		}
+
+		[[nodiscard]] SortedIngrList find_ingr_with_effects(std::vector<std::string> names, const bool fuzzy_search)
+		{
+			for (auto& it : names) it = str::tolower(it);
+			return getSortedList(_ingr, [&names, &fuzzy_search](const std::array<Effect, 4>& arr) -> bool {
+				return std::all_of(names.begin(), names.end(), [&arr, &fuzzy_search](const std::string& name) {
+					return std::any_of(arr.begin(), arr.end(), [&name, &fuzzy_search](const Effect& fx) {
+						const auto lc{ fx._name };
+						return lc == name || fuzzy_search && str::pos_valid(lc.find(name));
+					});
+				});
+			});
 		}
 
 		/**
@@ -82,10 +95,11 @@ namespace caco_alch {
 		 * @param off	- Position in the list to start search from.
 		 * @returns IngrList::iterator
 		 */
-		IngrList::iterator find_ingr(const std::string& name, const bool fuzzy_search, const int off = 0)
+		[[nodiscard]] IngrList::iterator find_ingr(const std::string& name, const bool fuzzy_search, const int off = 0)
 		{
-			return std::find_if(_ingr.begin() + off, _ingr.end(), [&name](const IngrList::value_type& ingr) -> bool { return str::tolower(ingr._name) == name; });
+			return std::find_if(_ingr.begin() + off, _ingr.end(), [&name, &fuzzy_search](const IngrList::value_type& ingr) -> bool { return str::tolower(ingr._name) == name || fuzzy_search && str::pos_valid(str::tolower(ingr._name).find(name)); });
 		}
+
 		/**
 		 * @function get_ingr_list(const std::string&)
 		 * @brief Retrieve all ingredients that have a given string in their name.
@@ -93,7 +107,7 @@ namespace caco_alch {
 		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @returns std::vector<Ingredient>
 		 */
-		SortedIngrList get_ingr_list(const std::string& name, const bool fuzzy_search)
+		[[nodiscard]] SortedIngrList get_ingr_list(const std::string& name, const bool fuzzy_search)
 		{
 			SortedIngrList set;
 			for ( auto& it : _ingr )
@@ -101,6 +115,7 @@ namespace caco_alch {
 					set.insert(&it);
 			return set;
 		}
+
 		/**
 		 * @function find_ingr_with_effect(const std::string& name)
 		 * @brief Retrieve all ingredients that have a given effect.
@@ -108,7 +123,7 @@ namespace caco_alch {
 		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @returns std::vector<Ingredient>
 		 */
-		SortedIngrList find_ingr_with_effect(std::string name, const bool fuzzy_search)
+		[[nodiscard]] SortedIngrList find_ingr_with_effect(std::string name, const bool fuzzy_search)
 		{
 			name = str::tolower(name);
 			SortedIngrList set;
@@ -117,6 +132,58 @@ namespace caco_alch {
 					if ( const auto lc{ str::tolower(fx._name) }; lc == name || ( fuzzy_search && lc.find(name) != std::string::npos ) ) {
 						set.insert(&it);
 						break; // from nested loop
+					}
+				}
+			}
+			return set;
+		}
+
+		/**
+		 * @function find_ingr_with_effect(const std::string& name)
+		 * @brief Retrieve all ingredients that have a given effect.
+		 * @param names			- Names to search for.
+		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
+		 * @returns std::vector<Ingredient>
+		 */
+		[[nodiscard]] SortedIngrList find_ingr_with_all_effects(std::vector<std::string> names, const bool fuzzy_search)
+		{
+			for (auto& it : names) it = str::tolower(it);
+			const auto matches{ [&names, &fuzzy_search](const std::array<Effect, 4>& fx) {
+				bool is_match{ true };
+				for ( auto& name : names ) {
+					if ( !std::any_of(fx.begin(), fx.end(), [&name, &fuzzy_search](const Effect& effect) {
+						return str::tolower(effect._name) == name || fuzzy_search && str::pos_valid(str::tolower(effect._name).find(name));
+					}) )
+						is_match = false;
+				}
+				return is_match;
+			} };
+			SortedIngrList set;
+			for ( auto& it : _ingr )
+				if (matches(it._effects))
+					set.insert(&it);
+			return set;
+		}
+
+		/**
+		 * @function find_ingr_with_effect(const std::string& name)
+		 * @brief Retrieve all ingredients that have a given effect.
+		 * @param names			- Names to search for.
+		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
+		 * @returns std::vector<Ingredient>
+		 */
+		[[nodiscard]] SortedIngrList find_ingr_with_any_effects(std::vector<std::string> names, const bool fuzzy_search)
+		{
+			for (auto& it : names) it = str::tolower(it);
+			const auto matches{ [&names, &fuzzy_search](const std::string& lc_name) {
+				return std::any_of(names.begin(), names.end(), [&lc_name, &fuzzy_search](const std::string& name){ return str::tolower(name) == lc_name || fuzzy_search && str::pos_valid(str::tolower(name).find(lc_name)); });
+			} };
+			SortedIngrList set;
+			for ( auto& it : _ingr ) {
+				for ( const auto& fx : it._effects ) {
+					if (matches(str::tolower(fx._name))) {
+						set.insert(&it);
+						break;
 					}
 				}
 			}
@@ -142,7 +209,7 @@ namespace caco_alch {
 		{
 			const auto name_lowercase{ str::tolower(name) };
 			if ( SortedIngrList cont{ [&fmt, &name_lowercase, this]() -> const SortedIngrList {
-				if ( const auto&& tmp{ find_ingr_with_effect(name_lowercase, !fmt.exact()) }; !tmp.empty() )
+				if ( const auto&& tmp{ get_ingr_list(name_lowercase, !fmt.exact()) }; !tmp.empty() )
 					return tmp;
 				if ( const auto&& tmp{ find_ingr_with_effect(name_lowercase, !fmt.exact()) }; !tmp.empty() )
 					return tmp;
@@ -212,55 +279,49 @@ namespace caco_alch {
 		 * @param cont	- List of ingredients ( Min. 2 <= x <= Max. 4 ). If more than 4 ingredients are passed in, the first 4 are used and the rest are discarded.
 		 * @param gs	- GameSettings instance, provides the stats necessary for simulating the alchemy algorithm.
 		 * @param fmt	- Alchemy Format object, controls how the results appear in the output stream.
+		 * @param max4	- Whether to enforce the 4 ingredient limit or not.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_build_to(std::ostream& os, IngrList cont, const GameSettings& gs, const Format& fmt = Format{ }) const
+		std::ostream& print_build_to(std::ostream& os, IngrList cont, const GameSettings& gs, const Format& fmt = Format{ }, const bool max4 = true) const
 		{
 			const auto verbose{ [&os, &fmt](Effect& fx) {
-				if ( ( fx._magnitude != 0.0 && ( fmt.verbose() || !fmt.quiet() ) ) || fmt.all() ) {
-					if ( fx._name.size() > 30u ) // name is long
-						os << std::setw(fx._name.size()) << ' ';
-					else // name is normal length
-						os << std::setw(30 - fx._name.size()) << ' ';
-					const auto mag_str{ [&fx, &fmt]() -> std::string { auto str{ std::to_string(fx._magnitude) }; if ( const auto dPos{ str.find('.') }; str::pos_valid(dPos) ) str = str.substr(0u, dPos + fmt.precision() + 1); return str; }( ) };
-					os << Color::f_gray << mag_str << std::setw(mag_str.size() < 16 ? 16 - mag_str.size() : mag_str.size() + 1) << ' ' << fx._duration << "s\n" << Color::reset; // << std::setw(10 - std::to_string(fx._magnitude).size()) << " / " << fx._duration << 's' << Color::reset << '\n';
-				}
-				else os << '\n';
+				if ( fx._name.size() > 20u ) // name is long
+					os << std::setw(fx._name.size() + 2u) << ' ';
+				else // name is normal length
+					os << std::setw(20u - fx._name.size()) << ' ';
+				const auto mag_str{ [&fx, &fmt]() -> std::string { auto str{ std::to_string(fx._magnitude) }; if ( const auto dPos{ str.find('.') }; str::pos_valid(dPos) ) str = str.substr(0u, dPos + fmt.precision() + 1); return str; }( ) };
+				os << Color::f_gray << mag_str << std::setw(mag_str.size() < 16 ? 16 - mag_str.size() : mag_str.size() + 1) << ' ' << fx._duration << "s\n" << Color::reset; // << std::setw(10 - std::to_string(fx._magnitude).size()) << " / " << fx._duration << 's' << Color::reset << '\n';
 			} };
 
 			if ( cont.size() >= 2 ) { // if at least 2 valid ingredients were found
-				if ( cont.size() > 4 ) cont.erase(cont.begin() + 4u, cont.end()); // remove any extra ingredients
+				if ( max4 && cont.size() > 4 ) cont.erase(cont.begin() + 4u, cont.end()); // remove any extra ingredients
 				const auto indentation{ std::string(fmt.indent(), ' ') };
 				const auto precision{ os.precision() };
 				os.precision(fmt.precision());
 				os << std::fixed;
 
+				const auto skill_base{ gs.fAlchemyAV() };
+				os << Color::f_green << "Potion Builder [Alchemy Skill: " << Color::f_cyan << skill_base;
+				if ( const auto skill_mod{ gs.fAlchemyMod() }; skill_mod > 0.0 )
+					os << Color::reset << "(" << Color::f_green << skill_base + skill_mod << Color::reset << ")";
+				os << Color::f_green << ']' << Color::reset << '\n';
+
 				const Potion potion{ cont, gs };
 
-				const auto base_skill{ gs.AlchemyAV() };
-				os << Color::f_green << "Potion Builder [Alchemy Skill: " << Color::f_cyan << base_skill;
-				if ( const auto mod{ gs.AlchemyMod() }; mod > 0.0 )
-					os << Color::reset << "(" << Color::f_green << base_skill + mod << Color::reset << ")";
-				os << Color::f_green << ']' << Color::reset << '\n';
+				os << Color::f_green << "Input:\n" << Color::f_red << '{' << Color::reset << '\n';
 				for ( auto& it : cont )
-					os << indentation << Color::f_yellow << it._name << '\n';
+					fmt.to_stream_build(os, it, potion);
 
-				if ( const auto name{ potion.name() }; !name.empty() )
-					os << name << '\n'; // name
+				os << Color::f_red << '}' << Color::reset << '\n';
+				os << Color::f_green << "Output:\n" << Color::f_red << '{' << Color::reset << '\n';
 
-				os << Color::f_red << '{' << Color::reset << '\n'; // Open body
+				fmt.to_stream(os, potion, indentation);
 
-				for ( auto& fx : potion.effects() ) {
-					os << indentation << fx._name;
-					verbose(fx);
-				}
-
-				os << Color::f_red << '}' << Color::reset << '\n'; // Close body
-
+				os << Color::f_red << '}' << Color::reset << '\n';
 				os.precision(precision); // Reset precision
 				return os;
 			}
-			else throw invalid_param;
+			throw invalid_param;
 		}
 
 		/**
@@ -285,12 +346,5 @@ namespace caco_alch {
 			if ( cont.size() > 4 ) cont.erase(cont.begin() + 4u, cont.end());
 			return print_build_to(os, std::forward<std::vector<Ingredient>>(cont), gs, fmt);
 		}
-
-		/**
-		 * @function ingredients() const
-		 * @brief Retrieve the list of all known ingredients.
-		 * @returns IngrList
-		 */
-		[[nodiscard]] IngrList ingredients() const { return _ingr; }
 	};
 }
