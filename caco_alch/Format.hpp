@@ -237,7 +237,9 @@ namespace caco_alch {
 			const auto [pre, highlight, post]{ get_tuple(ingr._name, search_str) };
 			os << indentation; // insert indentation
 			sys::colorSet(_color); // set color
-			os << pre << Color::reset << _color_highlight << highlight << Color::reset;
+			os << pre << Color::reset;
+			sys::colorSet(_color_highlight);
+			os << highlight << Color::reset;
 			sys::colorSet(_color); // set color
 			os << post << Color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, { search_str }) ) // iterate through this ingredient's effects, and insert them as well.
@@ -258,7 +260,9 @@ namespace caco_alch {
 			const auto [pre, highlight, post]{ get_tuple(potion.name(), "") };
 			os << indentation; // insert indentation
 			sys::colorSet(_color); // set color
-			os << pre << Color::reset << _color_highlight << highlight << Color::reset;
+			os << pre << Color::reset;
+			sys::colorSet(_color_highlight);
+			os << highlight << Color::reset;
 			sys::colorSet(_color); // set color
 			os << post << Color::reset << '\n';
 			for ( auto& fx : potion.effects() ) // iterate through this ingredient's effects, and insert them as well.
