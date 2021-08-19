@@ -154,7 +154,7 @@ namespace caco_alch {
 			{ "-l", "List all ingredients." },
 			{ "-a", "Lists all ingredients and a list of all known effects." },
 			{ "-s", "Searches the ingredient & effect lists for all additional parameters, and prints a result to STDOUT" },
-			{ "-e", "Exact mode, does not allow partial search matches." },
+			{ "-e", "Exact mode, does not allow partial search matches. This option is implicit when using build mode." },
 			{ "-q", "Quiet output, only shows effects that match the search string in search results." },
 			{ "-v", "Verbose output, shows extended stat information." },
 			{ "-b", "(Incompatible with -s) Build mode, accepts up to 4 ingredient names and shows the result of combining them." },

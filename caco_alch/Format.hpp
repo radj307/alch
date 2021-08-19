@@ -102,27 +102,10 @@ namespace caco_alch {
 		 */
 		[[nodiscard]] unsigned short resolveEffectColor(const Effect& fx) const
 		{
-			using namespace Keywords;
 			if ( !_allow_color_fx || _force_color || fx._keywords.empty() )
 				return _color;
-			if (fx.hasKeyword(
-				KYWD_Harmful,
-				KYWD_DamageHealth,
-				KYWD_DamageStamina,
-				KYWD_DamageMagicka
-			)) return _color_fx_negative; // return red for negative effects
-			if (fx.hasKeyword(
-				KYWD_Beneficial,
-				KYWD_RestoreHealth,
-				KYWD_FortifyHealth,
-				KYWD_FortifyRegenHealth,
-				KYWD_RestoreStamina,
-				KYWD_FortifyStamina,
-				KYWD_FortifyRegenStamina,
-				KYWD_RestoreMagicka,
-				KYWD_FortifyMagicka,
-				KYWD_FortifyRegenMagicka
-			)) return _color_fx_positive; // return green for positive effects
+			if (hasNegative(fx)) return _color_fx_negative; // return red for negative effects
+			if (hasPositive(fx)) return _color_fx_positive; // return green for positive effects
 			return Color::_reset; // else return white
 		}
 
@@ -189,9 +172,10 @@ namespace caco_alch {
 		 * @param search_str		- Search string, used to highlight searched-for strings in the output.
 		 * @param indentation		- String to use as indentation before each line.
 		 * @param repeatIndentation	- Repeats the indentation string this many times before the effect name.
+		 * @param ind_fac			- Subtract the number of used chars from this value to get final indentation when printing magnitude & duration.
 		 * @returns std::ostream&
 		 */
-		std::ostream& to_stream(std::ostream& os, const Effect& fx, const std::string& search_str, const std::string& indentation, const unsigned repeatIndentation = 2u) const
+		std::ostream& to_stream(std::ostream& os, const Effect& fx, const std::string& search_str, const std::string& indentation, const unsigned repeatIndentation = 2u, const size_t ind_fac = 25u) const
 		{
 			const auto [pre, highlight, post]{ get_tuple(fx._name, search_str) };
 			const auto fx_color{ resolveEffectColor(fx) };
@@ -203,11 +187,11 @@ namespace caco_alch {
 			os << highlight;
 			sys::colorSet(fx_color);
 			os << post << Color::reset;
-			const auto insert_num{ [&os](const std::string& num, const unsigned short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
-				if (indent > 24u)
+			const auto insert_num{ [&os, &ind_fac](const std::string& num, const unsigned short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
+				if (indent > ind_fac)
 					os << std::setw(indent + 2u) << ' ';
 				else
-					os << std::setw(24u - indent) << ' ';
+					os << std::setw(ind_fac - indent) << ' ';
 				sys::colorSet(color);
 				os << num;
 				return num.size();
@@ -243,7 +227,7 @@ namespace caco_alch {
 			sys::colorSet(_color); // set color
 			os << post << Color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, { search_str }) ) // iterate through this ingredient's effects, and insert them as well.
-				to_stream(os, *fx, search_str, indentation);
+				to_stream(os, *fx, search_str, indentation, 2u, 25u);
 			return os;
 		}
 
@@ -266,7 +250,7 @@ namespace caco_alch {
 			sys::colorSet(_color); // set color
 			os << post << Color::reset << '\n';
 			for ( auto& fx : potion.effects() ) // iterate through this ingredient's effects, and insert them as well.
-				to_stream(os, fx, "", indentation);
+				to_stream(os, fx, "", indentation, 2u, 25u);
 			return os;
 		}
 

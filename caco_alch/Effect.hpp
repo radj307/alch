@@ -48,4 +48,31 @@ namespace caco_alch {
 		bool operator<(const Effect& o) const { return _name == o._name && _magnitude < o._magnitude; }
 		bool operator>(const Effect& o) const { return _name == o._name && _magnitude > o._magnitude; }
 	};
+
+	static bool hasPositive(const Effect& effect)
+	{
+		using namespace Keywords;
+		return effect.hasKeyword(
+				KYWD_Beneficial,
+				KYWD_RestoreHealth,
+				KYWD_FortifyHealth,
+				KYWD_FortifyRegenHealth,
+				KYWD_RestoreStamina,
+				KYWD_FortifyStamina,
+				KYWD_FortifyRegenStamina,
+				KYWD_RestoreMagicka,
+				KYWD_FortifyMagicka,
+				KYWD_FortifyRegenMagicka
+		);
+	}
+	static bool hasNegative(const Effect& effect)
+	{
+		using namespace Keywords;
+		return effect.hasKeyword(
+				KYWD_Harmful,
+				KYWD_DamageHealth,
+				KYWD_DamageStamina,
+				KYWD_DamageMagicka
+		);
+	}
 }

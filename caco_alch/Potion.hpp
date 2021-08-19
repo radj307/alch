@@ -13,7 +13,7 @@ namespace caco_alch {
 	 * @param ingr	- List of ingredients
 	 * @returns EffectList
 	 */
-	inline EffectList get_common_effects(const std::vector<Ingredient>& ingr)
+	static EffectList get_common_effects(const IngrList&ingr)
 	{
 		if ( ingr.size() > 4 ) throw std::exception("Too many ingredients! (Max 4)"); else if ( ingr.size() < 2 ) throw std::exception("Not enough ingredients! (Min 2)");
 		EffectList common, tmp;
@@ -54,11 +54,45 @@ namespace caco_alch {
 	protected:
 		EffectList _base_fx; ///< @brief The base effects of a potion, before calculating the potion magnitude.
 
+		static std::string getName(const EffectList& effects)
+		{
+			auto strongest{ effects.end() };
+			for ( auto it{ effects.begin() }; it != effects.end(); ++it )
+				if ( strongest == effects.end() || it->_magnitude > strongest->_magnitude )
+					strongest = it;
+			if ( strongest != effects.end() ) {
+				std::string name{ " of " + strongest->_name };
+				if ( hasNegative(*strongest) )
+					name = "Poison" + name;
+				else if ( effects.size() > 2 )
+					name = "Elixir" + name;
+				else if ( effects.size() == 2 )
+					name = "Draught" + name;
+				else
+					name = "Potion" + name;
+				return name;
+			}
+			return "Potion";
+		}
+
 	public:
 		explicit PotionBase(const std::string& name) : ObjectBase(name) {}
-		PotionBase(const std::string& name, EffectList effects) : ObjectBase(name), _base_fx{ std::move(effects) } {}
-		PotionBase(const std::string& name, std::vector<Ingredient>&& ingredients) : ObjectBase(name), _base_fx{ get_common_effects(std::move(ingredients)) } {}
-		PotionBase(const std::string& name, const std::vector<Ingredient>& ingredients) : ObjectBase(name), _base_fx{ get_common_effects(ingredients) } {}
+		explicit PotionBase(EffectList effects) : ObjectBase(getName(effects)), _base_fx{ std::move(effects) } {}
+		explicit PotionBase(const IngrList& ingredients)
+		{
+			const auto common{ get_common_effects(ingredients) };
+			_name = getName(common);
+			_base_fx = std::move(common);
+		}
+		explicit PotionBase(const SortedIngrList& ingredients)
+		{
+			IngrList ingr;
+			for (auto& it : ingredients)
+				ingr.push_back({ *it });
+			const auto common{ get_common_effects(ingr) };
+			_name = getName(common);
+			_base_fx = std::move(common);
+		}
 	};
 
 	/**
@@ -84,10 +118,9 @@ namespace caco_alch {
 		}
 
 	public:
-		Potion(const std::string& name, std::vector<Ingredient>&& ingredients, const GameSettings& gs) : PotionBase(name, std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(const std::string& name, const std::vector<Ingredient>& ingredients, const GameSettings& gs) : PotionBase(name, ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(std::vector<Ingredient>&& ingredients, const GameSettings& gs) : PotionBase("Potion", std::forward<std::vector<Ingredient>>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(const std::vector<Ingredient>& ingredients, const GameSettings& gs) : PotionBase("Potion", ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const IngrList& ingredients, const GameSettings& gs) : PotionBase(ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(IngrList&& ingredients, const GameSettings& gs) : PotionBase(std::forward<IngrList>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(SortedIngrList&& ingredients, const GameSettings& gs) : PotionBase(std::forward<SortedIngrList>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
 
 		/**
 		 * @function name() const

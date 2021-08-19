@@ -284,17 +284,12 @@ namespace caco_alch {
 		 */
 		std::ostream& print_build_to(std::ostream& os, IngrList cont, const GameSettings& gs, const Format& fmt = Format{ }, const bool max4 = true) const
 		{
-			const auto verbose{ [&os, &fmt](Effect& fx) {
-				if ( fx._name.size() > 20u ) // name is long
-					os << std::setw(fx._name.size() + 2u) << ' ';
-				else // name is normal length
-					os << std::setw(20u - fx._name.size()) << ' ';
-				const auto mag_str{ [&fx, &fmt]() -> std::string { auto str{ std::to_string(fx._magnitude) }; if ( const auto dPos{ str.find('.') }; str::pos_valid(dPos) ) str = str.substr(0u, dPos + fmt.precision() + 1); return str; }( ) };
-				os << Color::f_gray << mag_str << std::setw(mag_str.size() < 16 ? 16 - mag_str.size() : mag_str.size() + 1) << ' ' << fx._duration << "s\n" << Color::reset; // << std::setw(10 - std::to_string(fx._magnitude).size()) << " / " << fx._duration << 's' << Color::reset << '\n';
-			} };
-
-			if ( cont.size() >= 2 ) { // if at least 2 valid ingredients were found
-				if ( max4 && cont.size() > 4 ) cont.erase(cont.begin() + 4u, cont.end()); // remove any extra ingredients
+			SortedIngrList set{};
+			for ( auto& it : cont )
+				set.insert(&it);
+			if ( set.size() >= 2 ) { // if at least 2 valid ingredients were found
+				if ( max4 && set.size() > 4 )
+					set = [](const SortedIngrList& set){ SortedIngrList nset; unsigned count{0u}; for (auto& it : set) { nset.insert(it); if (++count == 4u) break; } return nset; }(set);
 				const auto indentation{ std::string(fmt.indent(), ' ') };
 				const auto precision{ os.precision() };
 				os.precision(fmt.precision());
@@ -306,13 +301,16 @@ namespace caco_alch {
 					os << Color::reset << "(" << Color::f_green << skill_base + skill_mod << Color::reset << ")";
 				os << Color::f_green << ']' << Color::reset << '\n';
 
-				const Potion potion{ cont, gs };
+				const Potion potion{ std::forward<SortedIngrList>(set), gs };
 
 				os << Color::f_green << "Input:\n" << Color::f_red << '{' << Color::reset << '\n';
-				for ( auto& it : cont )
-					fmt.to_stream_build(os, it, potion);
-
+				for ( auto& it : set )
+					fmt.to_stream_build(os, *it, potion);
 				os << Color::f_red << '}' << Color::reset << '\n';
+
+				if ( potion.effects().empty() )
+					throw std::exception("Potion creation failed.");
+
 				os << Color::f_green << "Output:\n" << Color::f_red << '{' << Color::reset << '\n';
 
 				fmt.to_stream(os, potion, indentation);
@@ -338,7 +336,7 @@ namespace caco_alch {
 			if ( names.size() > 4 ) throw std::exception("Too many ingredients! (Build Mode Max 4)"); else if ( names.size() < 2 ) throw std::exception("Not enough ingredients! (Build Mode Min 2)");
 			std::vector<Ingredient> cont;
 			for ( auto& it : names ) {
-				const auto ingr{ find_ingr(str::tolower(it), !fmt.exact()) };
+				const auto ingr{ find_ingr(str::tolower(it), false) };
 				if ( ingr != _ingr.end() )
 					cont.push_back(*ingr);
 				else os << sys::warn << "Couldn't find ingredient: \"" << it << "\"\n";
