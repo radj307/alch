@@ -103,7 +103,7 @@ namespace caco_alch {
 		 */
 		[[nodiscard]] short resolveEffectColor(const Effect& fx) const
 		{
-			if ( !_allow_color_fx || _force_color || fx._keywords.empty() )
+			if ( !_allow_color_fx || _force_color )
 				return _color;
 			if (hasNegative(fx)) return _color_fx_negative; // return red for negative effects
 			if (hasPositive(fx)) return _color_fx_positive; // return green for positive effects

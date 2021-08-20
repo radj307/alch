@@ -1,10 +1,10 @@
 #pragma once
+#include <file.h>
+#include <resolve-path.hpp>
+
 #include "Alchemy.hpp"
-#include "file.h"
 #include "GameSettings.hpp"
 #include "reloader.hpp"
-#include "resolve-path.hpp"
-#include "sysapi.h"
 #include "UserAssist.hpp"
 
 namespace caco_alch {
@@ -25,36 +25,39 @@ namespace caco_alch {
 		GameSettings gs(def); // INIT
 		// Load current INI settings if the file exists
 		if ( ini_exists ) gs.read_ini(ini_filename);
-		if ( ini_exists || args.check_opt("ini-reset") ) {
+		if ( ini_exists || args.check_opt("ini") || args.check_opt("ini-reset") ) {
 			bool update_ini_before_return{ false }; ///< @brief Changed by the set() lambda, updates the ini with new values before returning when true.
 
 			// Lambda that writes GameSettings to INI
 			const auto write_ini{ [&ini_filename, &gs](){ return file::write(ini_filename, gs.to_stream(), false); } };
 
+			// check if the --ini-reset option was specified, and write to INI if it was
 			if ( args.check_opt("ini-reset") && write_ini() )
 				std::cout << sys::msg << "Successfully reset INI. ( " << ini_filename << " )\n";
 
-			const auto indent{ gs.indent_size() };
-			const auto set{ [&gs, &update_ini_before_return, &indent](const std::string& name, const std::string& value) {
-				try {
-					if (gs.set(name, value)) {
-						std::cout << sys::msg << "\'" << name << std::left << std::setw(indent - name.size()) << ' ' << "\' = \'" << value << "\'\n";
-						update_ini_before_return = true;
+			// check for INI option
+			if (args.check_opt("ini")) {
+				// lambda used to set INI variables
+				const auto set{ [&gs, &update_ini_before_return](const std::string& name, const std::string& value) {
+					try {
+						if (gs.set(name, value)) {
+							std::cout << sys::msg << "\'" << name << "\' = \'" << value << "\'\n";
+							update_ini_before_return = true;
+						}
+						else std::cout << sys::warn << "Operation failed without exception.\n";
+					} catch (std::exception& ex) {
+						std::cout << sys::error << "\'" << name <<  "\' = \'" << value << "\' triggered an exception: \"" << ex.what() << '\"' << std::endl;
 					}
-					else std::cout << sys::warn << "Operation failed without exception.\n";
-				} catch (std::exception& ex) {
-					std::cout << sys::error << "\'" << name <<  "\' = \'" << value << "\' triggered an exception: \"" << ex.what() << '\"' << std::endl;
-				}
-			} };
-
-			if (args.check_opt("ini"))
+				} };
+				// iterate through all --ini args
 				for ( auto i{ args.get_index("ini") }; i != args._opt.size(); i = args.get_index("ini", i + 1) )
 					if ( const auto arg{ args.getv("ini", i) }; !arg.empty() ) {
 						if (const auto dPos{ arg.find(':') }; str::pos_valid(dPos) && !str::pos_valid(arg.find(':', dPos + 1)))
 							set(arg.substr(0u, dPos), arg.substr(dPos + 1u));
 						else std::cout << sys::warn << "Invalid Parameter for --ini: Couldn't find ':' in \"" << arg << "\"" << std::endl;
 					}
-
+			}
+			// check if the INI should be updated
 			if ( update_ini_before_return ) {
 				if ( write_ini() )
 					std::cout << sys::msg << "Successfully wrote to \"" << ini_filename << '\"' << std::endl;

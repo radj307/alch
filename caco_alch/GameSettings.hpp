@@ -49,6 +49,24 @@ namespace caco_alch {
 			_value = Tuple{ std::nullopt, std::nullopt, value };
 		}
 
+		/**
+		 * @function safe_get() const
+		 * @brief Safely retrieve this game setting's value, irrelevant of which type it is.
+		 * @returns std::string
+		 */
+		[[nodiscard]] std::string safe_get() const
+		{
+			switch (_type) {
+			case _internal::GMST_T::BOOL:
+				return str::to_string(std::get<2>(_value).value_or(false));
+			case _internal::GMST_T::DOUBLE:
+				return str::to_string(std::get<1>(_value).value_or(0.0));
+			case _internal::GMST_T::STRING:
+				return std::get<0>(_value).value_or("");
+			}
+			return{};
+		}
+
 		friend std::ostream& operator<<(std::ostream& os, const GMST& gmst)
 		{
 			os << gmst._name << " = ";
@@ -114,6 +132,17 @@ namespace caco_alch {
 			return std::find_if(off + _settings.begin(), _settings.end(), [&name](const GMST& setting) { return setting._name == name; });
 		}
 		/**
+		 * @function getValue(const std::string&, const int = 0) const
+		 * @brief Wrapper for find() & GMST::safe_get()
+		 * @returns std::string
+		 */
+		[[nodiscard]] std::string getValue(const std::string& name, const int off = 0) const
+		{
+			if ( const auto it{ find(name, off) }; it != _settings.end() )
+				return it->safe_get();
+			return{};
+		}
+		/**
 		 * @function getBoolValue(const std::string&, const int = 0) const
 		 * @brief Retrieve a boolean value from the config file.
 		 * @returns bool
@@ -122,7 +151,7 @@ namespace caco_alch {
 		[[nodiscard]] bool getBoolValue(const std::string& name, const int off = 0) const
 		{
 			try {
-				return std::get<GMST::BOOL>(find(name)->_value).value();
+				return std::get<GMST::BOOL>(find(name, off)->_value).value();
 			} catch (std::exception&) {
 				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
@@ -136,7 +165,7 @@ namespace caco_alch {
 		[[nodiscard]] double getDoubleValue(const std::string& name, const int off = 0) const
 		{
 			try {
-				return std::get<GMST::DOUBLE>(find(name)->_value).value();
+				return std::get<GMST::DOUBLE>(find(name, off)->_value).value();
 			} catch (std::exception&) {
 				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
@@ -150,7 +179,7 @@ namespace caco_alch {
 		[[nodiscard]] std::string getStringValue(const std::string& name, const int off = 0) const
 		{
 			try {
-				return std::get<GMST::STRING>(find(name)->_value).value();
+				return std::get<GMST::STRING>(find(name, off)->_value).value();
 			} catch (std::exception&) {
 				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
@@ -267,7 +296,7 @@ namespace caco_alch {
 #pragma endregion GMST_GETTERS
 
 		/**
-		 * @function calculate_magnitude(const double) const
+		 * @function calculate(const double) const
 		 * @brief Calculate the magnitude of an effect using its magnitude and the current game settings.
 		 * @param effect	- Target effect.
 		 * @returns double
@@ -295,10 +324,9 @@ namespace caco_alch {
 					val *= 0.5 * AlchemyAV;
 				return std::round(val);
 			} };
-			// TODO: Add check & INI value for CACO's locked-duration potions. (1s, 5s, 10s)
 			if (effect.hasKeyword(Keywords::KYWD_DurationBased))
 				return Effect{ effect._name, perk_formula(base_formula(effect._magnitude)), effect._duration, effect._keywords };
-			return Effect{ effect._name, perk_formula(base_formula(effect._magnitude)), static_cast<unsigned>(perk_formula(base_formula(effect._duration))), effect._keywords };
+			return Effect{ effect._name, base_formula(effect._magnitude), static_cast<unsigned>(perk_formula(base_formula(effect._duration))), effect._keywords };
 		}
 
 		/**
@@ -324,20 +352,6 @@ namespace caco_alch {
 				os << it << '\n';
 			os.flush();
 			return os;
-		}
-
-		/**
-		 * @function indent_size() const
-		 * @brief Retrieve the size of the longest GameSetting name. Used for formatting output.
-		 * @returns unsigned int
-		 */
-		[[nodiscard]] unsigned indent_size() const
-		{
-			unsigned indent{ 0u };
-			for ( auto& it : _settings)
-				if (const auto sz{ it._name.size() }; sz > indent)
-					indent = sz;
-			return indent;
 		}
 
 		/**
