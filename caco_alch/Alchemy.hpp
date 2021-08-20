@@ -221,19 +221,19 @@ namespace caco_alch {
 				if ( fmt.file_export() ) // export registry-format ingredients
 					fmt.to_fstream(os, cont);
 				else { // insert search results
-					os << Color::f_green << "Search results for: \'" << Color::f_yellow << name << Color::f_green << "\'\n" << Color::f_red << "{\n" << Color::reset;
+					os << Color::f::green << "Search results for: \'" << Color::f::yellow << name << Color::f::green << "\'\n" << Color::f::red << "{\n" << Color::reset;
 					if ( fmt.reverse_output() )
 						for ( auto it{ cont.rbegin() }; it != cont.rend(); ++it )
 							fmt.to_stream(os, **it, name_lowercase);
 					else
 						for ( auto it{ cont.begin() }; it != cont.end(); ++it )
 							fmt.to_stream(os, **it, name_lowercase);
-					os << Color::f_red << "}" << Color::reset << std::endl;
+					os << Color::f::red << "}" << Color::reset << std::endl;
 				}
 				os.precision(precision); // reset output stream precision
 			}
 			else // no results found
-				os << sys::error << "Didn't find any ingredients or effects matching \'" << Color::f_yellow << name << Color::reset << "\'\n";
+				os << sys::error << "Didn't find any ingredients or effects matching \'" << Color::f::yellow << name << Color::reset << "\'\n";
 			return os;
 		}
 
@@ -257,14 +257,14 @@ namespace caco_alch {
 				if ( fmt.file_export() )
 					fmt.to_fstream(os, set);
 				else {
-					os << Color::f_green << "Ingredients" << Color::reset << '\n' << Color::f_red << '{' << Color::reset << '\n';
+					os << Color::f::green << "Ingredients" << Color::reset << '\n' << Color::f::red << '{' << Color::reset << '\n';
 					if ( fmt.reverse_output() )
 						for ( auto it{ set.rbegin() }; it != set.rend(); ++it )
 							fmt.to_stream(os, **it);
 					else
 						for ( auto it{ set.begin() }; it != set.end(); ++it )
 							fmt.to_stream(os, **it);
-					os << Color::f_red << '}' << Color::reset << '\n';
+					os << Color::f::red << '}' << Color::reset << '\n';
 				}
 
 				os.precision(precision); // reset precision
@@ -296,26 +296,26 @@ namespace caco_alch {
 				os << std::fixed;
 
 				const auto skill_base{ gs.fAlchemyAV() };
-				os << Color::f_green << "Potion Builder [Alchemy Skill: " << Color::f_cyan << skill_base;
+				os << Color::f::green << "Potion Builder [Alchemy Skill: " << Color::f::cyan << skill_base;
 				if ( const auto skill_mod{ gs.fAlchemyMod() }; skill_mod > 0.0 )
-					os << Color::reset << "(" << Color::f_green << skill_base + skill_mod << Color::reset << ")";
-				os << Color::f_green << ']' << Color::reset << '\n';
+					os << Color::reset << "(" << Color::f::green << skill_base + skill_mod << Color::reset << ")";
+				os << Color::f::green << ']' << Color::reset << '\n';
 
 				const Potion potion{ std::forward<SortedIngrList>(set), gs };
 
-				os << Color::f_green << "Input:\n" << Color::f_red << '{' << Color::reset << '\n';
+				os << Color::f::green << "Input:\n" << Color::f::red << '{' << Color::reset << '\n';
 				for ( auto& it : set )
 					fmt.to_stream_build(os, *it, potion);
-				os << Color::f_red << '}' << Color::reset << '\n';
+				os << Color::f::red << '}' << Color::reset << '\n';
 
 				if ( potion.effects().empty() )
 					throw std::exception("Potion creation failed.");
 
-				os << Color::f_green << "Output:\n" << Color::f_red << '{' << Color::reset << '\n';
+				os << Color::f::green << "Output:\n" << Color::f::red << '{' << Color::reset << '\n';
 
 				fmt.to_stream(os, potion, indentation);
 
-				os << Color::f_red << '}' << Color::reset << '\n';
+				os << Color::f::red << '}' << Color::reset << '\n';
 				os.precision(precision); // Reset precision
 				return os;
 			}

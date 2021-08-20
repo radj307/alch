@@ -18,11 +18,11 @@ namespace caco_alch {
 		size_t _indent, _precision;
 		unsigned short
 			_color,									// Ingredient color
-			_color_highlight{ Color::_f_yellow },	// Search string highlight color.
-			_color_fx_positive{ Color::_f_green },		// Positive effect color.
-			_color_fx_negative{ Color::_f_red },		// Negative effect color.
-			_color_fx_mag{ Color::_f_magenta },		// Effect Magnitude color.
-			_color_fx_dur{ Color::_f_cyan };		// Effect Duration color.
+			_color_highlight{ Color::_yellow },	// Search string highlight color.
+			_color_fx_positive{ Color::_green },		// Positive effect color.
+			_color_fx_negative{ Color::_red },		// Negative effect color.
+			_color_fx_mag{ Color::_magenta },		// Effect Magnitude color.
+			_color_fx_dur{ Color::_cyan };		// Effect Duration color.
 
 	public:
 		/**
@@ -39,7 +39,7 @@ namespace caco_alch {
 		 * @param precision			- How many decimal points of precision to use when outputting floating points.
 		 * @param color				- General color override, changes the color of Ingredient names for search, list, and build.
 		 */
-		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const size_t indent = 3u, const size_t precision = 2u, const unsigned short color = Color::_reset) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != Color::_f_white }, _allow_color_fx{ allow_color_fx }, _indent{ indent }, _precision{ precision }, _color{ color } {}
+		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const size_t indent = 3u, const size_t precision = 2u, const unsigned short color = Color::_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != Color::_white }, _allow_color_fx{ allow_color_fx }, _indent{ indent }, _precision{ precision }, _color{ color } {}
 
 #pragma region GETTERS
 		[[nodiscard]] bool quiet() const { return _quiet; }
@@ -106,7 +106,7 @@ namespace caco_alch {
 				return _color;
 			if (hasNegative(fx)) return _color_fx_negative; // return red for negative effects
 			if (hasPositive(fx)) return _color_fx_positive; // return green for positive effects
-			return Color::_reset; // else return white
+			return Color::_white; // else return white
 		}
 
 #pragma region FSTREAM
@@ -198,9 +198,9 @@ namespace caco_alch {
 			} };
 			auto size_factor{ fx._name.size() };
 			if ( fx._magnitude > 0.0 || _all )
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _allow_color_fx ? _color_fx_mag : Color::_f_gray, size_factor) + 10u;
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _allow_color_fx ? _color_fx_mag : Color::_black, size_factor) + 10u;
 			if ( fx._duration > 0u || _all ) {
-				insert_num(str::to_string(fx._duration, _precision), _allow_color_fx ? _color_fx_dur : Color::_f_gray, size_factor);
+				insert_num(str::to_string(fx._duration, _precision), _allow_color_fx ? _color_fx_dur : Color::_black, size_factor);
 				os << 's';
 			}
 			os << Color::reset << '\n';

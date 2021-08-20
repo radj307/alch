@@ -32,7 +32,7 @@ namespace caco_alch {
 			args.getFlag('c'),	// allow color
 			3u,					// indent
 			[&args]() { const auto v{ str::stoui(args.getv("precision")) }; if ( v != 0.0 ) return v; return 2u; }( ),
-			[&args]() -> unsigned short { const auto v{ Color::strToColor(args.getv("color")) }; if ( v != 0 ) return v; return Color::_f_white; }( )
+			[&args]() -> unsigned short { const auto v{ Color::strToColor(args.getv("color")) }; if ( v != 0 ) return v; return Color::_white; }( )
 		};
 
 		if ( args.getFlag('C') ) {
