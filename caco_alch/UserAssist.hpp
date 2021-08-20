@@ -10,6 +10,10 @@
 #include <iomanip>
 #include <optlib.hpp>
 #include <utility>
+#include <ColorLib.hpp>
+
+#include "Alchemy.hpp"
+#include "reloader.hpp"
 
 namespace caco_alch {
 	/**
@@ -32,7 +36,7 @@ namespace caco_alch {
 			args.getFlag('c'),	// allow color
 			3u,					// indent
 			[&args]() { const auto v{ str::stoui(args.getv("precision")) }; if ( v != 0.0 ) return v; return 2u; }( ),
-			[&args]() -> unsigned short { const auto v{ Color::strToColor(args.getv("color")) }; if ( v != 0 ) return v; return Color::_white; }( )
+			[&args]() -> short { const auto v{ Color::strToColor(args.getv("color")) }; if ( v != 0 ) return v; return Color::_white; }( )
 		};
 
 		if ( args.getFlag('C') ) {

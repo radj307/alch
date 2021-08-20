@@ -1,8 +1,9 @@
 #pragma once
 #include <set>
 #include <iomanip>
-#include <sysapi.h>
+#include <TermAPI.hpp>
 #include <strconv.hpp>
+
 #include "using.h"
 #include "Ingredient.hpp"
 
@@ -16,7 +17,7 @@ namespace caco_alch {
 	private:
 		bool _quiet, _verbose, _exact, _all, _file_export, _reverse_output, _force_color, _allow_color_fx; // see UserAssist.hpp
 		size_t _indent, _precision;
-		unsigned short
+		short
 			_color,									// Ingredient color
 			_color_highlight{ Color::_yellow },	// Search string highlight color.
 			_color_fx_positive{ Color::_green },		// Positive effect color.
@@ -39,7 +40,7 @@ namespace caco_alch {
 		 * @param precision			- How many decimal points of precision to use when outputting floating points.
 		 * @param color				- General color override, changes the color of Ingredient names for search, list, and build.
 		 */
-		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const size_t indent = 3u, const size_t precision = 2u, const unsigned short color = Color::_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != Color::_white }, _allow_color_fx{ allow_color_fx }, _indent{ indent }, _precision{ precision }, _color{ color } {}
+		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const size_t indent = 3u, const size_t precision = 2u, const short color = Color::_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != Color::_white }, _allow_color_fx{ allow_color_fx }, _indent{ indent }, _precision{ precision }, _color{ color } {}
 
 #pragma region GETTERS
 		[[nodiscard]] bool quiet() const { return _quiet; }
@@ -100,12 +101,17 @@ namespace caco_alch {
 		 * @param fx	The effect to resolve.
 		 * @returns unsigned short
 		 */
-		[[nodiscard]] unsigned short resolveEffectColor(const Effect& fx) const
+		[[nodiscard]] short resolveEffectColor(const Effect& fx) const
 		{
 			if ( !_allow_color_fx || _force_color || fx._keywords.empty() )
 				return _color;
 			if (hasNegative(fx)) return _color_fx_negative; // return red for negative effects
 			if (hasPositive(fx)) return _color_fx_positive; // return green for positive effects
+			const auto name_lc{ str::tolower(fx._name) };
+			if ( name_lc.find("damage") || name_lc.find("ravage") || name_lc.find("drain") )
+				return _color_fx_negative;
+			if ( name_lc.find("restore") || name_lc.find("fortify") )
+				return _color_fx_positive;
 			return Color::_white; // else return white
 		}
 
