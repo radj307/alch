@@ -162,7 +162,7 @@ namespace caco_alch {
 			{ "-q", "Quiet output, only shows effects that match the search string in search results." },
 			{ "-v", "Verbose output, shows extended stat information." },
 			{ "-b", "(Incompatible with -s) Build mode, accepts up to 4 ingredient names and shows the result of combining them." },
-			{ "-c", "Colorize effects based on whether they are positive or negative by checking their keywords." },
+			{ "-c", "Enable additional color support." },
 			{ "-R", "(Not Implemented) Reverse order." }, // TODO
 			{ "-C", "Receive an ingredient list from STDIN. (ex. \"cat <file> | caco-alch\")" },
 			{ "-E", "File export mode, prints results in the format used by the parser so they can be read in again using '-C'." },

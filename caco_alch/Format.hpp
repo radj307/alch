@@ -204,9 +204,9 @@ namespace caco_alch {
 			} };
 			auto size_factor{ fx._name.size() };
 			if ( fx._magnitude > 0.0 || _all )
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _allow_color_fx ? _color_fx_mag : Color::_black, size_factor) + 10u;
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _allow_color_fx ? _color_fx_mag : Color::_gray, size_factor) + 10u;
 			if ( fx._duration > 0u || _all ) {
-				insert_num(str::to_string(fx._duration, _precision), _allow_color_fx ? _color_fx_dur : Color::_black, size_factor);
+				insert_num(str::to_string(fx._duration, _precision), _allow_color_fx ? _color_fx_dur : Color::_gray, size_factor);
 				os << 's';
 			}
 			os << Color::reset << '\n';

@@ -92,10 +92,7 @@ namespace caco_alch {
 		if ( args.getFlag('h') )
 			print(def._help_doc);
 
-		const auto path{ [&argv, &envp]() -> std::string {
-			const auto loc{ opt::resolve_path(envp, argv[0]) };
-			return loc.substr(0u, loc.find_last_of("/\\") + 1);
-		}() };
+		const auto path{ opt::resolve_split_path(envp, argv[0]).first };
 
 		std::string filename{ path }, ini_filename{ path };
 		if (args.check_opt("load")) {
@@ -111,8 +108,11 @@ namespace caco_alch {
 		else ini_filename.append("alch.ini");
 
 		if ( args.check_opt("validate") ) { // Process "--validate" opt
-			std::cout << "argv[0]" << std::setw(12u - 7u) << ' ' << argv[0] << std::endl;
-			std::cout << "filename" << std::setw(12u - 8u) << ' ' << filename << std::endl;
+			constexpr auto indent_max{ 16u };
+			std::cout << "argv[0]" << std::setw(indent_max - 7u) << ' ' << argv[0] << std::endl;
+			std::cout << "location" << std::setw(indent_max - 8u) << ' ' << path << std::endl;
+			std::cout << "registry" << std::setw(indent_max - 8u) << ' ' << filename << std::endl;
+			std::cout << "GMST config" << std::setw(indent_max - 11u) << ' ' << ini_filename << std::endl;
 			if ( validate_file(filename) )
 				std::cout << sys::msg << "Validation succeeded." << std::endl;
 			else std::cout << sys::warn << "Validation failed." << std::endl;
