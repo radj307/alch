@@ -1,5 +1,6 @@
 // ReSharper disable CppClangTidyClangDiagnosticExitTimeDestructors
 #pragma once
+#include <vector>
 #include "ObjectBase.hpp"
 
 namespace caco_alch {
@@ -15,6 +16,8 @@ namespace caco_alch {
 
 		bool operator==(const Keyword& o) const { return _name == o._name || _form_id == o._form_id; }
 		bool operator!=(const Keyword& o) const { return _name != o._name || _form_id != o._form_id; }
+		bool operator==(const std::string& name_or_id) const { return _name == name_or_id || _form_id == name_or_id; }
+		bool operator!=(const std::string& name_or_id) const { return _name != name_or_id || _form_id != name_or_id; }
 
 		bool operator<(const Keyword& o) const { return _name < o._name || _form_id < o._form_id; }
 		bool operator>(const Keyword& o) const { return _name > o._name || _form_id > o._form_id; }
@@ -34,25 +37,57 @@ namespace caco_alch {
 	namespace Keywords {
 		inline const Keyword
 			// Potion/Poison
-			KYWD_Beneficial{			"MagicAlchBeneficial",			"000F8A4E" }, ///< @brief Keyword used to specify a positive effect.
-			KYWD_Harmful{				"MagicAlchHarmful",				"00042509" }, ///< @brief Keyword used to specify a negative effect.
+			KYWD_Beneficial{				"MagicAlchBeneficial",				"000F8A4E" }, ///< @brief Keyword used to specify a positive effect.
+			KYWD_CACO_CureDisease{			"MagicAlchCureDisease_CACO",		"7E90B902" }, ///< @brief Keyword used to specify a positive effect.
+			KYWD_CACO_CurePoison{			"MagicAlchCurePoison_CACO",			"7E90B903" }, ///< @brief Keyword used to specify a positive effect.
+			KYWD_Harmful{					"MagicAlchHarmful",					"00042509" }, ///< @brief Keyword used to specify a negative effect.
+			KYWD_MagicInfluence{			"MagicInfluence",					"00078098" },
 			// Special
-			KYWD_DurationBased{			"MagicAlchDurationBased",		"000F8A4F" }, ///< @brief Keyword used to determine whether an ingredient is magnitude-based or duration-based.
+			KYWD_DurationBased{				"MagicAlchDurationBased",			"000F8A4F" }, ///< @brief Keyword used to determine whether an ingredient is magnitude-based or duration-based.
 			// Health
-			KYWD_RestoreHealth{			"MagicAlchRestoreHealth",		"00042503" }, ///< @brief Effect restores health
-			KYWD_DamageHealth{			"MagicAlchDamageHealth",		"0010F9DD" }, ///< @brief Effect damages health
-			KYWD_FortifyHealth{			"MagicAlchFortifyHealth",		"00065A31" }, ///< @brief Effect fortifies health value.
-			KYWD_FortifyRegenHealth{	"MagicAlchFortifyHealthRate",	"" }, // doesn't exist?
+			KYWD_RestoreHealth{				"MagicAlchRestoreHealth",			"00042503" }, ///< @brief Effect restores health
+			KYWD_DamageHealth{				"MagicAlchDamageHealth",			"0010F9DD" }, ///< @brief Effect damages health
+			KYWD_FortifyHealth{				"MagicAlchFortifyHealth",			"00065A31" }, ///< @brief Effect fortifies health value.
+//			KYWD_FortifyRegenHealth{		"MagicAlchFortifyHealthRate",		"" }, // doesn't exist?
 			// Stamina
-			KYWD_RestoreStamina{		"MagicAlchRestoreStamina",		"00042504" }, ///< @brief Effect restores stamina.
-			KYWD_DamageStamina{			"MagicAlchDamageStamina",		"0010F9DC" }, ///< @brief Effect damages stamina.
-			KYWD_FortifyStamina{		"MagicAlchFortifyStamina",		"00065A32" }, ///< @brief Effect fortifies stamina value.
-			KYWD_FortifyRegenStamina{	"MagicAlchFortifyStaminaRate",	"00065A35" }, ///< @brief Effect fortifies stamina regeneration.
+			KYWD_RestoreStamina{			"MagicAlchRestoreStamina",			"00042504" }, ///< @brief Effect restores stamina.
+			KYWD_DamageStamina{				"MagicAlchDamageStamina",			"0010F9DC" }, ///< @brief Effect damages stamina.
+			KYWD_FortifyStamina{			"MagicAlchFortifyStamina",			"00065A32" }, ///< @brief Effect fortifies stamina value.
+			KYWD_FortifyRegenStamina{		"MagicAlchFortifyStaminaRate",		"00065A35" }, ///< @brief Effect fortifies stamina regeneration.
+			KYWD_CACO_Fatigue{				"MagicAlchFatigue_CACO",			"7E07A153" }, ///< @brief Effect fortifies stamina regeneration.
 			// Magicka
-			KYWD_RestoreMagicka{		"MagicAlchRestoreMagicka",		"00042508" }, ///< @brief Effect restores magicka.
-			KYWD_DamageMagicka{			"MagicAlchDamageMagicka",		"0010F9DE" }, ///< @brief Effect damages magicka.
-			KYWD_FortifyMagicka{		"MagicAlchFortifyMagicka",		"00065A33" }, ///< @brief Effect fortifies magicka value.
-			KYWD_FortifyRegenMagicka{	"MagicAlchFortifyMagickaRate",	"00065A34" }; ///< @brief Effect fortifies magicka regeneration.
+			KYWD_RestoreMagicka{			"MagicAlchRestoreMagicka",			"00042508" }, ///< @brief Effect restores magicka.
+			KYWD_DamageMagicka{				"MagicAlchDamageMagicka",			"0010F9DE" }, ///< @brief Effect damages magicka.
+			KYWD_FortifyMagicka{			"MagicAlchFortifyMagicka",			"00065A33" }, ///< @brief Effect fortifies magicka value.
+			KYWD_FortifyRegenMagicka{		"MagicAlchFortifyMagickaRate",		"00065A34" }, ///< @brief Effect fortifies magicka regeneration.
+			KYWD_CACO_FortifyRegenMagicka{	"MagicAlchDamageMagickaRegen_CACO",	"7E07A152" }, ///< @brief Effect fortifies magicka regeneration.
+			KYWD_CACO_Silence{				"MagicAlchSilence_CACO",			"7E07A150" }, ///< @brief Effect fortifies magicka regeneration.
+			// Skills
+			KYWD_FortifyLockpicking{		"MagicAlchFortifyLockpicking",		"00065A26" },
+			KYWD_FortifySpeechcraft{		"MagicAlchFortifySpeechcraft",		"00065A29" };
+		inline const KeywordList
+			positive{
+				KYWD_Beneficial,
+				KYWD_CACO_CureDisease,
+				KYWD_CACO_CurePoison,
+				KYWD_RestoreHealth,
+				KYWD_RestoreMagicka,
+				KYWD_RestoreStamina,
+				KYWD_FortifyHealth,
+				KYWD_FortifyMagicka,
+				KYWD_FortifyStamina,
+				KYWD_CACO_FortifyRegenMagicka,
+				KYWD_FortifyRegenMagicka,
+				KYWD_FortifyRegenStamina
+			},
+			negative{
+				KYWD_Harmful,
+				KYWD_DamageHealth,
+				KYWD_DamageMagicka,
+				KYWD_DamageStamina,
+				KYWD_CACO_Fatigue,
+				KYWD_CACO_Silence
+			};
 	}
 
 	/**

@@ -30,20 +30,20 @@ namespace caco_alch {
 
 	inline IngrList parseFileContent(std::stringstream& ss)
 	{
-		constexpr auto find_elem{ [](reparse::Elem::Cont traits, const std::string& name) -> std::string {
-			if ( const auto pos{ std::find_if(traits.begin(), traits.end(), [&name](const reparse::Elem::Cont::value_type& v) { return str::tolower(v.name()) == name; }) }; pos != traits.end() && pos->isVar() )
-				return pos->value();
-			return { };
-		} };
-		const auto get_fx{ [&find_elem] (reparse::Elem::Cont::value_type& elem) -> std::array<Effect, 4> {
+		constexpr auto get_fx{ [] (reparse::Elem::Cont::value_type& elem) -> std::array<Effect, 4> {
+			constexpr auto find_var{ [](reparse::Elem::Cont traits, const std::string& name) -> std::string {
+				if ( const auto pos{ std::find_if(traits.begin(), traits.end(), [&name](const reparse::Elem::Cont::value_type& v) { return str::tolower(v.name()) == name; }) }; pos != traits.end() && pos->isVar() )
+					return pos->value();
+				return { };
+			} };
 			if ( elem.isVar() ) throw std::exception("Unrecognized File Format");
 			const auto vec{ elem.getVec() };
 			std::array<Effect, 4> arr;
 			for ( size_t i{ 0 }; i < vec.size() && i < 4u; ++i ) {
 				if ( vec.at(i).isVar() ) throw std::exception("Unrecognized File Format");
 				if ( const auto traits{ vec.at(i).getVec() }; traits.size() >= 2 ) {
-					const double mag{ str::stod(find_elem(traits, "magnitude")) };
-					const unsigned dur{ str::stoui(find_elem(traits, "duration")) };
+					const double mag{ str::stod(find_var(traits, "magnitude")) };
+					const unsigned dur{ str::stoui(find_var(traits, "duration")) };
 					const auto KWDA{ [&traits]() -> KeywordList {
 						KeywordList keywords;
 						for ( auto& it : traits )
@@ -68,9 +68,9 @@ namespace caco_alch {
 		} };
 		for ( auto& elem : reparse::parse(std::forward<std::stringstream>(ss)) ) {
 			if ( !push(elem.name(), get_fx(elem)) ) {
-#ifdef ENABLE_DEBUG
+			#ifdef ENABLE_DEBUG
 				std::cout << sys::warn << "Found duplicate element: \'" << elem.name() << '\'' << std::endl;
-#endif
+			#endif
 			}
 		}
 		return ingredients;

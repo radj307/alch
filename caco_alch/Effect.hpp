@@ -23,7 +23,7 @@ namespace caco_alch {
 		Effect(const std::string& name, KeywordList&& keywords) : ObjectBase(name), _magnitude{ -0.0 }, _duration{ 0u }, _keywords{ std::move(keywords) } {}
 		Effect(const std::string& name, const double magnitude, const unsigned duration, KeywordList&& keywords) : ObjectBase(name), _magnitude{ magnitude }, _duration{ duration }, _keywords{ std::move(keywords) } {}
 
-		/**
+		/** // Working Variadic Template Example
 		 * @function hasKeyword(const T&...) const
 		 * @brief Check if this effect has any of a number of keywords.
 		 * @tparam ...T	- Variadic Argument.
@@ -39,7 +39,31 @@ namespace caco_alch {
 				return false;
 			return var::variadic_or(std::find(_keywords.begin(), _keywords.end(), KWDA) != _keywords.end()...);
 		}
-		[[nodiscard]] bool hasKeyword(const std::string& KYWD) const { if ( _keywords.empty() ) return false; return std::find_if(_keywords.begin(), _keywords.end(), [&KYWD](const KeywordList::value_type& k){ return k._name == KYWD; }) != _keywords.end(); }
+		/**
+		 * @function hasKeyword(const std::string& KYWD) const
+		 * @brief Check if this effect has a given keyword.
+		 * @returns bool
+		 *			true	- This effect has the given keyword.
+		 *			false	- This effect does not have the given keyword.
+		 */
+		[[nodiscard]] bool hasKeyword(const std::string& KYWD) const
+		{
+			if ( _keywords.empty() )
+				return false;
+			return std::any_of(_keywords.begin(), _keywords.end(), [&KYWD](const KeywordList::value_type& k){ return k._name == KYWD; });
+		}
+		/**
+		 * @function hasKeyword(const KeywordList&) const
+		 * @brief Check if this effect has any of a number of keywords.
+		 * @param KWDA	- List of keywords to check for.
+		 * @returns bool
+		 *			true	- This effect has one of the given keywords.
+		 *			false	- This effect does not have any of the given keywords.
+		 */
+		[[nodiscard]] bool hasKeyword(const KeywordList& KWDA) const
+		{
+			return std::any_of(KWDA.begin(), KWDA.end(), [this](const Keyword& KYWD) -> bool { return std::find(_keywords.begin(), _keywords.end(), KYWD) != _keywords.end(); });
+		}
 		[[nodiscard]] bool is_match(const Effect& o) const { return o._name == _name; }
 
 		bool operator==(const Effect& o) const { return o._name == _name && o._magnitude == _magnitude; }
@@ -48,31 +72,7 @@ namespace caco_alch {
 		bool operator<(const Effect& o) const { return _name == o._name && _magnitude < o._magnitude; }
 		bool operator>(const Effect& o) const { return _name == o._name && _magnitude > o._magnitude; }
 	};
-
-	static bool hasPositive(const Effect& effect)
-	{
-		using namespace Keywords;
-		return effect.hasKeyword(
-				KYWD_Beneficial,
-				KYWD_RestoreHealth,
-				KYWD_FortifyHealth,
-				KYWD_FortifyRegenHealth,
-				KYWD_RestoreStamina,
-				KYWD_FortifyStamina,
-				KYWD_FortifyRegenStamina,
-				KYWD_RestoreMagicka,
-				KYWD_FortifyMagicka,
-				KYWD_FortifyRegenMagicka
-		);
-	}
-	static bool hasNegative(const Effect& effect)
-	{
-		using namespace Keywords;
-		return effect.hasKeyword(
-				KYWD_Harmful,
-				KYWD_DamageHealth,
-				KYWD_DamageStamina,
-				KYWD_DamageMagicka
-		);
-	}
+	// KEYWORD CHECKERS
+	inline bool hasPositive(const Effect& effect) { return effect.hasKeyword(Keywords::positive); }
+	inline bool hasNegative(const Effect& effect) { return effect.hasKeyword(Keywords::negative); }
 }

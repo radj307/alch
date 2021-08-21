@@ -22,6 +22,7 @@ namespace caco_alch {
 			_color_highlight{ Color::_yellow },	// Search string highlight color.
 			_color_fx_positive{ Color::_green },		// Positive effect color.
 			_color_fx_negative{ Color::_red },		// Negative effect color.
+			_color_fx_neutral{ Color::_blue },		// Negative effect color.
 			_color_fx_mag{ Color::_magenta },		// Effect Magnitude color.
 			_color_fx_dur{ Color::_cyan };		// Effect Duration color.
 
@@ -105,12 +106,32 @@ namespace caco_alch {
 		{
 			if ( !_allow_color_fx || _force_color )
 				return _color;
-			if (hasNegative(fx)) return _color_fx_negative; // return red for negative effects
-			if (hasPositive(fx)) return _color_fx_positive; // return green for positive effects
+			if (!fx._keywords.empty()) {
+				if (hasNegative(fx))
+					return _color_fx_negative;
+				if (hasPositive(fx))
+					return _color_fx_positive;
+				if (!fx.hasKeyword(Keywords::KYWD_MagicInfluence))
+					return _color_fx_neutral;
+			}
 			const auto name_lc{ str::tolower(fx._name) };
-			if ( name_lc.find("damage") || name_lc.find("ravage") || name_lc.find("drain") )
+			if ( // NEGATIVE EFFECTS
+				str::pos_valid(name_lc.find("damage"))
+			 || str::pos_valid(name_lc.find("ravage"))
+			 || str::pos_valid(name_lc.find("drain"))
+			 || str::pos_valid(name_lc.find("frenzy"))
+			 || str::pos_valid(name_lc.find("fear"))
+			 || str::pos_valid(name_lc.find("aversion"))
+				)
 				return _color_fx_negative;
-			if ( name_lc.find("restore") || name_lc.find("fortify") )
+			if ( // POSITIVE EFFECTS
+				str::pos_valid(name_lc.find("restore"))
+			 || str::pos_valid(name_lc.find("fortify"))
+			 || str::pos_valid(name_lc.find("resist"))
+			 || str::pos_valid(name_lc.find("detect"))
+			 || str::pos_valid(name_lc.find("night eye"))
+			 || str::pos_valid(name_lc.find("speed"))
+			)
 				return _color_fx_positive;
 			return Color::_white; // else return white
 		}
@@ -193,7 +214,7 @@ namespace caco_alch {
 			os << highlight;
 			sys::colorSet(fx_color);
 			os << post << Color::reset;
-			const auto insert_num{ [&os, &ind_fac](const std::string& num, const unsigned short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
+			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
 					os << std::setw(indent + 2u) << ' ';
 				else
