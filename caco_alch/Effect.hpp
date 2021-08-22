@@ -69,6 +69,9 @@ namespace caco_alch {
 		bool operator==(const Effect& o) const { return o._name == _name && o._magnitude == _magnitude; }
 		bool operator!=(const Effect& o) const { return o._name != _name && o._magnitude != _magnitude; }
 
+		bool operator==(const std::string& oname) const { return oname == _name; }
+		bool operator!=(const std::string& oname) const { return oname != _name; }
+
 		bool operator<(const Effect& o) const { return _name == o._name && _magnitude < o._magnitude; }
 		bool operator>(const Effect& o) const { return _name == o._name && _magnitude > o._magnitude; }
 	};

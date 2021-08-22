@@ -13,9 +13,45 @@ namespace caco_alch {
 	 * @param ingr	- List of ingredients
 	 * @returns EffectList
 	 */
-	static EffectList get_common_effects(const IngrList&ingr)
+	static EffectList get_common_effects(const IngrList& ingr)
 	{
-		if ( ingr.size() > 4 ) throw std::exception("Too many ingredients! (Max 4)"); else if ( ingr.size() < 2 ) throw std::exception("Not enough ingredients! (Min 2)");
+		EffectList common, tmp;
+		constexpr auto is_duplicate{ [](EffectList& target, const Effect& fx) {
+			for ( auto it{ target.begin() }; it != target.end(); ++it )
+				if ( it->_name == fx._name ) // if effect names are the same, consider it a duplicate even though the magnitudes might be different
+					return it;
+			return target.end();
+		} };
+
+		for ( auto& i : ingr )
+			for ( auto& it : i._effects ) {
+				if ( auto dupl{ is_duplicate(tmp, it) }; dupl != tmp.end() ) { // if effect is a duplicate, push it to the common effects vector
+					if ( auto current{ is_duplicate(common, it) }; current == common.end() ) {
+						if ( it._magnitude < dupl->_magnitude )
+							common.push_back(*dupl); // if effect is not in the common list yet, add it
+						else
+							common.push_back(it);
+					}
+					else {
+						if ( it._magnitude > current->_magnitude)	// Set magnitude to largest (base_mag)
+							( *current )._magnitude = it._magnitude;
+						if ( it._duration > current->_duration )	// Set duration to largest (base_dur)
+							( *current )._duration = it._duration;
+					}
+				}
+				else
+					tmp.emplace_back(it);
+			}
+		return common;
+	}
+	/**
+	 * @function get_common_effects(const std::vector<Ingredient>&)
+	 * @brief Retrieve a list of common effects with the magnitude of the strongest effect of that type. (Base Magnitude)
+	 * @param ingr	- List of ingredients
+	 * @returns EffectList
+	 */
+	static EffectList get_common_effects(const SortedIngrList& ingr)
+	{
 		EffectList common, tmp;
 		constexpr auto is_duplicate{ [](EffectList& target, const Effect& fx) {
 			for ( auto it{ target.begin() }; it != target.end(); ++it )
@@ -88,7 +124,7 @@ namespace caco_alch {
 		{
 			IngrList ingr;
 			for (auto& it : ingredients)
-				ingr.push_back({ *it });
+				ingr.push_back({ it });
 			const auto common{ get_common_effects(ingr) };
 			_name = getName(common);
 			_base_fx = std::move(common);

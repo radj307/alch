@@ -78,7 +78,7 @@ namespace caco_alch {
 	 *\n		1	- Alchemy instance containing the parsed ingredient registry.
 	 *\n		2	- Parsed INI config including all default settings.
 	 */
-	inline std::tuple<opt::Param, Alchemy, GameSettings> init(const int argc, char* argv[], char* envp[])
+	inline std::tuple<opt::Param, Alchemy> init(const int argc, char* argv[], char* envp[])
 	{
 		const DefaultObjects def;
 		// parse arguments
@@ -118,7 +118,20 @@ namespace caco_alch {
 			else std::cout << sys::warn << "Validation failed." << std::endl;
 		}
 
+		const Format _format{
+			args.getFlag('q'),	// quiet
+			args.getFlag('v'),	// verbose
+			args.getFlag('e'),	// exact
+			args.getFlag('a'),	// all
+			args.getFlag('E'),	// export
+			args.getFlag('R'),	// reverse
+			args.getFlag('c'),	// allow color
+			args.getFlag('S'),	// smart search
+			3u,					// indent
+			[&args]() { const auto v{ str::stoui(args.getv("precision")) }; if ( v != 0.0 ) return v; return 2u; }( ),
+			[&args]() -> short { const auto v{ Color::strToColor(args.getv("color")) }; if ( v != 0 ) return v; return Color::_white; }( )
+		};
 
-		return { args, Alchemy(loadFromFile(filename)), handle_ini(ini_filename, args, def._settings) };
+		return { args, Alchemy(loadFromFile(filename), _format, handle_ini(ini_filename, args, def._settings)) };
 	}
 }

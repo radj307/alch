@@ -15,7 +15,7 @@ namespace caco_alch {
 	 */
 	struct Format {
 	private:
-		bool _quiet, _verbose, _exact, _all, _file_export, _reverse_output, _force_color, _allow_color_fx; // see UserAssist.hpp
+		bool _quiet, _verbose, _exact, _all, _file_export, _reverse_output, _force_color, _allow_color_fx, _cache; // see UserAssist.hpp
 		size_t _indent, _precision;
 		short
 			_color,									// Ingredient color
@@ -37,11 +37,12 @@ namespace caco_alch {
 		 * @param file_export		- When true, output is formatted in the registry format to allow piping output to a file, then back in again.
 		 * @param reverse_output	- When true, prints output in the opposite order as it would normally be printed. (Alphabetical by default)
 		 * @param allow_color_fx	- When true, prints effect colors where possible.
+		 * @param use_local_cache	- When true, the alchemy instance will cache the list before parsing additional arguments.
 		 * @param indent			- How many space characters to include before ingredient names. This is multiplied by 2 for effect names.
 		 * @param precision			- How many decimal points of precision to use when outputting floating points.
 		 * @param color				- General color override, changes the color of Ingredient names for search, list, and build.
 		 */
-		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const size_t indent = 3u, const size_t precision = 2u, const short color = Color::_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != Color::_white }, _allow_color_fx{ allow_color_fx }, _indent{ indent }, _precision{ precision }, _color{ color } {}
+		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const bool use_local_cache = false, const size_t indent = 3u, const size_t precision = 2u, const short color = Color::_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != Color::_white }, _allow_color_fx{ allow_color_fx }, _cache{ use_local_cache }, _indent{ indent }, _precision{ precision }, _color{ color } {}
 
 #pragma region GETTERS
 		[[nodiscard]] bool quiet() const { return _quiet; }
@@ -50,6 +51,7 @@ namespace caco_alch {
 		[[nodiscard]] bool all() const { return _all; }
 		[[nodiscard]] bool file_export() const { return _file_export; }
 		[[nodiscard]] bool reverse_output() const { return _reverse_output; }
+		[[nodiscard]] bool doLocalCaching() const { return _cache; }
 		[[nodiscard]] size_t indent() const { return _indent; }
 		[[nodiscard]] size_t precision() const { return _precision; }
 		[[nodiscard]] unsigned short color() const { return _color; }
@@ -73,6 +75,24 @@ namespace caco_alch {
 					return { str.substr(0, dPos), str.substr(dPos, highlight.size()), str.substr(dPos + highlight.size()) };
 			return{ str, { }, { } }; // by default, return blanks for unused tuple slots. This is used to hide the text color when nothing was found.
 		}
+		/**
+		 * @function get_tuple(const std::string&, const std::string&) const
+		 * @brief Uses a string to split of a line into a tuple of strings where { <preceeding text>, <delimiter text>, <trailing text> }
+		 * @param str			The line to split.
+		 * @param highlights	Substrings of str to separate. Must be converted to lowercase beforehand or match will not be successful.
+		 * @returns std::tuple<std::string, std::string, std::string>
+		 *\n		0	- Text that preceeds highlight
+		 *\n		1	- highlight
+		 *\n		2	- Text that supersedes highlight
+		 */
+		[[nodiscard]] std::tuple<std::string, std::string, std::string> get_tuple(const std::string& str, const std::vector<std::string>& highlights) const
+		{
+			if ( !str.empty() )
+				for ( auto& highlight : highlights )
+					if ( const auto dPos{ str::tolower(str).find(highlight) }; dPos != std::string::npos )
+						return { str.substr(0, dPos), str.substr(dPos, highlight.size()), str.substr(dPos + highlight.size()) };
+			return{ str, { }, { } }; // by default, return blanks for unused tuple slots. This is used to hide the text color when nothing was found.
+		}
 
 		/**
 		 * @function get_fx(std::array<Effect, 4>&, const std::vector<std::string>&) const
@@ -81,14 +101,15 @@ namespace caco_alch {
 		 * @param names_lowercase	The names to search for, must be lowercase.
 		 * @returns std::vector<Effect*>
 		 */
-		std::vector<Effect*> get_fx(std::array<Effect, 4>& arr, const std::vector<std::string>& names_lowercase) const
+		[[nodiscard]] std::vector<Effect> get_fx(const std::array<Effect, 4>& arr, const std::vector<std::string>& names_lowercase) const
 		{
-			std::vector<Effect*> vec;
+			std::vector<Effect> vec;
+			vec.reserve(4llu);
 			for ( auto it{ arr.begin() }; it != arr.end(); ++it ) {
 				if ( !_quiet )
-					vec.push_back(&*it);
+					vec.push_back(*it);
 				else if (const auto lc{str::tolower(it->_name)}; std::find_if(names_lowercase.begin(), names_lowercase.end(), [this, &lc](const std::string& name) -> bool { return lc == name || !_exact && str::pos_valid(lc.find(name)); }) != names_lowercase.end()) {
-					vec.push_back(&*it);
+					vec.push_back(*it);
 					if ( _exact ) break;
 				}
 			}
@@ -164,10 +185,10 @@ namespace caco_alch {
 		{
 			if ( _reverse_output )
 				for ( auto it{ ingr.rbegin() }; it != ingr.rend(); ++it )
-					to_fstream(os, **it);
+					to_fstream(os, *it);
 			else
 				for ( auto it{ ingr.begin() }; it != ingr.end(); ++it )
-					to_fstream(os, **it);
+					to_fstream(os, *it);
 			return os;
 		}
 
@@ -187,6 +208,13 @@ namespace caco_alch {
 				for ( auto it{ ingr.begin() }; it != ingr.end(); ++it )
 					to_fstream(os, *it);
 			return os;
+		}
+
+		[[nodiscard]] std::stringstream to_fstream(const SortedIngrList& ingr) const
+		{
+			std::stringstream ss;
+			to_fstream(ss, ingr);
+			return ss;
 		}
 #pragma endregion FSTREAM
 
@@ -225,9 +253,51 @@ namespace caco_alch {
 			} };
 			auto size_factor{ fx._name.size() };
 			if ( fx._magnitude > 0.0 || _all )
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _allow_color_fx ? _color_fx_mag : Color::_gray, size_factor) + 10u;
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), static_cast<short>(_allow_color_fx ? _color_fx_mag : Color::_gray), size_factor) + 10u;
 			if ( fx._duration > 0u || _all ) {
-				insert_num(str::to_string(fx._duration, _precision), _allow_color_fx ? _color_fx_dur : Color::_gray, size_factor);
+				insert_num(str::to_string(fx._duration, _precision), static_cast<short>(_allow_color_fx ? _color_fx_dur : Color::_gray), size_factor);
+				os << 's';
+			}
+			os << Color::reset << '\n';
+			return os;
+		}
+		/**
+		 * @function to_stream(std::ostream&, const Effect&, const std::string&, const std::string&)
+		 * @brief Insert an Effect into an output stream in human-readable format.
+		 * @param os				- Target output stream.
+		 * @param fx				- Target Effect.
+		 * @param search_strings	- Search strings, used to highlight searched-for strings in the output.
+		 * @param indentation		- String to use as indentation before each line.
+		 * @param repeatIndentation	- Repeats the indentation string this many times before the effect name.
+		 * @param ind_fac			- Subtract the number of used chars from this value to get final indentation when printing magnitude & duration.
+		 * @returns std::ostream&
+		 */
+		std::ostream& to_stream(std::ostream& os, const Effect& fx, const std::vector<std::string>& search_strings, const std::string& indentation, const unsigned repeatIndentation = 2u, const size_t ind_fac = 25u) const
+		{
+			const auto [pre, highlight, post]{ get_tuple(fx._name, search_strings) };
+			const auto fx_color{ resolveEffectColor(fx) };
+			for ( auto i{ 0u }; i < repeatIndentation; ++i )
+				os << indentation;
+			sys::colorSet(fx_color);
+			os << pre << Color::reset;
+			sys::colorSet(_color_highlight);
+			os << highlight;
+			sys::colorSet(fx_color);
+			os << post << Color::reset;
+			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
+				if (indent > ind_fac)
+					os << std::setw(indent + 2u) << ' ';
+				else
+					os << std::setw(ind_fac - indent) << ' ';
+				sys::colorSet(color);
+				os << num;
+				return num.size();
+			} };
+			auto size_factor{ fx._name.size() };
+			if ( fx._magnitude > 0.0 || _all )
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), static_cast<short>(_allow_color_fx ? _color_fx_mag : Color::_gray), size_factor) + 10u;
+			if ( fx._duration > 0u || _all ) {
+				insert_num(str::to_string(fx._duration, _precision), static_cast<short>(_allow_color_fx ? _color_fx_dur : Color::_gray), size_factor);
 				os << 's';
 			}
 			os << Color::reset << '\n';
@@ -242,7 +312,7 @@ namespace caco_alch {
 		 * @param search_str	- Search string, used to highlight searched-for strings in the output.
 		 * @returns std::ostream&
 		 */
-		std::ostream& to_stream(std::ostream& os, Ingredient& ingr, const std::string& search_str = "") const
+		std::ostream& to_stream(std::ostream& os, const Ingredient& ingr, const std::string& search_str = "") const
 		{
 			const auto indentation{ std::string(_indent, ' ') }; // get indentation string
 			const auto [pre, highlight, post]{ get_tuple(ingr._name, search_str) };
@@ -254,7 +324,34 @@ namespace caco_alch {
 			sys::colorSet(_color); // set color
 			os << post << Color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, { search_str }) ) // iterate through this ingredient's effects, and insert them as well.
-				to_stream(os, *fx, search_str, indentation, 2u, 25u);
+				to_stream(os, fx, search_str, indentation, 2u, 25u);
+			return os;
+		}
+
+		/**
+		 * @function to_fstream(std::ostream&, const SortedIngrList&, const std::vector<std::string>&) const
+		 * @brief Insert a list of ingredients into an output stream. Used for the list output mode.
+		 * @param os				- Target output stream.
+		 * @param ingr				- Target ingredient list.
+		 * @param search_strings	- Search strings, used to highlight searched-for strings in the output.
+		 * @returns std::ostream&
+		 */
+		std::ostream& to_stream(std::ostream& os, const SortedIngrList& ingr, const std::vector<std::string>& search_strings) const
+		{
+			const auto indentation{ std::string(_indent, ' ') };
+			const auto to_stream{ [this, &os, &search_strings, &indentation](const SortedIngrList::iterator it) {
+				os << indentation;
+				sys::colorSet(_color);
+				os << it->_name << Color::reset << '\n';
+				for ( auto& fx : it->_effects )
+					this->to_stream(os, fx, search_strings, indentation);
+			} };
+			if ( _reverse_output )
+				for ( auto it{ ingr.rbegin() }; it != ingr.rend(); ++it )
+					to_stream(it.base());
+			else
+				for ( auto it{ ingr.begin() }; it != ingr.end(); ++it )
+					to_stream(it);
 			return os;
 		}
 
@@ -289,7 +386,7 @@ namespace caco_alch {
 		 * @param potion		- Resulting potion.
 		 * @returns std::ostream&
 		 */
-		std::ostream& to_stream_build(std::ostream& os, Ingredient& ingr, const Potion& potion) const
+		std::ostream& to_stream_build(std::ostream& os, const Ingredient& ingr, const Potion& potion) const
 		{
 			const auto indentation{ std::string(_indent, ' ') }; // get indentation string
 			const auto names_lc{ [&potion]() -> std::vector<std::string> {
@@ -302,7 +399,7 @@ namespace caco_alch {
 			sys::colorSet(_color);
 			os << ingr._name << Color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, names_lc) ) // iterate through this ingredient's effects, and insert them as well.
-				to_stream(os, *fx, "", indentation);
+				to_stream(os, fx, "", indentation);
 			return os;
 		}
 #pragma endregion STREAM

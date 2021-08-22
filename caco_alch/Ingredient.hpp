@@ -43,15 +43,13 @@ namespace caco_alch {
 			return os;
 		}
 
-		bool operator==(const Ingredient& o) { return ( _name == o._name ) && array_match(_effects, o._effects); }
-		bool operator!=(const Ingredient& o) { return ( _name != o._name ) && !array_match(_effects, o._effects); }
-		bool operator<(const Ingredient& o)
-		{
+		bool operator==(const Ingredient& o) const { return ( _name == o._name ) && array_match(_effects, o._effects); }
+		bool operator!=(const Ingredient& o) const { return ( _name != o._name ) && !array_match(_effects, o._effects); }
+		bool operator<(const Ingredient& o) {
 			if ( _name.empty() || o._name.empty() ) throw std::exception("INVALID_OPERATION");
 			return static_cast<short>( _name.at(0) ) < static_cast<short>( o._name.at(0) );
 		}
-		bool operator>(const Ingredient& o)
-		{
+		bool operator>(const Ingredient& o) {
 			if ( _name.empty() || o._name.empty() ) throw std::exception("INVALID_OPERATION");
 			return static_cast<short>( _name.at(0) ) > static_cast<short>( o._name.at(0) );
 		}

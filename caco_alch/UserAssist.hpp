@@ -10,7 +10,6 @@
 #include <iomanip>
 #include <optlib.hpp>
 #include <utility>
-#include <ColorLib.hpp>
 
 #include "Alchemy.hpp"
 #include "reloader.hpp"
@@ -24,39 +23,42 @@ namespace caco_alch {
 	 * @param gs	- Gamesettings instance rvalue.
 	 * @returns int - see main() documentation
 	 */
-	inline int handle_arguments(opt::Param&& args, Alchemy&& alch, GameSettings&& gs)
+	inline int handle_arguments(opt::Param&& args, Alchemy&& alch)
 	{
-		const Format _format{
-			args.getFlag('q'),	// quiet
-			args.getFlag('v'),	// verbose
-			args.getFlag('e'),	// exact
-			args.getFlag('a'),	// all
-			args.getFlag('E'),	// export
-			args.getFlag('R'),	// reverse
-			args.getFlag('c'),	// allow color
-			3u,					// indent
-			[&args]() { const auto v{ str::stoui(args.getv("precision")) }; if ( v != 0.0 ) return v; return 2u; }( ),
-			[&args]() -> short { const auto v{ Color::strToColor(args.getv("color")) }; if ( v != 0 ) return v; return Color::_white; }( )
-		};
-
 		if ( args.getFlag('C') ) {
 			std::stringstream buffer;
 			buffer << std::cin.rdbuf();
-			alch.print_build_to(std::cout, parseFileContent(buffer), std::forward<GameSettings>(gs), _format).flush();
+			alch.print_build_to(std::cout, parseFileContent(buffer)).flush();
 		}
 		else {
 			if ( args.getFlag('l') ) // List mode
-				alch.print_list_to(std::cout, _format).flush();
+				alch.print_list_to(std::cout).flush();
 			if ( args.getFlag('b') ) // Build mode
-				alch.print_build_to(std::cout, args._param, std::forward<GameSettings>(gs), _format).flush();
-			else if ( args.getFlag('s') ) // Search mode
-				for ( auto& it : args._param )
-					alch.print_search_to(std::cout, it, _format).flush();
+				alch.print_build_to(std::cout, args._param).flush();
+			else if ( const auto smart{ args.getFlag('S') }; args.getFlag('s') || smart ) { // Search mode
+				if ( smart )
+					alch.print_smart_search_to(std::cout, args._param);
+				else
+					for ( auto it{ args._param.begin() }; it != args._param.end(); ++it )
+						alch.print_search_to(std::cout, *it).flush();
+			}
+		}
+		if ( args.getFlag('S') ) {
+			if ( const std::string filename{ "alch.cache" }; alch.writeCacheToFile(filename) ) {
+			#ifdef ENABLE_DEBUG
+				std::cout << sys::msg << "Successfully saved cache to \"" << filename << "\"" << std::endl;
+			#endif
+			}
+			else {
+			#ifdef ENABLE_DEBUG
+				std::cout << sys::warn << "Failed to write cache to \"" << filename << "\"" << std::endl;
+			#endif
+			}
 		}
 		return 0;
 	}
 
-	inline int handle_arguments(std::tuple<opt::Param, Alchemy, GameSettings>&& pr) { return handle_arguments(std::forward<opt::Param>(std::get<0>(pr)), std::forward<Alchemy>(std::get<1>(pr)), std::forward<GameSettings>(std::get<2>(pr))); }
+	inline int handle_arguments(std::tuple<opt::Param, Alchemy>&& pr) { return handle_arguments(std::forward<opt::Param>(std::get<0>(pr)), std::forward<Alchemy>(std::get<1>(pr))); }
 
 	/**
 	 * @namespace Help
@@ -152,7 +154,7 @@ namespace caco_alch {
 	 */
 	struct DefaultObjects {
 		// @brief Contains the list of valid commandline arguments for the alch program.
-		opt::Matcher _matcher{  { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'c', 'e', 'C', 'E' }, { { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-load", true } }  };
+		opt::Matcher _matcher{  { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'c', 'e', 'C', 'E', 'S' }, { { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-load", true } }  };
 		Help::Helper _help_doc{"caco-alch", "<[options] [target]>", {
 			{ "-h", "Shows this help display." },
 			{ "-l", "List all ingredients." },
@@ -163,9 +165,10 @@ namespace caco_alch {
 			{ "-v", "Verbose output, shows extended stat information." },
 			{ "-b", "(Incompatible with -s) Build mode, accepts up to 4 ingredient names and shows the result of combining them." },
 			{ "-c", "Enable additional color support." },
-			{ "-R", "(Not Implemented) Reverse order." }, // TODO
-			{ "-C", "Receive an ingredient list from STDIN. (ex. \"cat <file> | caco-alch\")" },
+			{ "-R", "Reverse sorting order." },
+			{ "-C", "Receive an ingredient list from STDIN. (ex. \"cat <file> | alch -C\")" },
 			{ "-E", "File export mode, prints results in the format used by the parser so they can be read in again using '-C'." },
+			{ "-S", "Smart search, only searches for effects, but specifying multiple effects will only show ingredients that have at least 2 of them." },
 			{ "--load <file>", "Allows specifying an alternative ingredient registry file." },
 			{ "--validate", "Checks if the target file can be loaded successfully, and contains valid data. Specifying this option will cause all other options to be ignored." },
 			{ "--color <string_color>", "Change the color of ingredient names. String colors must include either an 'f' (foreground) or 'b' (background), then the name of the desired color." },
@@ -182,6 +185,7 @@ namespace caco_alch {
 			{ "fPerkAlchemyMasteryRank", 0.0 },		// valid: 0, 1, or 2
 			{ "bPerkPoisoner", false },
 			{ "bPerkAdvancedLab", false },
+			{ "bPerkThatWhichDoesNotKillYou", false },
 			{ "sPerkPhysicianType", std::string("") },
 		};
 	};

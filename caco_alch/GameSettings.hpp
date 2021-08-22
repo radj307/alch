@@ -293,6 +293,14 @@ namespace caco_alch {
 		{
 			return getBoolValue("bPerkPoisoner");
 		}
+		[[nodiscard]] bool bPerkAdvancedLab() const
+		{
+			return getBoolValue("bPerkAdvancedLab");
+		}
+		[[nodiscard]] bool bPerkThatWhichDoesNotKillYou() const
+		{
+			return getBoolValue("bPerkThatWhichDoesNotKillYou");
+		}
 #pragma endregion GMST_GETTERS
 
 		/**
@@ -305,7 +313,7 @@ namespace caco_alch {
 		{
 			const auto AlchemyAV{ fAlchemyAV() };
 			const auto base_formula{ [this, &AlchemyAV](const double base_value) -> double {
-				return std::round(
+				return (
 					base_value
 					* fAlchemyIngredientInitMult()
 					* ( 1.0 + AlchemyAV / 200.0 )
@@ -320,13 +328,17 @@ namespace caco_alch {
 					val *= 1.2;
 				else if (perk_mastery == 2.0)
 					val *= 1.4;
+				if (bPerkAdvancedLab())
+					val *= 1.25;
 				if (bPerkPoisoner() && effect.hasKeyword(Keywords::KYWD_Harmful))
 					val *= 0.5 * AlchemyAV;
+				if (bPerkThatWhichDoesNotKillYou())
+					val *= 1.25;
 				return std::round(val);
 			} };
 			if (effect.hasKeyword(Keywords::KYWD_DurationBased))
 				return Effect{ effect._name, perk_formula(base_formula(effect._magnitude)), effect._duration, effect._keywords };
-			return Effect{ effect._name, base_formula(effect._magnitude), static_cast<unsigned>(perk_formula(base_formula(effect._duration))), effect._keywords };
+			return Effect{ effect._name, std::round(base_formula(effect._magnitude)), static_cast<unsigned>(perk_formula(base_formula(effect._duration))), effect._keywords };
 		}
 
 		/**
