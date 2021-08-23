@@ -1,445 +1,202 @@
-Thistle Branch
+Dragon Claw
 {
-	Fatigue
+	Fortify Two-handed
 	{
-		magnitude = 0.000000
-		duration = 266
-	}
-	Fortify Heavy Armor
-	{
-		magnitude = 1.160000
+		magnitude = 4.000000
 		duration = 60
 	}
-	Resist Poison
+	Lingering Damage Health
 	{
-		magnitude = 1.320000
-		duration = 60
+		magnitude = 1.000000
+		duration = 10
 	}
-	Resist Frost
+	Fortify Marksman
 	{
-		magnitude = 0.550000
-		duration = 60
-	}
-}
-Snowberries
-{
-	Fortify Enchanting
-	{
-		magnitude = 1.120000
-		duration = 60
-	}
-	Resist Fire
-	{
-		magnitude = 0.550000
-		duration = 60
-	}
-	Resist Frost
-	{
-		magnitude = 0.550000
-		duration = 60
-	}
-	Resist Shock
-	{
-		magnitude = 0.550000
-		duration = 60
-	}
-}
-Jarrin Root
-{
-	Damage Health
-	{
-		magnitude = 208.500000
-		duration = 1
-	}
-	Damage Stamina
-	{
-		magnitude = 27.750000
-		duration = 1
-	}
-	Damage Magicka
-	{
-		magnitude = 27.750000
-		duration = 1
-	}
-	Drain Strength
-	{
-		magnitude = 4.130000
-		duration = 30
-	}
-}
-Pine Thrush Egg
-{
-	Fortify Lockpicking
-	{
-		magnitude = 2.800000
-		duration = 30
-	}
-	Resist Shock
-	{
-		magnitude = 1.540000
-		duration = 60
-	}
-	Poison Aversion
-	{
-		magnitude = 2.010000
-		duration = 30
-	}
-	Stamina
-	{
-		magnitude = 5.550000
-		duration = 1
-	}
-}
-Chicken Egg
-{
-	Fortify Alteration
-	{
-		magnitude = 2.910000
-		duration = 60
-	}
-	Resist Paralysis
-	{
-		magnitude = 0.000000
-		duration = 166
-	}
-	Resist Poison
-	{
-		magnitude = 0.990000
-		duration = 60
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 1.010000
-		duration = 30
-	}
-}
-Nightshade
-{
-	Fortify Destruction
-	{
-		magnitude = 2.800000
-		duration = 60
-	}
-	Damage Undead
-	{
-		magnitude = 6.260000
-		duration = 1
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 2.350000
-		duration = 30
-	}
-	Damage Health
-	{
-		magnitude = 3.480000
-		duration = 1
-	}
-}
-Bone Meal
-{
-	Damage Stamina
-	{
-		magnitude = 12.210000
-		duration = 1
-	}
-	Fortify Conjuration
-	{
-		magnitude = 4.150000
-		duration = 60
-	}
-	Resist Fire
-	{
-		magnitude = 1.980000
-		duration = 60
-	}
-	Night Eye
-	{
-		magnitude = 0.000000
-		duration = 399
-	}
-}
-Salt Pile
-{
-	Fortify Unarmed
-	{
-		magnitude = 0.270000
-		duration = 60
-	}
-	Stamina Regeneration
-	{
-		magnitude = 2.770000
-		duration = 180
-	}
-	Magic Aversion
-	{
-		magnitude = 1.660000
-		duration = 30
-	}
-	Damage Stamina Regen
-	{
-		magnitude = 1.010000
-		duration = 30
-	}
-}
-Garlic
-{
-	Resist Disease
-	{
-		magnitude = 100.000000
-		duration = 1332
-	}
-	Stamina Regeneration
-	{
-		magnitude = 4.150000
-		duration = 180
-	}
-	Health Regeneration
-	{
-		magnitude = 2.770000
-		duration = 180
-	}
-	Magicka Regeneration
-	{
-		magnitude = 2.770000
-		duration = 180
-	}
-}
-Elves Ear
-{
-	Magicka
-	{
-		magnitude = 3.700000
-		duration = 1
-	}
-	Health
-	{
-		magnitude = 2.770000
-		duration = 1
-	}
-	Frost Aversion
-	{
-		magnitude = 2.230000
-		duration = 30
-	}
-	Resist Fire
-	{
-		magnitude = 0.550000
-		duration = 60
-	}
-}
-Frost Mirriam
-{
-	Resist Frost
-	{
-		magnitude = 1.210000
-		duration = 60
-	}
-	Stamina Fortification
-	{
-		magnitude = 2.220000
-		duration = 60
-	}
-	Magicka Fortification
-	{
-		magnitude = 2.220000
-		duration = 60
-	}
-	Fire Aversion
-	{
-		magnitude = 2.230000
-		duration = 30
-	}
-}
-Daedra Heart
-{
-	Health
-	{
-		magnitude = 13.880000
-		duration = 1
-	}
-	Fear
-	{
-		magnitude = 3.920000
-		duration = 30
-	}
-	Silence
-	{
-		magnitude = 0.000000
-		duration = 106
-	}
-	Damage Magicka
-	{
-		magnitude = 22.200001
-		duration = 1
-	}
-}
-Falmer Ear
-{
-	Fortify Lockpicking
-	{
-		magnitude = 4.200000
-		duration = 30
-	}
-	Frenzy
-	{
-		magnitude = 3.640000
-		duration = 30
-	}
-	Resist Poison
-	{
-		magnitude = 3.640000
-		duration = 60
-	}
-	Damage Health
-	{
-		magnitude = 6.950000
-		duration = 1
-	}
-}
-Fire Salts
-{
-	Fire Aversion
-	{
-		magnitude = 6.680000
-		duration = 30
-	}
-	Resist Frost
-	{
-		magnitude = 2.750000
-		duration = 60
-	}
-	Magicka Regeneration
-	{
-		magnitude = 5.530000
-		duration = 300
-	}
-	Magicka
-	{
-		magnitude = 10.640000
-		duration = 1
-	}
-}
-Frost Salts
-{
-	Frost Aversion
-	{
-		magnitude = 6.680000
-		duration = 30
-	}
-	Resist Fire
-	{
-		magnitude = 2.750000
-		duration = 60
-	}
-	Damage Health
-	{
-		magnitude = 9.730000
-		duration = 1
-	}
-	Magicka
-	{
-		magnitude = 10.640000
-		duration = 1
-	}
-}
-Void Salts
-{
-	Shock Aversion
-	{
-		magnitude = 6.680000
-		duration = 30
-	}
-	Resist Shock
-	{
-		magnitude = 2.750000
-		duration = 60
-	}
-	Silence
-	{
-		magnitude = 0.000000
-		duration = 94
-	}
-	Magicka
-	{
-		magnitude = 10.640000
-		duration = 1
-	}
-}
-Briar Heart
-{
-	Health Fortification
-	{
-		magnitude = 7.770000
+		magnitude = 4.000000
 		duration = 60
 	}
 	Fortify Destruction
 	{
-		magnitude = 3.640000
+		magnitude = 4.000000
 		duration = 60
 	}
-	Magicka Fortification
+}
+Dragon Bone Meal
+{
+	Fortify One-handed
 	{
-		magnitude = 6.660000
+		magnitude = 4.000000
+		duration = 60
+	}
+	Fortify Health
+	{
+		magnitude = 1.000000
+		duration = 10
+	}
+	Resist Fire
+	{
+		magnitude = 3.000000
+		duration = 60
+	}
+	Resist Frost
+	{
+		magnitude = 3.000000
+		duration = 60
+	}
+}
+Blueberries
+{
+	Resist Shock
+	{
+		magnitude = 3.000000
+		duration = 60
+	}
+	Fortify Pickpocket
+	{
+		magnitude = 1.000000
+		duration = 40
+	}
+	Slow
+	{
+		magnitude = 2.000000
 		duration = 60
 	}
 	Paralysis
 	{
 		magnitude = 0.000000
-		duration = 61
+		duration = 4
 	}
 }
-Ectoplasm
+Sugar
 {
-	Etherealize
+	Restore Health
+	{
+		magnitude = 3.000000
+		duration = 0
+	}
+	Fortify Persuasion
+	{
+		magnitude = 3.000000
+		duration = 30
+	}
+	Cure Disease
+	{
+		magnitude = 3.000000
+		duration = 0
+	}
+	Weakness to Poison
+	{
+		magnitude = 3.000000
+		duration = 60
+	}
+}
+Saltrice
+{
+	Restore Stamina
+	{
+		magnitude = 3.000000
+		duration = 0
+	}
+	Damage Stamina
+	{
+		magnitude = 3.000000
+		duration = 30
+	}
+	Fortify Magicka
+	{
+		magnitude = 3.000000
+		duration = 0
+	}
+	Restore Health
+	{
+		magnitude = 3.000000
+		duration = 0
+	}
+}
+Stoneflower Petals
+{
+	Restore Stamina
+	{
+		magnitude = 3.000000
+		duration = 0
+	}
+	Fortify Magicka
+	{
+		magnitude = 3.000000
+		duration = 30
+	}
+	Slow
+	{
+		magnitude = 3.000000
+		duration = 30
+	}
+	Fortify Persuasion
 	{
 		magnitude = 0.000000
-		duration = 80
-	}
-	Fortify Illusion
-	{
-		magnitude = 5.810000
 		duration = 60
-	}
-	Magicka Fortification
-	{
-		magnitude = 7.220000
-		duration = 60
-	}
-	Damage Health
-	{
-		magnitude = 4.870000
-		duration = 1
 	}
 }
-Giant's Toe
+Large Antlers
 {
+	Restore Stamina
+	{
+		magnitude = 5.000000
+		duration = 0
+	}
+	Fortify Stamina
+	{
+		magnitude = 4.000000
+		duration = 60
+	}
+	Slow
+	{
+		magnitude = 5.000000
+		duration = 30
+	}
 	Damage Stamina Regen
 	{
-		magnitude = 5.030000
-		duration = 30
-	}
-	Feather
-	{
-		magnitude = 4.630000
-		duration = 300
-	}
-	Health Fortification
-	{
-		magnitude = 7.220000
-		duration = 60
-	}
-	Drain Strength
-	{
-		magnitude = 3.440000
-		duration = 30
+		magnitude = 100.000000
+		duration = 5
 	}
 }
-Hagraven Feathers
+Large Antlers
 {
-	Shock Aversion
+	Restore Stamina
 	{
-		magnitude = 5.120000
+		magnitude = 5.000000
+		duration = 0
+	}
+	Fortify Stamina
+	{
+		magnitude = 4.000000
+		duration = 60
+	}
+	Slow
+	{
+		magnitude = 5.000000
+		duration = 30
+	}
+	Damage Stamina Regen
+	{
+		magnitude = 100.000000
+		duration = 5
+	}
+}
+Glow Dust
+{
+	Resist Shock
+	{
+		magnitude = 2.530000
+		duration = 60
+	}
+	Fortify Destruction
+	{
+		magnitude = 3.360000
+		duration = 60
+	}
+	Damage Magicka Regen
+	{
+		magnitude = 4.020000
 		duration = 30
 	}
 	Damage Magicka
@@ -447,590 +204,28 @@ Hagraven Feathers
 		magnitude = 12.210000
 		duration = 1
 	}
-	Fortify Conjuration
-	{
-		magnitude = 4.560000
-		duration = 60
-	}
-	Frenzy
-	{
-		magnitude = 2.800000
-		duration = 30
-	}
 }
-Ice Wraith Teeth
+Vampire Dust
 {
-	Frost Aversion
-	{
-		magnitude = 6.230000
-		duration = 30
-	}
-	Magicka Regeneration
+	Health Regeneration
 	{
 		magnitude = 8.300000
-		duration = 180
-	}
-	Etherealize
-	{
-		magnitude = 0.000000
-		duration = 53
-	}
-	Fortify Heavy Armor
-	{
-		magnitude = 1.400000
-		duration = 60
-	}
-}
-Skeever Tail
-{
-	Damage Stamina Regen
-	{
-		magnitude = 4.020000
-		duration = 30
-	}
-	Fortify Sneak
-	{
-		magnitude = 0.990000
-		duration = 60
-	}
-	Ravage Health
-	{
-		magnitude = 3.480000
-		duration = 10
-	}
-	Damage Health
-	{
-		magnitude = 2.090000
-		duration = 1
-	}
-}
-Slaughterfish Scales
-{
-	Fortify Block
-	{
-		magnitude = 1.400000
-		duration = 60
-	}
-	Lingering Damage Health
-	{
-		magnitude = 0.360000
-		duration = 10
-	}
-	Fortify Heavy Armor
-	{
-		magnitude = 1.090000
-		duration = 60
-	}
-	Waterwalking
-	{
-		magnitude = 0.000000
-		duration = 266
-	}
-}
-Taproot
-{
-	Fortify Illusion
-	{
-		magnitude = 6.230000
-		duration = 60
-	}
-	Magicka
-	{
-		magnitude = 12.030000
-		duration = 1
-	}
-	Magicka Regeneration
-	{
-		magnitude = 9.680000
-		duration = 180
-	}
-	Magic Aversion
-	{
-		magnitude = 4.980000
-		duration = 30
-	}
-}
-Troll Fat
-{
-	Resist Disease
-	{
-		magnitude = 100.000000
-		duration = 3080
-	}
-	Frenzy
-	{
-		magnitude = 3.080000
-		duration = 30
-	}
-	Fortify Two-handed
-	{
-		magnitude = 2.940000
-		duration = 60
-	}
-	Lingering Damage Health
-	{
-		magnitude = 0.400000
-		duration = 10
-	}
-}
-Tundra Cotton
-{
-	Fortify Unarmed
-	{
-		magnitude = 0.480000
-		duration = 60
-	}
-	Resist Paralysis
-	{
-		magnitude = 0.000000
-		duration = 199
-	}
-	Fortify Block
-	{
-		magnitude = 0.780000
-		duration = 60
-	}
-	Fortify Speech
-	{
-		magnitude = 1.380000
-		duration = 60
-	}
-}
-Lavender
-{
-	Fortify Speech
-	{
-		magnitude = 2.480000
-		duration = 60
-	}
-	Stamina Fortification
-	{
-		magnitude = 4.160000
-		duration = 60
-	}
-	Drain Intelligence
-	{
-		magnitude = 1.380000
-		duration = 30
-	}
-	Fortify Conjuration
-	{
-		magnitude = 2.080000
-		duration = 60
-	}
-}
-Wheat
-{
-	Health
-	{
-		magnitude = 3.700000
-		duration = 1
-	}
-	Health Fortification
-	{
-		magnitude = 2.220000
-		duration = 60
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 1.010000
-		duration = 30
-	}
-	Damage Stamina Regen
-	{
-		magnitude = 1.010000
-		duration = 30
-	}
-}
-Fly Amanita
-{
-	Stamina Regeneration
-	{
-		magnitude = 5.530000
 		duration = 240
-	}
-	Resist Fire
-	{
-		magnitude = 1.760000
-		duration = 60
-	}
-	Fortify Two-handed
-	{
-		magnitude = 2.240000
-		duration = 60
-	}
-	Frenzy
-	{
-		magnitude = 1.680000
-		duration = 30
-	}
-}
-Bleeding Crown
-{
-	Fire Aversion
-	{
-		magnitude = 4.450000
-		duration = 30
-	}
-	Poison Aversion
-	{
-		magnitude = 3.020000
-		duration = 30
-	}
-	Fortify Light Armor
-	{
-		magnitude = 0.930000
-		duration = 60
-	}
-	Fortify Block
-	{
-		magnitude = 0.930000
-		duration = 60
-	}
-}
-White Cap
-{
-	Frost Aversion
-	{
-		magnitude = 4.010000
-		duration = 30
-	}
-	Drain Intelligence
-	{
-		magnitude = 2.060000
-		duration = 30
-	}
-	Fortify Restoration
-	{
-		magnitude = 1.550000
-		duration = 60
-	}
-	Fortify Heavy Armor
-	{
-		magnitude = 0.780000
-		duration = 60
-	}
-}
-Imp Stool
-{
-	Lingering Damage Health
-	{
-		magnitude = 0.400000
-		duration = 10
-	}
-	Health Regeneration
-	{
-		magnitude = 4.150000
-		duration = 240
-	}
-	Health
-	{
-		magnitude = 6.480000
-		duration = 1
-	}
-	Damage Health
-	{
-		magnitude = 4.170000
-		duration = 1
-	}
-}
-Namira's Rot
-{
-	Fear
-	{
-		magnitude = 2.800000
-		duration = 30
-	}
-	Damage Magicka
-	{
-		magnitude = 11.100000
-		duration = 1
-	}
-	Health Regeneration
-	{
-		magnitude = 5.530000
-		duration = 240
-	}
-	Fortify Lockpicking
-	{
-		magnitude = 2.240000
-		duration = 30
-	}
-}
-Blisterwort
-{
-	Damage Stamina
-	{
-		magnitude = 9.990000
-		duration = 1
-	}
-	Frenzy
-	{
-		magnitude = 2.240000
-		duration = 30
-	}
-	Fortify Smithing
-	{
-		magnitude = 0.980000
-		duration = 30
-	}
-	Health
-	{
-		magnitude = 4.630000
-		duration = 1
-	}
-}
-Torchbug Abdomen
-{
-	Lingering Damage Undead
-	{
-		magnitude = 0.420000
-		duration = 10
-	}
-	Stamina Fortification
-	{
-		magnitude = 5.000000
-		duration = 60
-	}
-	Magic Aversion
-	{
-		magnitude = 3.740000
-		duration = 30
-	}
-	Detect Life
-	{
-		magnitude = 0.000000
-		duration = 167
-	}
-}
-Juniper Berries
-{
-	Fortify Marksman
-	{
-		magnitude = 1.960000
-		duration = 60
-	}
-	Damage Stamina Regen
-	{
-		magnitude = 1.680000
-		duration = 30
-	}
-	Health Regeneration
-	{
-		magnitude = 2.770000
-		duration = 180
-	}
-	Fire Aversion
-	{
-		magnitude = 2.670000
-		duration = 30
-	}
-}
-Deathbell
-{
-	Poison Aversion
-	{
-		magnitude = 3.690000
-		duration = 30
-	}
-	Fatigue
-	{
-		magnitude = 0.000000
-		duration = 366
-	}
-	Slow
-	{
-		magnitude = 50.000000
-		duration = 268
-	}
-	Damage Health
-	{
-		magnitude = 5.560000
-		duration = 1
-	}
-}
-Charred Skeever Meat
-{
-	Resist Poison
-	{
-		magnitude = 4.300000
-		duration = 60
-	}
-	Stamina
-	{
-		magnitude = 11.100000
-		duration = 1
-	}
-	Health
-	{
-		magnitude = 10.180000
-		duration = 1
-	}
-	Cure Disease
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-}
-Hanging Moss
-{
-	Damage Magicka Regen
-	{
-		magnitude = 2.510000
-		duration = 30
-	}
-	Stamina Fortification
-	{
-		magnitude = 2.780000
-		duration = 60
-	}
-	Fortify One-handed
-	{
-		magnitude = 1.680000
-		duration = 60
-	}
-	Damage Magicka
-	{
-		magnitude = 3.890000
-		duration = 1
-	}
-}
-Nirnroot
-{
-	Damage Health
-	{
-		magnitude = 9.380000
-		duration = 1
-	}
-	Invisibility
-	{
-		magnitude = 0.000000
-		duration = 364
-	}
-	Resist Magic
-	{
-		magnitude = 0.810000
-		duration = 60
-	}
-	Drain Strength
-	{
-		magnitude = 1.650000
-		duration = 30
-	}
-}
-Spriggan Sap
-{
-	Fortify Alteration
-	{
-		magnitude = 4.980000
-		duration = 60
-	}
-	Fortify Smithing
-	{
-		magnitude = 1.540000
-		duration = 30
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 4.190000
-		duration = 30
-	}
-	Fortify Enchanting
-	{
-		magnitude = 1.400000
-		duration = 60
-	}
-}
-Canis Root
-{
-	Damage Stamina
-	{
-		magnitude = 9.990000
-		duration = 1
-	}
-	Fortify Marksman
-	{
-		magnitude = 2.520000
-		duration = 60
 	}
 	Silence
 	{
 		magnitude = 0.000000
-		duration = 43
+		duration = 98
 	}
-	Fortify Light Armor
+	Invisibility
 	{
-		magnitude = 0.780000
-		duration = 60
-	}
-}
-Jazbay Grapes
-{
-	Magicka Fortification
-	{
-		magnitude = 3.610000
-		duration = 60
-	}
-	Magic Aversion
-	{
-		magnitude = 2.080000
-		duration = 30
-	}
-	Ravage Health
-	{
-		magnitude = 2.780000
-		duration = 10
-	}
-	Magicka Regeneration
-	{
-		magnitude = 2.770000
-		duration = 180
-	}
-}
-Hagraven Claw
-{
-	Fortify Enchanting
-	{
-		magnitude = 1.610000
-		duration = 60
-	}
-	Fortify Speech
-	{
-		magnitude = 3.580000
-		duration = 60
-	}
-	Drain Strength
-	{
-		magnitude = 3.030000
-		duration = 30
-	}
-	Resist Magic
-	{
-		magnitude = 0.900000
-		duration = 60
-	}
-}
-Mudcrab Chitin
-{
-	Resist Disease
-	{
-		magnitude = 100.000000
-		duration = 1832
+		magnitude = 0.000000
+		duration = 331
 	}
 	Cure Disease
 	{
 		magnitude = 1.000000
 		duration = 0
-	}
-	Stamina
-	{
-		magnitude = 7.400000
-		duration = 1
-	}
-	Resist Fire
-	{
-		magnitude = 0.990000
-		duration = 60
 	}
 }
 Bear Claws
@@ -1051,29 +246,6 @@ Bear Claws
 		duration = 60
 	}
 	Fortify Block
-	{
-		magnitude = 1.550000
-		duration = 60
-	}
-}
-Sabre Cat Tooth
-{
-	Stamina Fortification
-	{
-		magnitude = 6.110000
-		duration = 60
-	}
-	Poison Aversion
-	{
-		magnitude = 3.520000
-		duration = 30
-	}
-	Fortify One-handed
-	{
-		magnitude = 2.940000
-		duration = 60
-	}
-	Fortify Heavy Armor
 	{
 		magnitude = 1.550000
 		duration = 60
@@ -1100,972 +272,6 @@ Large Antlers
 	{
 		magnitude = 50.000000
 		duration = 201
-	}
-}
-Small Antlers
-{
-	Fortify Restoration
-	{
-		magnitude = 3.100000
-		duration = 60
-	}
-	Damage Undead
-	{
-		magnitude = 5.560000
-		duration = 1
-	}
-	Poison Aversion
-	{
-		magnitude = 1.340000
-		duration = 30
-	}
-	Speed
-	{
-		magnitude = 1.000000
-		duration = 60
-	}
-}
-Wisp Wrappings
-{
-	Etherealize
-	{
-		magnitude = 0.000000
-		duration = 58
-	}
-	Detect Life
-	{
-		magnitude = 0.000000
-		duration = 366
-	}
-	Fortify Destruction
-	{
-		magnitude = 2.800000
-		duration = 60
-	}
-	Resist Magic
-	{
-		magnitude = 0.720000
-		duration = 60
-	}
-}
-Powdered Mammoth Tusk
-{
-	Fortify Block
-	{
-		magnitude = 2.170000
-		duration = 60
-	}
-	Fire Aversion
-	{
-		magnitude = 5.340000
-		duration = 30
-	}
-	Fortify Unarmed
-	{
-		magnitude = 0.610000
-		duration = 60
-	}
-	Fear
-	{
-		magnitude = 2.520000
-		duration = 30
-	}
-}
-Scaly Pholiota
-{
-	Feather
-	{
-		magnitude = 3.310000
-		duration = 300
-	}
-	Stamina Regeneration
-	{
-		magnitude = 4.150000
-		duration = 300
-	}
-	Speed
-	{
-		magnitude = 2.500000
-		duration = 60
-	}
-	Magic Aversion
-	{
-		magnitude = 1.660000
-		duration = 30
-	}
-}
-Berit's Ashes
-{
-	Damage Stamina
-	{
-		magnitude = 12.210000
-		duration = 1
-	}
-	Fortify Conjuration
-	{
-		magnitude = 4.150000
-		duration = 60
-	}
-	Resist Fire
-	{
-		magnitude = 1.980000
-		duration = 60
-	}
-	Night Eye
-	{
-		magnitude = 0.000000
-		duration = 399
-	}
-}
-Blue Swallowtail
-{
-	Fortify Conjuration
-	{
-		magnitude = 3.320000
-		duration = 60
-	}
-	Fortify Smithing
-	{
-		magnitude = 0.980000
-		duration = 30
-	}
-	Fortify Enchanting
-	{
-		magnitude = 0.980000
-		duration = 60
-	}
-	Damage Stamina
-	{
-		magnitude = 3.890000
-		duration = 1
-	}
-}
-Luna Moth
-{
-	Damage Magicka
-	{
-		magnitude = 9.440000
-		duration = 1
-	}
-	Magicka Regeneration
-	{
-		magnitude = 4.150000
-		duration = 300
-	}
-	Fortify Light Armor
-	{
-		magnitude = 1.090000
-		duration = 60
-	}
-	Invisibility
-	{
-		magnitude = 0.000000
-		duration = 248
-	}
-}
-Monarch Butterfly
-{
-	Damage Undead
-	{
-		magnitude = 3.480000
-		duration = 1
-	}
-	Fortify Speech
-	{
-		magnitude = 1.380000
-		duration = 60
-	}
-	Damage Magicka
-	{
-		magnitude = 5.000000
-		duration = 1
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 1.340000
-		duration = 30
-	}
-}
-Blue Mountain Flower
-{
-	Fortify Conjuration
-	{
-		magnitude = 2.490000
-		duration = 60
-	}
-	Magicka Fortification
-	{
-		magnitude = 2.220000
-		duration = 60
-	}
-	Damage Health
-	{
-		magnitude = 2.090000
-		duration = 1
-	}
-	Magicka
-	{
-		magnitude = 2.780000
-		duration = 1
-	}
-}
-Red Mountain Flower
-{
-	Drain Intelligence
-	{
-		magnitude = 1.380000
-		duration = 30
-	}
-	Health Fortification
-	{
-		magnitude = 2.220000
-		duration = 60
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 1.340000
-		duration = 30
-	}
-	Health
-	{
-		magnitude = 2.770000
-		duration = 1
-	}
-}
-Purple Mountain Flower
-{
-	Fortify Sneak
-	{
-		magnitude = 0.550000
-		duration = 60
-	}
-	Fortify Marksman
-	{
-		magnitude = 1.680000
-		duration = 60
-	}
-	Lingering Damage Undead
-	{
-		magnitude = 0.140000
-		duration = 10
-	}
-	Stamina
-	{
-		magnitude = 2.780000
-		duration = 1
-	}
-}
-Swamp Fungal Pod
-{
-	Lingering Damage Undead
-	{
-		magnitude = 0.480000
-		duration = 10
-	}
-	Resist Shock
-	{
-		magnitude = 2.310000
-		duration = 60
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 2.680000
-		duration = 30
-	}
-	Paralysis
-	{
-		magnitude = 0.000000
-		duration = 42
-	}
-}
-Giant Lichen
-{
-	Poison Aversion
-	{
-		magnitude = 3.520000
-		duration = 30
-	}
-	Shock Aversion
-	{
-		magnitude = 4.450000
-		duration = 30
-	}
-	Ravage Health
-	{
-		magnitude = 6.950000
-		duration = 10
-	}
-	Magicka
-	{
-		magnitude = 8.330000
-		duration = 1
-	}
-}
-Slaughterfish Egg
-{
-	Waterbreathing
-	{
-		magnitude = 0.000000
-		duration = 532
-	}
-	Stamina Fortification
-	{
-		magnitude = 3.330000
-		duration = 60
-	}
-	Lingering Damage Health
-	{
-		magnitude = 0.240000
-		duration = 10
-	}
-	Fortify Pickpocket
-	{
-		magnitude = 1.680000
-		duration = 60
-	}
-}
-Rock Warbler Egg
-{
-	Health
-	{
-		magnitude = 9.250000
-		duration = 1
-	}
-	Cure Poison
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-	Magic Aversion
-	{
-		magnitude = 3.320000
-		duration = 30
-	}
-	Damage Stamina
-	{
-		magnitude = 3.890000
-		duration = 1
-	}
-}
-Nordic Barnacle
-{
-	Waterbreathing
-	{
-		magnitude = 0.000000
-		duration = 599
-	}
-	Fortify Pickpocket
-	{
-		magnitude = 2.240000
-		duration = 60
-	}
-	Health Regeneration
-	{
-		magnitude = 4.150000
-		duration = 180
-	}
-	Damage Magicka
-	{
-		magnitude = 3.890000
-		duration = 1
-	}
-}
-Glowing Mushroom
-{
-	Etherealize
-	{
-		magnitude = 0.000000
-		duration = 45
-	}
-	Resist Shock
-	{
-		magnitude = 1.210000
-		duration = 60
-	}
-	Fortify Destruction
-	{
-		magnitude = 1.680000
-		duration = 60
-	}
-	Health Fortification
-	{
-		magnitude = 2.780000
-		duration = 60
-	}
-}
-Grass Pod
-{
-	Drain Intelligence
-	{
-		magnitude = 1.650000
-		duration = 30
-	}
-	Cure Poison
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-	Fortify Alteration
-	{
-		magnitude = 2.080000
-		duration = 60
-	}
-	Magicka
-	{
-		magnitude = 3.700000
-		duration = 1
-	}
-}
-Mother of Pearl
-{
-	Magicka
-	{
-		magnitude = 9.710000
-		duration = 1
-	}
-	Resist Paralysis
-	{
-		magnitude = 0.000000
-		duration = 331
-	}
-	Waterwalking
-	{
-		magnitude = 0.000000
-		duration = 665
-	}
-	Stamina
-	{
-		magnitude = 6.480000
-		duration = 1
-	}
-}
-Pearl
-{
-	Waterwalking
-	{
-		magnitude = 0.000000
-		duration = 865
-	}
-	Stamina
-	{
-		magnitude = 9.710000
-		duration = 1
-	}
-	Magicka Fortification
-	{
-		magnitude = 5.550000
-		duration = 60
-	}
-	Fortify Restoration
-	{
-		magnitude = 2.790000
-		duration = 60
-	}
-}
-Dragon's Tongue
-{
-	Fortify Speech
-	{
-		magnitude = 2.200000
-		duration = 60
-	}
-	Resist Fire
-	{
-		magnitude = 1.540000
-		duration = 60
-	}
-	Fortify Two-handed
-	{
-		magnitude = 1.680000
-		duration = 60
-	}
-	Fortify Illusion
-	{
-		magnitude = 2.080000
-		duration = 60
-	}
-}
-Spider Egg
-{
-	Fortify Marksman
-	{
-		magnitude = 3.220000
-		duration = 60
-	}
-	Damage Stamina
-	{
-		magnitude = 13.880000
-		duration = 1
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 3.690000
-		duration = 30
-	}
-	Detect Life
-	{
-		magnitude = 0.000000
-		duration = 333
-	}
-}
-Beehive Husk
-{
-	Fortify Light Armor
-	{
-		magnitude = 1.240000
-		duration = 60
-	}
-	Cure Poison
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-	Fortify Sneak
-	{
-		magnitude = 0.830000
-		duration = 60
-	}
-	Fortify Destruction
-	{
-		magnitude = 1.680000
-		duration = 60
-	}
-}
-Bee
-{
-	Stamina
-	{
-		magnitude = 11.560000
-		duration = 1
-	}
-	Stamina Regeneration
-	{
-		magnitude = 6.910000
-		duration = 240
-	}
-	Fatigue
-	{
-		magnitude = 0.000000
-		duration = 333
-	}
-	Shock Aversion
-	{
-		magnitude = 3.560000
-		duration = 30
-	}
-}
-Honeycomb
-{
-	Magicka Regeneration
-	{
-		magnitude = 5.530000
-		duration = 240
-	}
-	Fortify One-handed
-	{
-		magnitude = 2.800000
-		duration = 60
-	}
-	Fatigue
-	{
-		magnitude = 0.000000
-		duration = 233
-	}
-	Fortify Illusion
-	{
-		magnitude = 2.490000
-		duration = 60
-	}
-}
-Human Heart
-{
-	Stamina Regeneration
-	{
-		magnitude = 6.910000
-		duration = 300
-	}
-	Detect Life
-	{
-		magnitude = 0.000000
-		duration = 416
-	}
-	Damage Magicka
-	{
-		magnitude = 13.880000
-		duration = 1
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 3.850000
-		duration = 30
-	}
-}
-Creep Cluster
-{
-	Feather
-	{
-		magnitude = 2.980000
-		duration = 300
-	}
-	Damage Stamina Regen
-	{
-		magnitude = 3.020000
-		duration = 30
-	}
-	Magic Aversion
-	{
-		magnitude = 2.700000
-		duration = 30
-	}
-	Magicka
-	{
-		magnitude = 6.480000
-		duration = 1
-	}
-}
-Crimson Nirnroot
-{
-	Damage Health
-	{
-		magnitude = 12.160000
-		duration = 1
-	}
-	Invisibility
-	{
-		magnitude = 0.000000
-		duration = 397
-	}
-	Resist Magic
-	{
-		magnitude = 0.990000
-		duration = 60
-	}
-	Drain Strength
-	{
-		magnitude = 2.750000
-		duration = 30
-	}
-}
-Orange Dartwing
-{
-	Fortify Pickpocket
-	{
-		magnitude = 2.800000
-		duration = 60
-	}
-	Lingering Damage Health
-	{
-		magnitude = 0.400000
-		duration = 10
-	}
-	Silence
-	{
-		magnitude = 0.000000
-		duration = 64
-	}
-	Speed
-	{
-		magnitude = 1.000000
-		duration = 60
-	}
-}
-Moon Sugar
-{
-	Magicka
-	{
-		magnitude = 11.560000
-		duration = 1
-	}
-	Resist Frost
-	{
-		magnitude = 2.530000
-		duration = 60
-	}
-	Magicka Regeneration
-	{
-		magnitude = 6.910000
-		duration = 240
-	}
-	Fire Aversion
-	{
-		magnitude = 3.340000
-		duration = 30
-	}
-}
-Blue Dartwing
-{
-	Fortify Pickpocket
-	{
-		magnitude = 3.080000
-		duration = 60
-	}
-	Resist Shock
-	{
-		magnitude = 1.760000
-		duration = 60
-	}
-	Health
-	{
-		magnitude = 5.550000
-		duration = 1
-	}
-	Fear
-	{
-		magnitude = 1.680000
-		duration = 30
-	}
-}
-Hawk Beak
-{
-	Feather
-	{
-		magnitude = 4.300000
-		duration = 300
-	}
-	Resist Shock
-	{
-		magnitude = 2.420000
-		duration = 60
-	}
-	Fortify Marksman
-	{
-		magnitude = 2.940000
-		duration = 60
-	}
-	Stamina Regeneration
-	{
-		magnitude = 8.300000
-		duration = 180
-	}
-}
-Hawk Feathers
-{
-	Speed
-	{
-		magnitude = 3.750000
-		duration = 60
-	}
-	Cure Disease
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-	Fortify Light Armor
-	{
-		magnitude = 1.550000
-		duration = 60
-	}
-	Fortify One-handed
-	{
-		magnitude = 1.680000
-		duration = 60
-	}
-}
-Mora Tapinella
-{
-	Fortify Alteration
-	{
-		magnitude = 4.150000
-		duration = 60
-	}
-	Fortify Illusion
-	{
-		magnitude = 3.320000
-		duration = 60
-	}
-	Magicka Fortification
-	{
-		magnitude = 4.160000
-		duration = 60
-	}
-	Lingering Damage Health
-	{
-		magnitude = 0.320000
-		duration = 10
-	}
-}
-Dwarven Oil
-{
-	Fortify Sneak
-	{
-		magnitude = 1.210000
-		duration = 60
-	}
-	Magic Aversion
-	{
-		magnitude = 4.570000
-		duration = 30
-	}
-	Fortify Illusion
-	{
-		magnitude = 3.740000
-		duration = 60
-	}
-	Fortify Lockpicking
-	{
-		magnitude = 2.240000
-		duration = 30
-	}
-}
-Human Flesh
-{
-	Damage Health
-	{
-		magnitude = 6.950000
-		duration = 1
-	}
-	Paralysis
-	{
-		magnitude = 0.000000
-		duration = 53
-	}
-	Magicka
-	{
-		magnitude = 9.250000
-		duration = 1
-	}
-	Fortify Sneak
-	{
-		magnitude = 1.100000
-		duration = 60
-	}
-}
-Histcarp
-{
-	Damage Stamina Regen
-	{
-		magnitude = 3.350000
-		duration = 30
-	}
-	Stamina
-	{
-		magnitude = 9.250000
-		duration = 1
-	}
-	Waterbreathing
-	{
-		magnitude = 0.000000
-		duration = 366
-	}
-	Resist Disease
-	{
-		magnitude = 100.000000
-		duration = 500
-	}
-}
-Cyrodilic Spadetail
-{
-	Fortify Restoration
-	{
-		magnitude = 3.720000
-		duration = 60
-	}
-	Damage Stamina
-	{
-		magnitude = 8.330000
-		duration = 1
-	}
-	Fear
-	{
-		magnitude = 1.400000
-		duration = 30
-	}
-	Ravage Health
-	{
-		magnitude = 2.430000
-		duration = 10
-	}
-}
-River Betty
-{
-	Damage Health
-	{
-		magnitude = 8.690000
-		duration = 1
-	}
-	Fortify Alteration
-	{
-		magnitude = 4.570000
-		duration = 60
-	}
-	Slow
-	{
-		magnitude = 50.000000
-		duration = 335
-	}
-	Feather
-	{
-		magnitude = 2.650000
-		duration = 300
-	}
-}
-Abecean Longfin
-{
-	Frost Aversion
-	{
-		magnitude = 4.900000
-		duration = 30
-	}
-	Fortify Light Armor
-	{
-		magnitude = 1.630000
-		duration = 60
-	}
-	Fortify Restoration
-	{
-		magnitude = 3.100000
-		duration = 60
-	}
-	Poison Aversion
-	{
-		magnitude = 2.680000
-		duration = 30
-	}
-}
-Silverside
-{
-	Damage Stamina Regen
-	{
-		magnitude = 3.350000
-		duration = 30
-	}
-	Resist Frost
-	{
-		magnitude = 1.540000
-		duration = 60
-	}
-	Stamina
-	{
-		magnitude = 4.630000
-		duration = 1
-	}
-	Ravage Health
-	{
-		magnitude = 2.430000
-		duration = 10
-	}
-}
-Amber
-{
-	Health
-	{
-		magnitude = 12.490000
-		duration = 1
-	}
-	Resist Fire
-	{
-		magnitude = 2.200000
-		duration = 60
-	}
-	Resist Disease
-	{
-		magnitude = 100.000000
-		duration = 1665
-	}
-	Speed
-	{
-		magnitude = 1.000000
-		duration = 120
 	}
 }
 Sulfur
@@ -2574,351 +780,6 @@ Fox Fat
 		duration = 10
 	}
 }
-Yellow Mountain Flower
-{
-	Fortify Restoration
-	{
-		magnitude = 4.650000
-		duration = 60
-	}
-	Health Fortification
-	{
-		magnitude = 5.830000
-		duration = 60
-	}
-	Damage Stamina Regen
-	{
-		magnitude = 3.520000
-		duration = 30
-	}
-	Resist Poison
-	{
-		magnitude = 3.480000
-		duration = 60
-	}
-}
-Ancestor Moth
-{
-	Damage Magicka Regen
-	{
-		magnitude = 4.860000
-		duration = 30
-	}
-	Detect Life
-	{
-		magnitude = 0.000000
-		duration = 466
-	}
-	Fortify Conjuration
-	{
-		magnitude = 5.810000
-		duration = 60
-	}
-	Fortify Enchanting
-	{
-		magnitude = 1.750000
-		duration = 60
-	}
-}
-Gleamblossom
-{
-	Etherealize
-	{
-		magnitude = 0.000000
-		duration = 66
-	}
-	Paralysis
-	{
-		magnitude = 0.000000
-		duration = 53
-	}
-	Health Regeneration
-	{
-		magnitude = 6.910000
-		duration = 240
-	}
-	Fear
-	{
-		magnitude = 2.380000
-		duration = 30
-	}
-}
-Chaurus Hunter Antennae
-{
-	Fortify Conjuration
-	{
-		magnitude = 6.230000
-		duration = 60
-	}
-	Damage Stamina
-	{
-		magnitude = 19.430000
-		duration = 1
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 4.360000
-		duration = 30
-	}
-	Fortify Enchanting
-	{
-		magnitude = 1.400000
-		duration = 60
-	}
-}
-Poison Bloom
-{
-	Slow
-	{
-		magnitude = 50.000000
-		duration = 436
-	}
-	Damage Health
-	{
-		magnitude = 11.120000
-		duration = 1
-	}
-	Fear
-	{
-		magnitude = 3.220000
-		duration = 30
-	}
-	Feather
-	{
-		magnitude = 2.320000
-		duration = 300
-	}
-}
-Salmon Roe
-{
-	Waterbreathing
-	{
-		magnitude = 0.000000
-		duration = 898
-	}
-	Magicka Fortification
-	{
-		magnitude = 6.110000
-		duration = 60
-	}
-	Magicka Regeneration
-	{
-		magnitude = 4.150000
-		duration = 240
-	}
-	Stamina
-	{
-		magnitude = 2.780000
-		duration = 1
-	}
-}
-Hawk Egg
-{
-	Damage Undead
-	{
-		magnitude = 7.650000
-		duration = 1
-	}
-	Night Eye
-	{
-		magnitude = 0.000000
-		duration = 732
-	}
-	Fortify Smithing
-	{
-		magnitude = 1.400000
-		duration = 30
-	}
-	Lingering Damage Undead
-	{
-		magnitude = 0.240000
-		duration = 10
-	}
-}
-Ashen Grass Pod
-{
-	Resist Fire
-	{
-		magnitude = 2.420000
-		duration = 60
-	}
-	Fortify Sneak
-	{
-		magnitude = 1.100000
-		duration = 60
-	}
-	Fortify Lockpicking
-	{
-		magnitude = 1.960000
-		duration = 30
-	}
-	Shock Aversion
-	{
-		magnitude = 3.120000
-		duration = 30
-	}
-}
-Trama Root
-{
-	Shock Aversion
-	{
-		magnitude = 6.230000
-		duration = 30
-	}
-	Damage Magicka
-	{
-		magnitude = 11.100000
-		duration = 1
-	}
-	Drain Strength
-	{
-		magnitude = 2.750000
-		duration = 30
-	}
-	Feather
-	{
-		magnitude = 1.990000
-		duration = 300
-	}
-}
-Scathecraw
-{
-	Ravage Health
-	{
-		magnitude = 9.730000
-		duration = 10
-	}
-	Lingering Damage Health
-	{
-		magnitude = 0.480000
-		duration = 10
-	}
-	Fatigue
-	{
-		magnitude = 0.000000
-		duration = 4
-	}
-	Silence
-	{
-		magnitude = 0.000000
-		duration = 72
-	}
-}
-Ash Salts
-{
-	Drain Strength
-	{
-		magnitude = 3.850000
-		duration = 30
-	}
-	Fortify Enchanting
-	{
-		magnitude = 1.680000
-		duration = 60
-	}
-	Fatigue
-	{
-		magnitude = 0.000000
-		duration = 383
-	}
-	Resist Magic
-	{
-		magnitude = 0.950000
-		duration = 60
-	}
-}
-Burnt Spriggan Wood
-{
-	Damage Magicka Regen
-	{
-		magnitude = 5.030000
-		duration = 30
-	}
-	Fire Aversion
-	{
-		magnitude = 5.790000
-		duration = 30
-	}
-	Fortify Alteration
-	{
-		magnitude = 5.810000
-		duration = 60
-	}
-	Slow
-	{
-		magnitude = 50.000000
-		duration = 385
-	}
-}
-Boar Tusk
-{
-	Fortify Block
-	{
-		magnitude = 1.860000
-		duration = 60
-	}
-	Stamina Fortification
-	{
-		magnitude = 5.830000
-		duration = 60
-	}
-	Health Fortification
-	{
-		magnitude = 5.550000
-		duration = 60
-	}
-	Frenzy
-	{
-		magnitude = 2.800000
-		duration = 30
-	}
-}
-Ash Hopper Jelly
-{
-	Health
-	{
-		magnitude = 11.100000
-		duration = 1
-	}
-	Frost Aversion
-	{
-		magnitude = 5.340000
-		duration = 30
-	}
-	Fortify Illusion
-	{
-		magnitude = 4.150000
-		duration = 60
-	}
-	Fortify Light Armor
-	{
-		magnitude = 1.240000
-		duration = 60
-	}
-}
-Netch Jelly
-{
-	Stamina
-	{
-		magnitude = 13.880000
-		duration = 1
-	}
-	Resist Paralysis
-	{
-		magnitude = 0.000000
-		duration = 430
-	}
-	Feather
-	{
-		magnitude = 3.970000
-		duration = 300
-	}
-	Paralysis
-	{
-		magnitude = 0.000000
-		duration = 42
-	}
-}
 Ash Creep Cluster
 {
 	Resist Fire
@@ -2939,52 +800,6 @@ Ash Creep Cluster
 	Fortify Destruction
 	{
 		magnitude = 1.960000
-		duration = 60
-	}
-}
-Emperor Parasol Moss
-{
-	Health Regeneration
-	{
-		magnitude = 9.680000
-		duration = 180
-	}
-	Fortify Two-handed
-	{
-		magnitude = 3.080000
-		duration = 60
-	}
-	Damage Health
-	{
-		magnitude = 6.950000
-		duration = 1
-	}
-	Fortify Heavy Armor
-	{
-		magnitude = 1.400000
-		duration = 60
-	}
-}
-Felsaad Tern Feathers
-{
-	Fortify Light Armor
-	{
-		magnitude = 2.090000
-		duration = 60
-	}
-	Health
-	{
-		magnitude = 12.030000
-		duration = 1
-	}
-	Cure Disease
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-	Resist Magic
-	{
-		magnitude = 0.630000
 		duration = 60
 	}
 }
@@ -3055,29 +870,6 @@ Dragon Heartscales
 	{
 		magnitude = 1.710000
 		duration = 60
-	}
-}
-Daedroth Teeth
-{
-	Stamina Fortification
-	{
-		magnitude = 7.770000
-		duration = 60
-	}
-	Frenzy
-	{
-		magnitude = 3.360000
-		duration = 30
-	}
-	Night Eye
-	{
-		magnitude = 0.000000
-		duration = 798
-	}
-	Drain Strength
-	{
-		magnitude = 3.160000
-		duration = 30
 	}
 }
 Ogre's Teeth
@@ -3791,29 +1583,6 @@ Arrowroot
 	{
 		magnitude = 6.000000
 		duration = 60
-	}
-}
-Werewolf Blood
-{
-	Detect Life
-	{
-		magnitude = 0.000000
-		duration = 500
-	}
-	Fear
-	{
-		magnitude = 3.780000
-		duration = 30
-	}
-	Fortify Alteration
-	{
-		magnitude = 5.400000
-		duration = 60
-	}
-	Cure Disease
-	{
-		magnitude = 1.000000
-		duration = 0
 	}
 }
 Khajiit Eye
@@ -6461,234 +4230,27 @@ Wormwood Leaves
 		duration = 60
 	}
 }
-Glowing Pearl
+Bone Hawk Claw
 {
-	Restore Stamina
+	Damage Stamina Regen
 	{
-		magnitude = 5.000000
-		duration = 0
-	}
-	Fortify Block
-	{
-		magnitude = 4.000000
-		duration = 60
-	}
-	Restore Magicka
-	{
-		magnitude = 5.000000
-		duration = 0
-	}
-	Resist Shock
-	{
-		magnitude = 3.000000
-		duration = 60
-	}
-}
-Bandit Minotaur Horns
-{
-	Restore Stamina
-	{
-		magnitude = 30.000000
-		duration = 0
-	}
-	Fortify Heavy Armor
-	{
-		magnitude = 40.000000
-		duration = 5
-	}
-	Resist Magic
-	{
-		magnitude = 20.000000
-		duration = 4
-	}
-	Fortify Two-handed
-	{
-		magnitude = 40.000000
-		duration = 10
-	}
-}
-Dragon Claw
-{
-	Fortify Two-handed
-	{
-		magnitude = 4.000000
-		duration = 60
-	}
-	Lingering Damage Health
-	{
-		magnitude = 1.000000
-		duration = 10
+		magnitude = 4.690000
+		duration = 30
 	}
 	Fortify Marksman
 	{
-		magnitude = 4.000000
+		magnitude = 3.640000
 		duration = 60
 	}
-	Fortify Destruction
+	Fortify Conjuration
 	{
-		magnitude = 4.000000
+		magnitude = 4.560000
 		duration = 60
 	}
-}
-Dragon Bone Meal
-{
-	Fortify One-handed
-	{
-		magnitude = 4.000000
-		duration = 60
-	}
-	Fortify Health
-	{
-		magnitude = 1.000000
-		duration = 10
-	}
-	Resist Fire
-	{
-		magnitude = 3.000000
-		duration = 60
-	}
-	Resist Frost
-	{
-		magnitude = 3.000000
-		duration = 60
-	}
-}
-Crushed Amber
-{
-	Health
-	{
-		magnitude = 12.490000
-		duration = 1
-	}
-	Resist Fire
+	Drain Strength
 	{
 		magnitude = 2.200000
-		duration = 60
-	}
-	Resist Disease
-	{
-		magnitude = 100.000000
-		duration = 1665
-	}
-	Speed
-	{
-		magnitude = 1.000000
-		duration = 120
-	}
-}
-Crushed Onyx
-{
-	Fortify Block
-	{
-		magnitude = 2.020000
-		duration = 60
-	}
-	Fortify Smithing
-	{
-		magnitude = 1.470000
 		duration = 30
-	}
-	Shock Aversion
-	{
-		magnitude = 4.450000
-		duration = 30
-	}
-	Resist Shock
-	{
-		magnitude = 0.990000
-		duration = 60
-	}
-}
-Activated Werebeast Blood
-{
-	Beast Form
-	{
-		magnitude = 0.000000
-		duration = 10
-	}
-	Health Fortification
-	{
-		magnitude = 5.550000
-		duration = 60
-	}
-	Frenzy
-	{
-		magnitude = 2.800000
-		duration = 30
-	}
-	Health Regeneration
-	{
-		magnitude = 5.530000
-		duration = 240
-	}
-}
-Werebeast Blood
-{
-	Detect Life
-	{
-		magnitude = 0.000000
-		duration = 500
-	}
-	Fear
-	{
-		magnitude = 3.780000
-		duration = 30
-	}
-	Fortify Alteration
-	{
-		magnitude = 5.400000
-		duration = 60
-	}
-	Cure Disease
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-}
-Dwemer Egg
-{
-	Resist Shock
-	{
-		magnitude = 3.000000
-		duration = 60
-	}
-	Fortify Lockpicking
-	{
-		magnitude = 2.000000
-		duration = 30
-	}
-	Weakness to Shock
-	{
-		magnitude = 2.000000
-		duration = 30
-	}
-	Paralysis
-	{
-		magnitude = 0.000000
-		duration = 2
-	}
-}
-Chaurus Eggs
-{
-	Poison Aversion
-	{
-		magnitude = 3.850000
-		duration = 30
-	}
-	Night Eye
-	{
-		magnitude = 0.000000
-		duration = 665
-	}
-	Invisibility
-	{
-		magnitude = 0.000000
-		duration = 281
-	}
-	Damage Magicka
-	{
-		magnitude = 7.220000
-		duration = 1
 	}
 }
 Glow Dust
@@ -6760,210 +4322,96 @@ Sabre Cat Eye
 		duration = 1
 	}
 }
-Black Pearl
+Berit's Ashes
 {
-	Damage Undead
-	{
-		magnitude = 9.040000
-		duration = 1
-	}
-	Resist Paralysis
-	{
-		magnitude = 0.000000
-		duration = 364
-	}
-	Cure Poison
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-	Predator Vision
-	{
-		magnitude = 0.000000
-		duration = 333
-	}
-}
-Daedra Silk
-{
-	Slow
-	{
-		magnitude = 50.000000
-		duration = 469
-	}
-	Predator Vision
-	{
-		magnitude = 0.000000
-		duration = 931
-	}
-	Damage Stamina
-	{
-		magnitude = 22.200001
-		duration = 1
-	}
-	Etherealize
-	{
-		magnitude = 0.000000
-		duration = 74
-	}
-}
-Zora's Cotton
-{
-	Fortify Unarmed
-	{
-		magnitude = 0.480000
-		duration = 60
-	}
-	Resist Paralysis
-	{
-		magnitude = 0.000000
-		duration = 199
-	}
-	Fortify Block
-	{
-		magnitude = 0.780000
-		duration = 60
-	}
-	Fortify Speech
-	{
-		magnitude = 1.380000
-		duration = 60
-	}
-}
-Dried Bloodgrass
-{
-	Fortify Sneak
-	{
-		magnitude = 1.380000
-		duration = 60
-	}
-	Resist Paralysis
-	{
-		magnitude = 0.000000
-		duration = 414
-	}
-	Drain Strength
-	{
-		magnitude = 2.750000
-		duration = 30
-	}
-	Health Fortification
-	{
-		magnitude = 5.550000
-		duration = 60
-	}
-}
-Bette's Big Toe
-{
-	Damage Stamina Regen
-	{
-		magnitude = 3.850000
-		duration = 30
-	}
-	Fortify Two-handed
-	{
-		magnitude = 2.940000
-		duration = 60
-	}
-	Health Fortification
-	{
-		magnitude = 4.160000
-		duration = 60
-	}
-	Drain Strength
-	{
-		magnitude = 1.650000
-		duration = 30
-	}
-}
-Renni's Heart
-{
-	Stamina Regeneration
-	{
-		magnitude = 6.910000
-		duration = 300
-	}
-	Detect Life
-	{
-		magnitude = 0.000000
-		duration = 416
-	}
-	Damage Magicka
-	{
-		magnitude = 13.880000
-		duration = 1
-	}
-	Damage Magicka Regen
-	{
-		magnitude = 3.850000
-		duration = 30
-	}
-}
-Frodmar's Liver
-{
-	Stamina
-	{
-		magnitude = 11.100000
-		duration = 1
-	}
-	Drain Strength
-	{
-		magnitude = 3.030000
-		duration = 30
-	}
-	Cure Poison
-	{
-		magnitude = 1.000000
-		duration = 0
-	}
-	Health Fortification
-	{
-		magnitude = 3.330000
-		duration = 60
-	}
-}
-Black Mountain Flower
-{
-	Damage Health
-	{
-		magnitude = 11.120000
-		duration = 1
-	}
-	Poison Aversion
-	{
-		magnitude = 3.850000
-		duration = 30
-	}
 	Damage Stamina
 	{
 		magnitude = 12.210000
 		duration = 1
 	}
-	Cure Poison
+	Fortify Conjuration
 	{
-		magnitude = 1.000000
-		duration = 0
+		magnitude = 4.150000
+		duration = 60
+	}
+	Resist Fire
+	{
+		magnitude = 1.980000
+		duration = 60
+	}
+	Predator Vision
+	{
+		magnitude = 0.000000
+		duration = 399
 	}
 }
-Snow Thrush Egg
+Hawk Egg
 {
-	Resist Frost
+	Damage Undead
 	{
-		magnitude = 2.420000
+		magnitude = 7.650000
+		duration = 1
+	}
+	Predator Vision
+	{
+		magnitude = 0.000000
+		duration = 732
+	}
+	Fortify Smithing
+	{
+		magnitude = 1.400000
+		duration = 30
+	}
+	Lingering Damage Undead
+	{
+		magnitude = 0.240000
+		duration = 10
+	}
+}
+Dwemer Egg
+{
+	Resist Shock
+	{
+		magnitude = 3.000000
 		duration = 60
 	}
 	Fortify Lockpicking
 	{
-		magnitude = 2.800000
+		magnitude = 2.000000
 		duration = 30
 	}
-	Resist Shock
+	Weakness to Shock
 	{
-		magnitude = 2.200000
-		duration = 60
+		magnitude = 2.000000
+		duration = 30
 	}
-	Cure Disease
+	Paralysis
 	{
-		magnitude = 1.000000
-		duration = 0
+		magnitude = 0.000000
+		duration = 2
 	}
 }
+Chaurus Eggs
+{
+	Poison Aversion
+	{
+		magnitude = 3.850000
+		duration = 30
+	}
+	Predator Vision
+	{
+		magnitude = 0.000000
+		duration = 665
+	}
+	Invisibility
+	{
+		magnitude = 0.000000
+		duration = 281
+	}
+	Damage Magicka
+	{
+		magnitude = 7.220000
+		duration = 1
+	}
+}
+

@@ -1,5 +1,6 @@
 #pragma once
 #include <utility>
+#include <var.hpp>
 
 #include "using.h"
 #include "Ingredient.hpp"
@@ -89,36 +90,35 @@ namespace caco_alch {
 	struct PotionBase : ObjectBase {
 	protected:
 		EffectList _base_fx; ///< @brief The base effects of a potion, before calculating the potion magnitude.
+		bool _is_positive{ };
 
-		static std::string getName(const EffectList& effects)
+		void generate(const EffectList& effects)
 		{
 			auto strongest{ effects.end() };
 			for ( auto it{ effects.begin() }; it != effects.end(); ++it )
 				if ( strongest == effects.end() || it->_magnitude > strongest->_magnitude )
 					strongest = it;
 			if ( strongest != effects.end() ) {
-				std::string name{ " of " + strongest->_name };
-				if ( hasNegative(*strongest) )
-					name = "Poison" + name;
+				_name = " of " + strongest->_name;
+				_is_positive = !hasNegative(*strongest);
+				if ( !_is_positive )
+					_name = "Poison" + _name;
 				else if ( effects.size() > 2 )
-					name = "Elixir" + name;
+					_name = "Elixir" + _name;
 				else if ( effects.size() == 2 )
-					name = "Draught" + name;
+					_name = "Draught" + _name;
 				else
-					name = "Potion" + name;
-				return name;
+					_name = "Potion" + _name;
 			}
-			return "Potion";
+			_name = "Potion";
 		}
 
-	public:
 		explicit PotionBase(const std::string& name) : ObjectBase(name) {}
-		explicit PotionBase(EffectList effects) : ObjectBase(getName(effects)), _base_fx{ std::move(effects) } {}
 		explicit PotionBase(const IngrList& ingredients)
 		{
 			const auto common{ get_common_effects(ingredients) };
-			_name = getName(common);
-			_base_fx = std::move(common);
+			generate(common);
+			_base_fx = common;
 		}
 		explicit PotionBase(const SortedIngrList& ingredients)
 		{
@@ -126,9 +126,12 @@ namespace caco_alch {
 			for (auto& it : ingredients)
 				ingr.push_back({ it });
 			const auto common{ get_common_effects(ingr) };
-			_name = getName(common);
-			_base_fx = std::move(common);
+			generate(common);
+			_base_fx = common;
 		}
+
+	public:
+		PotionBase() = delete;
 	};
 
 	/**
@@ -145,12 +148,12 @@ namespace caco_alch {
 		 * @param gs	- Ref of a GameSettings instance.
 		 * @returns EffectList
 		 */
-		static EffectList calculate_stats(const EffectList& base, const GameSettings& gs)
+		[[nodiscard]] EffectList calculate_stats(const EffectList& base, const GameSettings& gs) const
 		{
 			EffectList vec;
 			for ( auto& it : base )
 				vec.push_back(gs.calculate(it));
-			return vec;
+			return gs.apply_pure_mixture_perk(vec, !_is_positive);
 		}
 
 	public:
@@ -176,6 +179,39 @@ namespace caco_alch {
 		 * @returns EffectList
 		 */
 		[[nodiscard]] EffectList base_effects() const { return _base_fx; }
+
+		/**
+		 * @function hasEffect(const T&...) const
+		 * @brief Check if this potion has any number of effects.
+		 * @tparam ...T		- Variadic Template
+		 * @param effects	- Any number of Effect instances.
+		 * @returns bool
+		 *			true	- Potion has at least one of the given effects.
+		 *			false	- Potion does not have any of the given effects.
+		 */
+		template<class ...T> [[nodiscard]] bool hasEffect(const T&... effects) const
+		{
+			static_assert(sizeof...(effects) > 0);
+			if ( _fx.empty() )
+				return false;
+			return var::variadic_or(std::find(_fx.begin(), _fx.end(), effects) != _fx.end()...);
+		}
+		/**
+		 * @function hasAllEffects(const T&...) const
+		 * @brief Check if this potion has all of any number of effects.
+		 * @tparam ...T		- Variadic Template
+		 * @param effects	- Any number of Effect instances.
+		 * @returns bool
+		 *			true	- Potion has all of the given effects.
+		 *			false	- Potion does not have all of the given effects.
+		 */
+		template<class ...T> [[nodiscard]] bool hasAllEffects(const T&... effects) const
+		{
+			static_assert(sizeof...(effects) > 0);
+			if ( _fx.empty() )
+				return false;
+			return var::variadic_and(std::find(_fx.begin(), _fx.end(), effects) != _fx.end()...);
+		}
 
 		friend std::ostream& operator<<(std::ostream& os, const Potion& p)
 		{

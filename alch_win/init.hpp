@@ -89,7 +89,7 @@ namespace caco_alch {
 			throw std::exception("No valid parameters detected.");
 		}
 	#endif
-		if ( args.getFlag('h') )
+		if ( args.getFlag('h') || args.check_opt("help") )
 			print(def._help_doc);
 
 		const auto path{ opt::resolve_split_path(envp, argv[0]).first };

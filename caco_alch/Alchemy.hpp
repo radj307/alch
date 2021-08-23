@@ -12,7 +12,6 @@
  * @brief Contains everything used by the caco-alch project.
  */
 namespace caco_alch {
-
 	/**
 	 * @struct IngredientCache
 	 * @brief Contains an ingredient list in convenient format.
@@ -180,7 +179,6 @@ namespace caco_alch {
 		 * @function find_ingr(const std::string&, const size_t = 0)
 		 * @brief Retrieve a case-insensitive match from the ingredient list.
 		 * @param name			- Name to search for.
-		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @param off	- Position in the list to start search from.
 		 * @returns IngrList::iterator
 		 */
@@ -209,7 +207,6 @@ namespace caco_alch {
 		 * @function find_ingr_with_effect(const std::string& name)
 		 * @brief Retrieve all ingredients that have a given effect.
 		 * @param name			- Name to search for.
-		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @returns std::vector<Ingredient>
 		 */
 		[[nodiscard]] SortedIngrList find_ingr_with_effect(std::string name)
@@ -231,7 +228,6 @@ namespace caco_alch {
 		 * @function find_ingr_with_effect(const std::string& name)
 		 * @brief Retrieve all ingredients that have a given effect.
 		 * @param names			- Names to search for.
-		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @returns std::vector<Ingredient>
 		 */
 		[[nodiscard]] SortedIngrList find_ingr_with_all_effects(std::vector<std::string> names)
@@ -258,7 +254,6 @@ namespace caco_alch {
 		 * @function find_ingr_with_effect(const std::string& name)
 		 * @brief Retrieve all ingredients that have a given effect.
 		 * @param names			- Names to search for.
-		 * @param fuzzy_search	- When true, allows partial matches in the returned list. (Ex: "smith" -> "fortify smithing")
 		 * @returns std::vector<Ingredient>
 		 */
 		[[nodiscard]] SortedIngrList find_ingr_with_any_effects(std::vector<std::string> names)
@@ -374,14 +369,14 @@ namespace caco_alch {
 				if ( !is_cache ) { // if cache hasn't been populated yet
 					is_cache = true;
 					if ( !_cache.empty() )
-						cache = _cache;
+						cache = _cache; // currently there is no way to use the long-term cache
 					else
 						cache = find_ingr_with_effect(*name);
 				}
 				else {
 					decltype(cache._ingr) tmp{  };
 					for ( auto& it : cache._ingr )
-						if ( std::any_of(it._effects.begin(), it._effects.end(), [&name](const Effect& fx){ return str::tolower(fx._name) == *name; }) )
+						if ( std::any_of(it._effects.begin(), it._effects.end(), [&name, this](const Effect& fx){ const auto lc{ str::tolower(fx._name) }; return lc == *name || !_fmt->exact() && str::pos_valid(lc.find(*name)); }) )
 							tmp.insert(it);
 					cache._ingr = tmp;
 				}
@@ -396,7 +391,7 @@ namespace caco_alch {
 					os.precision(precision); // reset output stream precision
 				}
 				if ( is_cache && cache.empty() ) {
-					os << sys::error << "Smart search didn't find anything after applying filter for \'" << Color::f::yellow << *name << Color::reset << "\'\n";
+					os << sys::error << "Didn't find anything after applying filter for \'" << Color::f::yellow << *name << Color::reset << "\'\n";
 					break;
 				}
 			}
@@ -411,7 +406,7 @@ namespace caco_alch {
 		 * @param os				- Target Output Stream.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_list_to(std::ostream& os)
+		std::ostream& print_list_to(std::ostream& os) const
 		{
 			if ( !_registry._ingr.empty() ) {
 				os << std::fixed; // force standard notation

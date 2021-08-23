@@ -220,6 +220,22 @@ namespace caco_alch {
 
 #pragma region STREAM
 		/**
+		 * @function to_stream(std::ostream&, const Keyword&, const std::string&, const unsigned = 3u)
+		 * @brief Insert a Keyword into an output stream in human-readable format.
+		 * @param os				- Target output stream.
+		 * @param kywd				- Target Keyword.
+		 * @param indentation		- String to use as indentation before each line.
+		 * @param repeatIndentation	- Repeats the indentation string this many times before the effect name.
+		 * @returns std::ostream&
+		 */
+		std::ostream& to_stream(std::ostream& os, const Keyword& kywd, const std::string& indentation, const unsigned repeatIndentation = 3u) const
+		{
+			for ( auto i{ 0u }; i < repeatIndentation; ++i )
+				os << indentation;
+			os << Color::f::gray << kywd._name << '\n';
+			return os;
+		}
+		/**
 		 * @function to_stream(std::ostream&, const Effect&, const std::string&, const std::string&)
 		 * @brief Insert an Effect into an output stream in human-readable format.
 		 * @param os				- Target output stream.
@@ -253,12 +269,15 @@ namespace caco_alch {
 			} };
 			auto size_factor{ fx._name.size() };
 			if ( fx._magnitude > 0.0 || _all )
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), static_cast<short>(_allow_color_fx ? _color_fx_mag : Color::_gray), size_factor) + 10u;
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _color_fx_mag, size_factor) + 10u;
 			if ( fx._duration > 0u || _all ) {
-				insert_num(str::to_string(fx._duration, _precision), static_cast<short>(_allow_color_fx ? _color_fx_dur : Color::_gray), size_factor);
+				insert_num(str::to_string(fx._duration, _precision), _color_fx_dur, size_factor);
 				os << 's';
 			}
 			os << Color::reset << '\n';
+			if ( _verbose || _all )
+				for ( auto& KYWD : fx._keywords )
+					to_stream(os, KYWD, indentation);
 			return os;
 		}
 		/**
@@ -295,9 +314,9 @@ namespace caco_alch {
 			} };
 			auto size_factor{ fx._name.size() };
 			if ( fx._magnitude > 0.0 || _all )
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), static_cast<short>(_allow_color_fx ? _color_fx_mag : Color::_gray), size_factor) + 10u;
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _color_fx_mag, size_factor) + 10u;
 			if ( fx._duration > 0u || _all ) {
-				insert_num(str::to_string(fx._duration, _precision), static_cast<short>(_allow_color_fx ? _color_fx_dur : Color::_gray), size_factor);
+				insert_num(str::to_string(fx._duration, _precision), _color_fx_dur, size_factor);
 				os << 's';
 			}
 			os << Color::reset << '\n';
@@ -403,6 +422,7 @@ namespace caco_alch {
 			return os;
 		}
 #pragma endregion STREAM
+
 		/**
 		 * @operator()()
 		 * @brief Retrieve a reference to this Format instance.

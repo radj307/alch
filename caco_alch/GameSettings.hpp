@@ -11,6 +11,17 @@ namespace caco_alch {
 			DOUBLE = 1,
 			BOOL = 2
 		};
+		/**
+		 * @enum PerkPhysicianType
+		 * @brief Contains the list of valid targets for the physician perk.
+		 */
+		enum class PerkPhysicianType {
+			NONE = 0u,
+			HEALTH = 1u,
+			STAMINA = 2u,
+			MAGICKA = 3u,
+			ALL = 4u
+		};
 	}
 
 	/**
@@ -267,9 +278,9 @@ namespace caco_alch {
 		{
 			return getDoubleValue("fAlchemySkillFactor");
 		}
-		[[nodiscard]] double fAlchemyAV() const
+		[[nodiscard]] unsigned fAlchemyAV() const
 		{
-			return getDoubleValue("fAlchemyAV");
+			return static_cast<unsigned>(std::round(getDoubleValue("fAlchemyAV")));
 		}
 		[[nodiscard]] double fAlchemyMod() const
 		{
@@ -280,14 +291,14 @@ namespace caco_alch {
 		 * @brief Retrieve the player's "Alchemy Mastery" perk rank.
 		 * @returns double	- Possible values: ( 0.0 | 1.0 | 2.0 )
 		 */
-		[[nodiscard]] double fPerkAlchemyMasteryRank() const
+		[[nodiscard]] unsigned fPerkAlchemyMasteryRank() const
 		{
 			auto val{ getDoubleValue("fPerkAlchemyMasteryRank") };
 			if (val > 2.0)
 				val = 2.0;
 			else if ( val < 0.0 )
 				val = 0.0;
-			return std::round(val);
+			return static_cast<unsigned>(std::round(val));
 		}
 		[[nodiscard]] bool bPerkPoisoner() const
 		{
@@ -301,7 +312,108 @@ namespace caco_alch {
 		{
 			return getBoolValue("bPerkThatWhichDoesNotKillYou");
 		}
+		[[nodiscard]] bool bPerkBenefactor() const
+		{
+			return getBoolValue("bPerkBenefactor");
+		}
+		[[nodiscard]] double fPerkPoisonerFactor() const
+		{
+			return getDoubleValue("fPerkPoisonerFactor");
+		}
+		[[nodiscard]] _internal::PerkPhysicianType sPerkPhysicianType() const
+		{
+			using namespace _internal;
+			const auto str{ str::tolower(getStringValue("sPerkPhysicianType")) };
+			if ( str::pos_valid(str.find("health")) )
+				return PerkPhysicianType::HEALTH;
+			if ( str::pos_valid(str.find("stamina")) )
+				return PerkPhysicianType::STAMINA;
+			if ( str::pos_valid(str.find("magicka")) )
+				return PerkPhysicianType::MAGICKA;
+			if ( str::pos_valid(str.find("beneficial")) || str::pos_valid(str.find("all")) )
+				return PerkPhysicianType::ALL;
+			return PerkPhysicianType::NONE;
+		}
+		/**
+		 * @function bPerkPhysicianAppliesTo(const Effect&) const
+		 * @brief Check if the physician perk applies to a given Effect.
+		 * @param effect	- The effect to check.
+		 */
+		[[nodiscard]] bool bPerkPhysicianAppliesTo(const Effect& effect) const
+		{
+			using namespace _internal;
+			using namespace Keywords;
+			switch ( sPerkPhysicianType() ) {
+			case PerkPhysicianType::HEALTH:
+				return effect.hasKeyword(KYWD_RestoreHealth, KYWD_FortifyHealth);
+			case PerkPhysicianType::STAMINA:
+				return effect.hasKeyword(KYWD_RestoreStamina, KYWD_FortifyStamina, KYWD_FortifyRegenStamina);
+			case PerkPhysicianType::MAGICKA:
+				return effect.hasKeyword(KYWD_RestoreMagicka, KYWD_FortifyMagicka, KYWD_FortifyRegenMagicka, KYWD_CACO_FortifyRegenMagicka);
+			case PerkPhysicianType::ALL:
+				return effect.hasKeyword(KYWD_Beneficial) || effect.hasKeyword(positive);
+			case PerkPhysicianType::NONE:
+				return false;
+			}
+			return false;
+		}
+		[[nodiscard]] bool bPerkPureMixture() const
+		{
+			return getBoolValue("bPerkPureMixture");
+		}
 #pragma endregion GMST_GETTERS
+	private:
+		[[nodiscard]] double calculate_base(const double base_val, const unsigned avAlchemy) const
+		{
+			const auto AVAlchemy{ static_cast<double>(avAlchemy) };
+			return	base_val
+				*	fAlchemyIngredientInitMult()
+				*	( 1.0 + AVAlchemy / 200.0 )
+				*	( 1.0 + ( fAlchemySkillFactor() - 1.0 ) )
+				*	( AVAlchemy / 100.0 )
+				*	( 1.0 + fAlchemyMod() / 100.0 );
+		}
+		[[nodiscard]] double calculate_perks(double val, const Effect& effect, const unsigned avAlchemy) const
+		{
+			const auto AVAlchemy{ static_cast<double>(avAlchemy) };
+			const auto perk_mastery{ fPerkAlchemyMasteryRank() };
+			if ( perk_mastery == 1u )
+				val *= 1.2;
+			else if ( perk_mastery == 2u )
+				val *= 1.4;
+			if ( bPerkAdvancedLab() )
+				val *= 1.25;
+			if ( bPerkBenefactor() && effect.hasKeyword(Keywords::KYWD_Beneficial) )
+				val *= 1.25;
+			if ( bPerkPoisoner() && effect.hasKeyword(Keywords::KYWD_Harmful) && !effect.hasKeyword(Keywords::KYWD_Beneficial) )
+				val *= 1.0 + AVAlchemy * fPerkPoisonerFactor();
+			if ( bPerkThatWhichDoesNotKillYou() )
+				val *= 1.25;
+			return val;
+		}
+
+	public:
+		/**
+		 * @function apply_pure_mixture_perk(EffectList&, const bool)
+		 * @brief Applies the Pure Mixture perk to an effect list. (Removes negative effects from positive potions, or positive effects from negative potions.)
+		 * @param effects		- Ref of an EffectList instance.
+		 * @param rm_positive	- When true, removes positive effects, else removes negative effects.
+		 * @returns EffectList&
+		 */
+		[[nodiscard]] EffectList& apply_pure_mixture_perk(EffectList& effects, const bool rm_positive) const
+		{
+			if ( bPerkPureMixture() ) {
+				EffectList keep{};
+				keep.reserve(effects.size());
+				for ( auto& it : effects )
+					if ( ( !rm_positive && it.hasKeyword(Keywords::positive) ) || ( rm_positive && it.hasKeyword(Keywords::negative) ) )
+						keep.push_back(it);
+				keep.shrink_to_fit();
+				effects = keep;
+				effects.shrink_to_fit();
+			}
+			return effects;
+		}
 
 		/**
 		 * @function calculate(const double) const
@@ -312,33 +424,9 @@ namespace caco_alch {
 		[[nodiscard]] Effect calculate(const Effect& effect) const
 		{
 			const auto AlchemyAV{ fAlchemyAV() };
-			const auto base_formula{ [this, &AlchemyAV](const double base_value) -> double {
-				return (
-					base_value
-					* fAlchemyIngredientInitMult()
-					* ( 1.0 + AlchemyAV / 200.0 )
-					* ( 1.0 + ( fAlchemySkillFactor() - 1.0 )
-					* ( AlchemyAV / 100.0 ) )
-					* ( 1.0 + fAlchemyMod() / 100.0 )
-				);
-			} };
-			const auto perk_formula{ [this, &AlchemyAV, &effect](double val) -> double {
-				const auto perk_mastery{ fPerkAlchemyMasteryRank() };
-				if (perk_mastery == 1.0)
-					val *= 1.2;
-				else if (perk_mastery == 2.0)
-					val *= 1.4;
-				if (bPerkAdvancedLab())
-					val *= 1.25;
-				if (bPerkPoisoner() && effect.hasKeyword(Keywords::KYWD_Harmful))
-					val *= 0.5 * AlchemyAV;
-				if (bPerkThatWhichDoesNotKillYou())
-					val *= 1.25;
-				return std::round(val);
-			} };
 			if (effect.hasKeyword(Keywords::KYWD_DurationBased))
-				return Effect{ effect._name, perk_formula(base_formula(effect._magnitude)), effect._duration, effect._keywords };
-			return Effect{ effect._name, std::round(base_formula(effect._magnitude)), static_cast<unsigned>(perk_formula(base_formula(effect._duration))), effect._keywords };
+				return Effect{ effect._name, std::round(calculate_perks(calculate_base(effect._magnitude, AlchemyAV), effect, AlchemyAV)), effect._duration, effect._keywords };
+			return Effect{ effect._name, effect._magnitude, static_cast<unsigned>(std::round(calculate_perks(calculate_base(effect._duration, AlchemyAV), effect, AlchemyAV))), effect._keywords };
 		}
 
 		/**

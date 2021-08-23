@@ -154,7 +154,7 @@ namespace caco_alch {
 	 */
 	struct DefaultObjects {
 		// @brief Contains the list of valid commandline arguments for the alch program.
-		opt::Matcher _matcher{  { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'c', 'e', 'C', 'E', 'S' }, { { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-load", true } }  };
+		opt::Matcher _matcher{  { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'c', 'e', 'C', 'E', 'S' }, { { "help", false }, { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-load", true } }  };
 		Help::Helper _help_doc{"caco-alch", "<[options] [target]>", {
 			{ "-h", "Shows this help display." },
 			{ "-l", "List all ingredients." },
@@ -168,7 +168,7 @@ namespace caco_alch {
 			{ "-R", "Reverse sorting order." },
 			{ "-C", "Receive an ingredient list from STDIN. (ex. \"cat <file> | alch -C\")" },
 			{ "-E", "File export mode, prints results in the format used by the parser so they can be read in again using '-C'." },
-			{ "-S", "Smart search, only searches for effects, but specifying multiple effects will only show ingredients that have at least 2 of them." },
+			{ "-S", "Alternative search mode that takes any number of effects, (realistically limited to 4) and only displays ingredients that have at least 2 of them." },
 			{ "--load <file>", "Allows specifying an alternative ingredient registry file." },
 			{ "--validate", "Checks if the target file can be loaded successfully, and contains valid data. Specifying this option will cause all other options to be ignored." },
 			{ "--color <string_color>", "Change the color of ingredient names. String colors must include either an 'f' (foreground) or 'b' (background), then the name of the desired color." },
@@ -183,7 +183,11 @@ namespace caco_alch {
 			{ "fAlchemyAV", 15.0 },
 			{ "fAlchemyMod", 0.0 },
 			{ "fPerkAlchemyMasteryRank", 0.0 },		// valid: 0, 1, or 2
+			{ "fPerkPoisonerFactor", 0.05 },
 			{ "bPerkPoisoner", false },
+			{ "bPerkPhysician", false },
+			{ "bPerkPureMixture", false },
+			{ "bPerkBenefactor", false },
 			{ "bPerkAdvancedLab", false },
 			{ "bPerkThatWhichDoesNotKillYou", false },
 			{ "sPerkPhysicianType", std::string("") },
