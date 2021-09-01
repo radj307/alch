@@ -50,5 +50,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Format.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)IngredientCache.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

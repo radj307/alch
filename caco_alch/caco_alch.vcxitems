@@ -24,6 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Format.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSettings.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Ingredient.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IngredientCache.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Keyword.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Potion.hpp" />
