@@ -1,9 +1,7 @@
 #pragma once
 #include <set>
-#include <file.h>
 #include "using.h"
 #include "Ingredient.hpp"
-#include "Potion.hpp"
 #include "Format.hpp"
 
 namespace caco_alch {
@@ -14,7 +12,7 @@ namespace caco_alch {
 	 * @tparam Sort	- The sorting predicate function used by the set.
 	 * @tparam Cont	- The type of set containing the list of ingredients.
 	 */
-	template<template<class> class Sort = _internal::less, template<class, class> class Cont = std::set>
+	template<template<class> class Sort, template<class, class> class Cont>
 	struct IngredientCache {
 		using Container = Cont<Ingredient, Sort<Ingredient>>;
 		Container _ingr; ///< @brief This is the live cache
@@ -101,5 +99,5 @@ namespace caco_alch {
 			return *this;
 		}
 	};
-
+	using RegistryType = IngredientCache<_internal::less, std::set>;
 }

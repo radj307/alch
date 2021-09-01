@@ -3,8 +3,8 @@
  * @author radj307
  * @brief Program entry point.
  */
-
-#define DEBUG_SWITCH ///< @brief Define this in debug configuration to switch to debug mode.
+#define TERMAPI_HPP_FORCE
+//#define DEBUG_SWITCH ///< @brief Define this in debug configuration to switch to debug mode.
 // must be in debug configuration, and have DEBUG_SWITCH defined.
 #if defined(DEBUG_SWITCH) && defined(_DEBUG)
 #define ENABLE_DEBUG
@@ -35,7 +35,7 @@ int main(const int argc, char* argv[], char* envp[])
 	// TODO: Add a "request" system to the potion-building mechanic that allows the user to request an automatically-generated potion of a certain type.
 	// TODO: Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
 	try {
-		std::cout << sys::win::EnableANSI(); // enable virtual terminal sequences
+		std::cout << sys::win::EnableANSI; // enable virtual terminal sequences
 	#ifdef ENABLE_DEBUG // DEBUG MODE
 		auto pr{ init(argc, argv, envp) };
 		return handle_arguments(std::move(pr));

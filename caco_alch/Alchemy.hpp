@@ -21,7 +21,6 @@ namespace caco_alch {
 	public:
 		const std::exception not_found{ "NOT_FOUND" };	///< @brief Exception thrown when a given search parameter couldn't be found
 		const std::exception invalid_param{ "INVALID_PARAMETERS" }; ///< @brief Exception thrown when a function receives an invalid parameter.
-		using RegistryType = IngredientCache<_internal::less, std::set>;
 	protected:
 		const Format* _fmt{ nullptr };
 		RegistryType
@@ -324,7 +323,7 @@ namespace caco_alch {
 					_fmt->to_fstream(os, _registry._ingr);
 				else {
 					os << Color::f::green << "Ingredients" << Color::reset << '\n' << Color::f::red << '{' << Color::reset << '\n';
-
+					_fmt->list_to_stream(os, _registry.getSortedList());
 					os << Color::f::red << '}' << Color::reset << '\n';
 				}
 

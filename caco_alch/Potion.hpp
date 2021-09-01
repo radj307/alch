@@ -110,7 +110,8 @@ namespace caco_alch {
 				else
 					_name = "Potion" + _name;
 			}
-			_name = "Potion";
+			else
+				_name = "Potion";
 		}
 
 		explicit PotionBase(const std::string& name) : ObjectBase(name) {}

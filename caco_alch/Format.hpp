@@ -421,6 +421,14 @@ namespace caco_alch {
 				to_stream(os, fx, "", indentation);
 			return os;
 		}
+
+		std::ostream& list_to_stream(std::ostream& os, const SortedIngrList& list) const
+		{
+			const auto indentation{ std::string(_indent, ' ') };
+			for ( auto& it : list )
+				to_stream(os, it);
+			return os;
+		}
 #pragma endregion STREAM
 
 		/**
