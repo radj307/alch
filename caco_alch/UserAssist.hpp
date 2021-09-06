@@ -148,14 +148,66 @@ namespace caco_alch {
 		}
 	}
 
+	struct DefaultPaths {
+	private:
+		static std::string combine(std::string left, std::string&& right)
+		{
+			return left.append(right);
+		}
+	public:
+		DefaultPaths(std::string local_path, std::string config, std::string gamesettings, std::string registry) : _path_config{ combine(local_path, std::move(config)) }, _path_gamesettings{ combine(local_path, std::move(gamesettings)) }, _path_registry{ combine(local_path, std::move(registry)) } {}
+		std::string 
+			_path_config, 
+			_path_gamesettings, 
+			_path_registry;
+	};
 	/**
 	 * @struct DefaultObjects
 	 * @brief Contains the overridable default objects and values used in various parts of the program.
 	 */
-	struct DefaultObjects {
+	struct {
+		const std::string _default_filename_config{ "alch.ini" }, _default_filename_gamesettings{ "alch.gamesettings" }, _default_filename_registry{ "alch.ingredients" };
+		
+		const std::string 
+			_help{ "help" },
+			_load_config{ "load-ini" },
+			_load_gamesettings{ "load-gamesettings" },
+			_load_registry{ "load-registry" };
+		const std::string
+			_reset_gamesettings{ "reset-gamesettings" };
+		const std::string
+			_set_gamesetting{ "set" };
+
 		// @brief Contains the list of valid commandline arguments for the alch program.
-		opt::Matcher _matcher{  { 'l', 's', 'a', 'h', 'q', 'v', 'b', 'c', 'e', 'C', 'E', 'S' }, { { "help", false }, { "load", true }, { "validate", false }, { "color", true }, { "precision", true }, { "name", true }, { "ini", true }, { "ini-load", true } }  };
-		Help::Helper _help_doc{"caco-alch", "<[options] [target]>", {
+		const opt::Matcher _matcher{  
+			{ // FLAGS
+				'l', // list
+				's', // search
+				'a', // all
+				'h', // help
+				'q', // quiet
+				'v', // verbose
+				'b', // build
+				'c', // color
+				'e', // exact
+				'C', // import & build
+				'E', // export
+				'S'	 // advanced search
+			},
+			{ // OPTS
+				{ _help, false },
+				{ "validate", false },
+				{ "color", true },
+				{ "precision", true }, 
+				{ "name", true }, 
+				{ _set_gamesetting, true },
+				{ _load_config, true },
+				{ _load_gamesettings, true },
+				{ _load_registry, true },
+				{ _reset_gamesettings, false },
+			}  
+		};
+		const Help::Helper _help_doc{"caco-alch", "<[options] [target]>", {
 			{ "-h", "Shows this help display." },
 			{ "-l", "List all ingredients." },
 			{ "-a", "Lists all ingredients and a list of all known effects." },
@@ -169,15 +221,17 @@ namespace caco_alch {
 			{ "-C", "Receive an ingredient list from STDIN. (ex. \"cat <file> | alch -C\")" },
 			{ "-E", "File export mode, prints results in the format used by the parser so they can be read in again using '-C'." },
 			{ "-S", "Alternative search mode that takes any number of effects, (realistically limited to 4) and only displays ingredients that have at least 2 of them." },
-			{ "--load <file>", "Allows specifying an alternative ingredient registry file." },
+			{ _help, "Shows this help display." },
+			{ "--" + _load_registry + " <Registry-Path>", "Allows specifying an alternative ingredient registry file." },
+			{ "--" + _load_config + " <INI-Path>", "Load a specific INI file." },
 			{ "--validate", "Checks if the target file can be loaded successfully, and contains valid data. Specifying this option will cause all other options to be ignored." },
 			{ "--color <string_color>", "Change the color of ingredient names. String colors must include either an 'f' (foreground) or 'b' (background), then the name of the desired color." },
 			{ "--precision <uint>", "Set the floating-point precision value when printing numbers. (Default: 2)" },
-			{ "--ini <<setting>:<value>>", "Change a value in the INI file. (Try \"cat <ini file>\" for variable names)" },
-			{ "--ini-reset", "Reset / Create an INI config file. (Used by the potion builder to calculate stats.)" },
-			{ "--ini-load <filepath>", "Load a specific INI file." },
+			{ "--" + _set_gamesetting + " << setting>:<value >>", "Change a value in the Game Settings file. ( Try \"cat <ini file>\" for variable names)"},
+			{ "--" + _reset_gamesettings, "Reset / Create a Game Settings config file. (Used by the potion builder to calculate stats.)"},
+			{ "--" + _load_gamesettings + " <GameSettings-Path>", "Load a specific Game Settings file."},
 		}};
-		GameSettings::Cont _settings{
+		const GameSettings::Cont _settings{
 			{ "fAlchemyIngredientInitMult", 3.0 },
 			{ "fAlchemySkillFactor", 3.0 },
 			{ "fAlchemyAV", 15.0 },
@@ -192,5 +246,5 @@ namespace caco_alch {
 			{ "bPerkThatWhichDoesNotKillYou", false },
 			{ "sPerkPhysicianType", std::string("") },
 		};
-	};
+	} DefaultObjects;
 }

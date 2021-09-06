@@ -12,9 +12,9 @@ namespace caco_alch {
 	 * @tparam Sort	- The sorting predicate function used by the set.
 	 * @tparam Cont	- The type of set containing the list of ingredients.
 	 */
-	template<template<class> class Sort, template<class, class> class Cont>
+	template<class Cont>
 	struct IngredientCache {
-		using Container = Cont<Ingredient, Sort<Ingredient>>;
+		using Container = Cont;
 		Container _ingr; ///< @brief This is the live cache
 		const Format* _fmt{ nullptr };
 
@@ -99,5 +99,5 @@ namespace caco_alch {
 			return *this;
 		}
 	};
-	using RegistryType = IngredientCache<_internal::less, std::set>;
+	using RegistryType = IngredientCache<std::set<Ingredient, _internal::less<Ingredient>>>;
 }

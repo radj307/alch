@@ -22,7 +22,7 @@ namespace caco_alch {
 		const std::exception not_found{ "NOT_FOUND" };	///< @brief Exception thrown when a given search parameter couldn't be found
 		const std::exception invalid_param{ "INVALID_PARAMETERS" }; ///< @brief Exception thrown when a function receives an invalid parameter.
 	protected:
-		const Format* _fmt{ nullptr };
+		const Format _fmt;
 		RegistryType
 			_registry,
 			_cache;
@@ -92,7 +92,7 @@ namespace caco_alch {
 		{
 			return std::find_if(off, _registry._ingr.end(), [&name, this](const IngrList::value_type& ingr) -> bool
 			{
-				return str::tolower(ingr._name) == name || !_fmt->exact() && str::pos_valid(str::tolower(ingr._name).find(name));
+				return str::tolower(ingr._name) == name || !_fmt.exact() && str::pos_valid(str::tolower(ingr._name).find(name));
 			});
 		}
 
@@ -121,7 +121,7 @@ namespace caco_alch {
 			SortedIngrList set;
 			for ( auto& it : _registry._ingr ) {
 				for ( const auto& fx : it._effects ) {
-					if ( const auto lc{ str::tolower(fx._name) }; lc == name || ( !_fmt->exact() && lc.find(name) != std::string::npos ) ) {
+					if ( const auto lc{ str::tolower(fx._name) }; lc == name || ( !_fmt.exact() && lc.find(name) != std::string::npos ) ) {
 						set.insert(it);
 						break; // from nested loop
 					}
@@ -143,7 +143,7 @@ namespace caco_alch {
 				bool is_match{ true };
 				for ( auto& name : names ) {
 					if ( !std::any_of(fx.begin(), fx.end(), [&name, this](const Effect& effect) {
-						return str::tolower(effect._name) == name || !_fmt->exact() && str::pos_valid(str::tolower(effect._name).find(name));
+						return str::tolower(effect._name) == name || !_fmt.exact() && str::pos_valid(str::tolower(effect._name).find(name));
 					}) )
 						is_match = false;
 				}
@@ -167,7 +167,7 @@ namespace caco_alch {
 			for (auto& it : names) it = str::tolower(it);
 			const auto matches{ [&names, this](const std::string& lc_name) {
 				return std::any_of(names.begin(), names.end(), [&lc_name, this](const std::string& name) {
-					return str::tolower(name) == lc_name || !_fmt->exact() && str::pos_valid(str::tolower(name).find(lc_name));
+					return str::tolower(name) == lc_name || !_fmt.exact() && str::pos_valid(str::tolower(name).find(lc_name));
 				});
 			} };
 			SortedIngrList set;
@@ -190,11 +190,11 @@ namespace caco_alch {
 		 * @param fmt	- Format instance.
 		 * @param gs	- GameSettings instance.
 		 */
-		explicit Alchemy(IngrList&& ingr, const Format& fmt, GameSettings&& gs) :
-			_fmt{ &fmt },
+		explicit Alchemy(IngrList&& ingr, const Format& fmt, const GameSettings& gs) :
+			_fmt{ fmt },
 			_registry{ std::move(ingr), fmt },
-			_cache{ *_fmt },
-			_GMST{ std::move(gs) }
+			_cache{ _fmt },
+			_GMST{ gs }
 		{}
 
 		/**
@@ -203,9 +203,9 @@ namespace caco_alch {
 		 * @param ingredients	- SortedIngrList rvalue ref.
 		 * @returns Potion
 		 */
-		Potion build(SortedIngrList&& ingredients) const
+		Potion build(const SortedIngrList& ingredients) const
 		{
-			return { std::forward<SortedIngrList>(ingredients), _GMST };
+			return Potion{ ingredients, _GMST };
 		}
 
 		/**
@@ -227,23 +227,23 @@ namespace caco_alch {
 			}() }; !cont.empty() ) {
 				os << std::fixed; // Set forced standard notation
 				const auto precision{ os.precision() }; // copy current output stream precision
-				os.precision(_fmt->precision()); // Set floating-point-precision.
-				if ( _fmt->file_export() ) // export registry-format ingredients
-					_fmt->to_fstream(os, cont);
+				os.precision(_fmt.precision()); // Set floating-point-precision.
+				if ( _fmt.file_export() ) // export registry-format ingredients
+					_fmt.to_fstream(os, cont);
 				else { // insert search results
-					os << Color::f::green << "Search results for: \'" << Color::f::yellow << name << Color::f::green << "\'\n" << Color::f::red << "{\n" << Color::reset;
-					if ( _fmt->reverse_output() )
+					os << color::f::green << "Search results for: \'" << color::f::yellow << name << color::f::green << "\'\n" << color::f::red << "{\n" << color::reset;
+					if ( _fmt.reverse_output() )
 						for ( auto it{ cont.rbegin() }; it != cont.rend(); ++it )
-							_fmt->to_stream(os, *it, name_lowercase);
+							_fmt.to_stream(os, *it, name_lowercase);
 					else
 						for ( auto it{ cont.begin() }; it != cont.end(); ++it )
-							_fmt->to_stream(os, *it, name_lowercase);
-					os << Color::f::red << "}" << Color::reset << std::endl;
+							_fmt.to_stream(os, *it, name_lowercase);
+					os << color::f::red << "}" << color::reset << std::endl;
 				}
 				os.precision(precision); // reset output stream precision
 			}
 			else // no results found
-				os << sys::error << "Didn't find any ingredients or effects matching \'" << Color::f::yellow << name << Color::reset << "\'\n";
+				os << sys::error << "Didn't find any ingredients or effects matching \'" << color::f::yellow << name << color::reset << "\'\n";
 			return os;
 		}
 
@@ -256,19 +256,19 @@ namespace caco_alch {
 		 */
 		std::ostream& print_smart_search_to(std::ostream& os, std::vector<std::string> names)
 		{
-			os << Color::f::green << "Search results for ";
+			os << color::f::green << "Search results for ";
 			for ( auto it{ names.begin() }; it != names.end(); ++it ) {
 				*it = str::tolower(*it);
-				os << Color::f::green << '\'' << Color::f::yellow << *it << Color::f::green << '\'';
+				os << color::f::green << '\'' << color::f::yellow << *it << color::f::green << '\'';
 				const auto has_next{ it + 1 != names.end() };
 				if ( has_next && it + 2 == names.end() )
 					os << " and ";
 				else if ( has_next )
 					os << ", ";
 			}
-			os << Color::reset << '\n' << Color::f::red << "{\n" << Color::reset;
+			os << color::reset << '\n' << color::f::red << "{\n" << color::reset;
 
-			RegistryType cache{ *_fmt };
+			RegistryType cache{ _fmt };
 
 			bool is_cache{ false };
 			for ( auto name{ names.begin() }; name != names.end(); ++name ) {
@@ -282,26 +282,26 @@ namespace caco_alch {
 				else {
 					decltype(cache._ingr) tmp{  };
 					for ( auto& it : cache._ingr )
-						if ( std::any_of(it._effects.begin(), it._effects.end(), [&name, this](const Effect& fx){ const auto lc{ str::tolower(fx._name) }; return lc == *name || !_fmt->exact() && str::pos_valid(lc.find(*name)); }) )
+						if ( std::any_of(it._effects.begin(), it._effects.end(), [&name, this](const Effect& fx){ const auto lc{ str::tolower(fx._name) }; return lc == *name || !_fmt.exact() && str::pos_valid(lc.find(*name)); }) )
 							tmp.insert(it);
 					cache._ingr = tmp;
 				}
 				if ( name + 1 == names.end() ) {
 					os << std::fixed; // Set forced standard notation
 					const auto precision{ os.precision() }; // copy current output stream precision
-					os.precision(_fmt->precision()); // Set floating-point-precision.
-					if ( _fmt->file_export() ) // export registry-format ingredients
-						_fmt->to_fstream(os, cache._ingr);
+					os.precision(_fmt.precision()); // Set floating-point-precision.
+					if ( _fmt.file_export() ) // export registry-format ingredients
+						_fmt.to_fstream(os, cache._ingr);
 					else
-						_fmt->to_stream(os, cache._ingr, names);
+						_fmt.to_stream(os, cache._ingr, names);
 					os.precision(precision); // reset output stream precision
 				}
 				if ( is_cache && cache.empty() ) {
-					os << sys::error << "Didn't find anything after applying filter for \'" << Color::f::yellow << *name << Color::reset << "\'\n";
+					os << sys::error << "Didn't find anything after applying filter for \'" << color::f::yellow << *name << color::reset << "\'\n";
 					break;
 				}
 			}
-			os << Color::f::red << "}\n" << Color::reset;
+			os << color::f::red << "}\n" << color::reset;
 			_cache = std::move(cache);
 			return os;
 		}
@@ -317,14 +317,14 @@ namespace caco_alch {
 			if ( !_registry._ingr.empty() ) {
 				os << std::fixed; // force standard notation
 				const auto precision{ os.precision() }; // copy the current precision
-				os.precision(_fmt->precision()); // set precision to 2 decimal places
+				os.precision(_fmt.precision()); // set precision to 2 decimal places
 
-				if ( _fmt->file_export() )
-					_fmt->to_fstream(os, _registry._ingr);
+				if ( _fmt.file_export() )
+					_fmt.to_fstream(os, _registry._ingr);
 				else {
-					os << Color::f::green << "Ingredients" << Color::reset << '\n' << Color::f::red << '{' << Color::reset << '\n';
-					_fmt->list_to_stream(os, _registry.getSortedList());
-					os << Color::f::red << '}' << Color::reset << '\n';
+					os << color::f::green << "Ingredients" << color::reset << '\n' << color::f::red << '{' << color::reset << '\n';
+					_fmt.list_to_stream(os, _registry.getSortedList());
+					os << color::f::red << '}' << color::reset << '\n';
 				}
 
 				os.precision(precision); // reset precision
@@ -348,32 +348,32 @@ namespace caco_alch {
 			if ( set.size() >= 2 ) { // if at least 2 valid ingredients were found
 				if ( max4 && set.size() > 4 )
 					set = [](const SortedIngrList& set){ SortedIngrList nset; unsigned count{0u}; for (auto& it : set) { nset.insert(it); if (++count == 4u) break; } return nset; }(set);
-				const auto indentation{ std::string(_fmt->indent(), ' ') };
+				const auto indentation{ std::string(_fmt.indent(), ' ') };
 				const auto precision{ os.precision() };
-				os.precision(_fmt->precision());
+				os.precision(_fmt.precision());
 				os << std::fixed;
 
 				const auto skill_base{ _GMST.fAlchemyAV() };
-				os << Color::f::green << "Potion Builder [Alchemy Skill: " << Color::f::cyan << skill_base;
+				os << color::f::green << "Potion Builder [Alchemy Skill: " << color::f::cyan << skill_base;
 				if ( const auto skill_mod{ _GMST.fAlchemyMod() }; skill_mod > 0.0 )
-					os << Color::reset << "(" << Color::f::green << skill_base + skill_mod << Color::reset << ")";
-				os << Color::f::green << ']' << Color::reset << '\n';
+					os << color::reset << "(" << color::f::green << skill_base + skill_mod << color::reset << ")";
+				os << color::f::green << ']' << color::reset << '\n';
 
-				const auto potion{ build(std::forward<SortedIngrList>(set)) };
+				const auto potion{ build(set) };
 
-				os << Color::f::green << "Input:\n" << Color::f::red << '{' << Color::reset << '\n';
+				os << color::f::green << "Input:\n" << color::f::red << '{' << color::reset << '\n';
 				for ( auto& it : set )
-					_fmt->to_stream_build(os, it, potion);
-				os << Color::f::red << '}' << Color::reset << '\n';
+					_fmt.to_stream_build(os, it, potion);
+				os << color::f::red << '}' << color::reset << '\n';
 
 				if ( potion.effects().empty() )
 					throw std::exception("Potion creation failed.");
 
-				os << Color::f::green << "Output:\n" << Color::f::red << '{' << Color::reset << '\n';
+				os << color::f::green << "Output:\n" << color::f::red << '{' << color::reset << '\n';
 
-				_fmt->to_stream(os, potion, indentation);
+				_fmt.to_stream(os, potion, indentation);
 
-				os << Color::f::red << '}' << Color::reset << '\n';
+				os << color::f::red << '}' << color::reset << '\n';
 				os.precision(precision); // Reset precision
 				return os;
 			}
@@ -398,12 +398,12 @@ namespace caco_alch {
 				else os << sys::warn << "Couldn't find ingredient: \"" << it << "\"\n";
 			}
 			if ( cont.size() > 4 ) cont.erase(cont.begin() + 4u, cont.end());
-			return print_build_to(os, std::forward<std::vector<Ingredient>>(cont), _fmt);
+			return print_build_to(os, std::forward<std::vector<Ingredient>>(cont));
 		}
 		[[nodiscard]] bool writeCacheToFile(const std::string& filename, const bool append = false) const
 		{
 			if ( !_cache.empty() )
-				return file::write(filename, std::stringstream{ _fmt->to_fstream(_cache._ingr) }, append);
+				return file::write(filename, std::stringstream{ _fmt.to_fstream(_cache._ingr) }, append);
 			return false;
 		}
 	};

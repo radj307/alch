@@ -160,7 +160,7 @@ namespace caco_alch {
 	public:
 		Potion(const IngrList& ingredients, const GameSettings& gs) : PotionBase(ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
 		Potion(IngrList&& ingredients, const GameSettings& gs) : PotionBase(std::forward<IngrList>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(SortedIngrList&& ingredients, const GameSettings& gs) : PotionBase(std::forward<SortedIngrList>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const SortedIngrList& ingredients, const GameSettings& gs) : PotionBase(ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
 
 		/**
 		 * @function name() const

@@ -40,7 +40,6 @@ int main(const int argc, char* argv[], char* envp[])
 		auto pr{ init(argc, argv, envp) };
 		return handle_arguments(std::move(pr));
 	#else // RELEASE MODE
-		Color::highIntensity(true);
 		return handle_arguments(init(argc, argv, envp));
 	#endif
 	} catch ( std::exception& ex ) {

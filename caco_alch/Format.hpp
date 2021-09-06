@@ -19,16 +19,16 @@ namespace caco_alch {
 		size_t _indent, _precision;
 		short
 			_color,									// Ingredient color
-			_color_highlight{ Color::_yellow },	// Search string highlight color.
-			_color_fx_positive{ Color::_green },		// Positive effect color.
-			_color_fx_negative{ Color::_red },		// Negative effect color.
-			_color_fx_neutral{ Color::_blue },		// Negative effect color.
-			_color_fx_mag{ Color::_magenta },		// Effect Magnitude color.
-			_color_fx_dur{ Color::_cyan };		// Effect Duration color.
+			_color_highlight{ color::yellow },	// Search string highlight color.
+			_color_fx_positive{ color::intense_green },		// Positive effect color.
+			_color_fx_negative{ color::intense_red },		// Negative effect color.
+			_color_fx_neutral{ color::intense_blue },		// Negative effect color.
+			_color_fx_mag{ color::intense_magenta },		// Effect Magnitude color.
+			_color_fx_dur{ color::intense_cyan };		// Effect Duration color.
 
 	public:
 		/**
-		 * @constructor Format(const bool = false, const bool = true, const bool = false, const bool = false, const size_t = 3u, const size_t = 2u, const unsigned short = Color::_f_white)
+		 * @constructor Format(const bool = false, const bool = true, const bool = false, const bool = false, const size_t = 3u, const size_t = 2u, const unsigned short = color::_f_white)
 		 * @brief Default Constructor
 		 * @param quiet				- When true, only includes effects that match part of the search string in results.
 		 * @param verbose			- When true, includes additional information about an effect's magnitude and duration.
@@ -42,7 +42,7 @@ namespace caco_alch {
 		 * @param precision			- How many decimal points of precision to use when outputting floating points.
 		 * @param color				- General color override, changes the color of Ingredient names for search, list, and build.
 		 */
-		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const bool use_local_cache = false, const size_t indent = 3u, const size_t precision = 2u, const short color = Color::_white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != Color::_white }, _allow_color_fx{ allow_color_fx }, _cache{ use_local_cache }, _indent{ indent }, _precision{ precision }, _color{ color } {}
+		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const bool use_local_cache = false, const size_t indent = 3u, const size_t precision = 2u, const short color = color::white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != color::white }, _allow_color_fx{ allow_color_fx }, _cache{ use_local_cache }, _indent{ indent }, _precision{ precision }, _color{ color } {}
 
 #pragma region GETTERS
 		[[nodiscard]] bool quiet() const { return _quiet; }
@@ -154,7 +154,7 @@ namespace caco_alch {
 			 || str::pos_valid(name_lc.find("speed"))
 			)
 				return _color_fx_positive;
-			return Color::_white; // else return white
+			return color::white; // else return white
 		}
 
 #pragma region FSTREAM
@@ -232,7 +232,7 @@ namespace caco_alch {
 		{
 			for ( auto i{ 0u }; i < repeatIndentation; ++i )
 				os << indentation;
-			os << Color::f::gray << kywd._name << '\n';
+			os << color::f::gray << kywd._name << '\n';
 			return os;
 		}
 		/**
@@ -253,11 +253,11 @@ namespace caco_alch {
 			for ( auto i{ 0u }; i < repeatIndentation; ++i )
 				os << indentation;
 			sys::colorSet(fx_color);
-			os << pre << Color::reset;
+			os << pre << color::reset;
 			sys::colorSet(_color_highlight);
 			os << highlight;
 			sys::colorSet(fx_color);
-			os << post << Color::reset;
+			os << post << color::reset;
 			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
 					os << std::setw(indent + 2u) << ' ';
@@ -274,7 +274,7 @@ namespace caco_alch {
 				insert_num(str::to_string(fx._duration, _precision), _color_fx_dur, size_factor);
 				os << 's';
 			}
-			os << Color::reset << '\n';
+			os << color::reset << '\n';
 			if ( _verbose || _all )
 				for ( auto& KYWD : fx._keywords )
 					to_stream(os, KYWD, indentation);
@@ -298,11 +298,11 @@ namespace caco_alch {
 			for ( auto i{ 0u }; i < repeatIndentation; ++i )
 				os << indentation;
 			sys::colorSet(fx_color);
-			os << pre << Color::reset;
+			os << pre << color::reset;
 			sys::colorSet(_color_highlight);
 			os << highlight;
 			sys::colorSet(fx_color);
-			os << post << Color::reset;
+			os << post << color::reset;
 			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
 					os << std::setw(indent + 2u) << ' ';
@@ -319,7 +319,7 @@ namespace caco_alch {
 				insert_num(str::to_string(fx._duration, _precision), _color_fx_dur, size_factor);
 				os << 's';
 			}
-			os << Color::reset << '\n';
+			os << color::reset << '\n';
 			return os;
 		}
 
@@ -337,11 +337,11 @@ namespace caco_alch {
 			const auto [pre, highlight, post]{ get_tuple(ingr._name, search_str) };
 			os << indentation; // insert indentation
 			sys::colorSet(_color); // set color
-			os << pre << Color::reset;
+			os << pre << color::reset;
 			sys::colorSet(_color_highlight);
-			os << highlight << Color::reset;
+			os << highlight << color::reset;
 			sys::colorSet(_color); // set color
-			os << post << Color::reset << '\n';
+			os << post << color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, { search_str }) ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, search_str, indentation, 2u, 25u);
 			return os;
@@ -361,7 +361,7 @@ namespace caco_alch {
 			const auto to_stream{ [this, &os, &search_strings, &indentation](const SortedIngrList::iterator it) {
 				os << indentation;
 				sys::colorSet(_color);
-				os << it->_name << Color::reset << '\n';
+				os << it->_name << color::reset << '\n';
 				for ( auto& fx : it->_effects )
 					this->to_stream(os, fx, search_strings, indentation);
 			} };
@@ -387,11 +387,11 @@ namespace caco_alch {
 			const auto [pre, highlight, post]{ get_tuple(potion.name(), "") };
 			os << indentation; // insert indentation
 			sys::colorSet(_color); // set color
-			os << pre << Color::reset;
+			os << pre << color::reset;
 			sys::colorSet(_color_highlight);
-			os << highlight << Color::reset;
+			os << highlight << color::reset;
 			sys::colorSet(_color); // set color
-			os << post << Color::reset << '\n';
+			os << post << color::reset << '\n';
 			for ( auto& fx : potion.effects() ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, "", indentation, 2u, 25u);
 			return os;
@@ -416,7 +416,7 @@ namespace caco_alch {
 			}() };
 			os << indentation;
 			sys::colorSet(_color);
-			os << ingr._name << Color::reset << '\n';
+			os << ingr._name << color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, names_lc) ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, "", indentation);
 			return os;
