@@ -11,7 +11,7 @@
 #include <xRand.h>
 #endif
 
-#include <TermAPIWin.hpp>
+#include <TermAPI.hpp>
 #include "UserAssist.hpp"
 #include "init.hpp"
 
@@ -35,7 +35,7 @@ int main(const int argc, char* argv[], char* envp[])
 	// TODO: Add a "request" system to the potion-building mechanic that allows the user to request an automatically-generated potion of a certain type.
 	// TODO: Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
 	try {
-		std::cout << sys::win::EnableANSI; // enable virtual terminal sequences
+		std::cout << sys::term::EnableANSI; // enable virtual terminal sequences
 	#ifdef ENABLE_DEBUG // DEBUG MODE
 		auto pr{ init(argc, argv, envp) };
 		return handle_arguments(std::move(pr));
@@ -43,10 +43,10 @@ int main(const int argc, char* argv[], char* envp[])
 		return handle_arguments(init(argc, argv, envp));
 	#endif
 	} catch ( std::exception& ex ) {
-		std::cout << sys::error << ex.what() << std::endl;
+		std::cout << sys::term::error << ex.what() << std::endl;
 		return -1;
 	} catch ( ... ) {
-		std::cout << sys::error << "An unknown exception occurred." << std::endl;
+		std::cout << sys::term::error << "An unknown exception occurred." << std::endl;
 		return -2;
 	}
 }

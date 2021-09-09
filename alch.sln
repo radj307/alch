@@ -11,13 +11,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SharedLib", "..\shared libr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "build-registry", "build-registry\build-registry.vcxproj", "{6B0EF6DF-D397-44CE-B827-6AB2EE279F84}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "parserlib", "..\..\ArgumentParser\parserlib\parserlib.vcxitems", "{D67CD0B3-39B2-4B74-944A-CF68A393AEDE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\shared library\SharedLib\SharedLib.vcxitems*{25144a18-ee89-4ceb-92e5-fdacf4247449}*SharedItemsImports = 9
 		caco_alch\caco_alch.vcxitems*{6b0ef6df-d397-44ce-b827-6ab2ee279f84}*SharedItemsImports = 4
 		..\shared library\SharedLib\SharedLib.vcxitems*{6b0ef6df-d397-44ce-b827-6ab2ee279f84}*SharedItemsImports = 4
+		..\..\ArgumentParser\parserlib\parserlib.vcxitems*{6f1aba7f-4bbe-4d68-a5d1-a625452cddda}*SharedItemsImports = 4
 		caco_alch\caco_alch.vcxitems*{6f1aba7f-4bbe-4d68-a5d1-a625452cddda}*SharedItemsImports = 4
 		..\shared library\SharedLib\SharedLib.vcxitems*{6f1aba7f-4bbe-4d68-a5d1-a625452cddda}*SharedItemsImports = 4
+		..\..\ArgumentParser\parserlib\parserlib.vcxitems*{d67cd0b3-39b2-4b74-944a-cf68a393aede}*SharedItemsImports = 9
 		caco_alch\caco_alch.vcxitems*{fc2e44f0-3525-476a-91ff-97fe78b57ec7}*SharedItemsImports = 9
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

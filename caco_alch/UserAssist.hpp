@@ -8,7 +8,8 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-#include <optlib.hpp>
+//#include <optlib.hpp>
+#include <Params.hpp>
 #include <utility>
 
 #include "Alchemy.hpp"
@@ -23,42 +24,43 @@ namespace caco_alch {
 	 * @param gs	- Gamesettings instance rvalue.
 	 * @returns int - see main() documentation
 	 */
-	inline int handle_arguments(opt::Param&& args, Alchemy&& alch)
+	inline int handle_arguments(opt::Params&& args, Alchemy&& alch)
 	{
-		if ( args.getFlag('C') ) {
+		if ( args.check_flag('C') ) {
 			std::stringstream buffer;
 			buffer << std::cin.rdbuf();
 			alch.print_build_to(std::cout, parseFileContent(buffer)).flush();
 		}
 		else {
-			if ( args.getFlag('l') ) // List mode
+			const auto params{ args.getAllWithType<opt::Parameter>() };
+			if ( args.check_flag('l') ) // List mode
 				alch.print_list_to(std::cout).flush();
-			if ( args.getFlag('b') ) // Build mode
-				alch.print_build_to(std::cout, args._param).flush();
-			else if ( const auto smart{ args.getFlag('S') }; args.getFlag('s') || smart ) { // Search mode
+			if ( args.check_flag('b') ) // Build mode
+				alch.print_build_to(std::cout, params).flush();
+			else if ( const auto smart{ args.check_flag('S') }; args.check_flag('s') || smart ) { // Search mode
 				if ( smart )
-					alch.print_smart_search_to(std::cout, args._param);
+					alch.print_smart_search_to(std::cout, params);
 				else
-					for ( auto it{ args._param.begin() }; it != args._param.end(); ++it )
+					for ( auto it{ params.begin() }; it != params.end(); ++it )
 						alch.print_search_to(std::cout, *it).flush();
 			}
 		}
-		if ( args.getFlag('S') ) {
+		if ( args.check_flag('S') ) {
 			if ( const std::string filename{ "alch.cache" }; alch.writeCacheToFile(filename) ) {
 			#ifdef ENABLE_DEBUG
-				std::cout << sys::msg << "Successfully saved cache to \"" << filename << "\"" << std::endl;
+				std::cout << sys::term::msg << "Successfully saved cache to \"" << filename << "\"" << std::endl;
 			#endif
 			}
 			else {
 			#ifdef ENABLE_DEBUG
-				std::cout << sys::warn << "Failed to write cache to \"" << filename << "\"" << std::endl;
+				std::cout << sys::term::warn << "Failed to write cache to \"" << filename << "\"" << std::endl;
 			#endif
 			}
 		}
 		return 0;
 	}
 
-	inline int handle_arguments(std::tuple<opt::Param, Alchemy>&& pr) { return handle_arguments(std::forward<opt::Param>(std::get<0>(pr)), std::forward<Alchemy>(std::get<1>(pr))); }
+	inline int handle_arguments(std::tuple<opt::Params, Alchemy>&& pr) { return handle_arguments(std::forward<opt::Params>(std::get<0>(pr)), std::forward<Alchemy>(std::get<1>(pr))); }
 
 	/**
 	 * @namespace Help
@@ -156,9 +158,9 @@ namespace caco_alch {
 		}
 	public:
 		DefaultPaths(std::string local_path, std::string config, std::string gamesettings, std::string registry) : _path_config{ combine(local_path, std::move(config)) }, _path_gamesettings{ combine(local_path, std::move(gamesettings)) }, _path_registry{ combine(local_path, std::move(registry)) } {}
-		std::string 
-			_path_config, 
-			_path_gamesettings, 
+		std::string
+			_path_config,
+			_path_gamesettings,
 			_path_registry;
 	};
 	/**
@@ -167,8 +169,8 @@ namespace caco_alch {
 	 */
 	struct {
 		const std::string _default_filename_config{ "alch.ini" }, _default_filename_gamesettings{ "alch.gamesettings" }, _default_filename_registry{ "alch.ingredients" };
-		
-		const std::string 
+
+		const std::string
 			_help{ "help" },
 			_load_config{ "load-ini" },
 			_load_gamesettings{ "load-gamesettings" },
@@ -178,8 +180,18 @@ namespace caco_alch {
 		const std::string
 			_set_gamesetting{ "set" };
 
+		const std::vector<std::string> _matcher{
+			"color",
+			"precision",
+			"name",
+			_set_gamesetting,
+			_load_config,
+			_load_gamesettings,
+			_load_registry
+		};
+
 		// @brief Contains the list of valid commandline arguments for the alch program.
-		const opt::Matcher _matcher{  
+		/*const opt::Matcher _matcher{
 			{ // FLAGS
 				'l', // list
 				's', // search
@@ -198,15 +210,15 @@ namespace caco_alch {
 				{ _help, false },
 				{ "validate", false },
 				{ "color", true },
-				{ "precision", true }, 
-				{ "name", true }, 
+				{ "precision", true },
+				{ "name", true },
 				{ _set_gamesetting, true },
 				{ _load_config, true },
 				{ _load_gamesettings, true },
 				{ _load_registry, true },
 				{ _reset_gamesettings, false },
-			}  
-		};
+			}
+		};*/
 		const Help::Helper _help_doc{"caco-alch", "<[options] [target]>", {
 			{ "-h", "Shows this help display." },
 			{ "-l", "List all ingredients." },

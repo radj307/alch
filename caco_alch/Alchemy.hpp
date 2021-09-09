@@ -243,7 +243,7 @@ namespace caco_alch {
 				os.precision(precision); // reset output stream precision
 			}
 			else // no results found
-				os << sys::error << "Didn't find any ingredients or effects matching \'" << color::f::yellow << name << color::reset << "\'\n";
+				os << sys::term::error << "Didn't find any ingredients or effects matching \'" << color::f::yellow << name << color::reset << "\'\n";
 			return os;
 		}
 
@@ -297,7 +297,7 @@ namespace caco_alch {
 					os.precision(precision); // reset output stream precision
 				}
 				if ( is_cache && cache.empty() ) {
-					os << sys::error << "Didn't find anything after applying filter for \'" << color::f::yellow << *name << color::reset << "\'\n";
+					os << sys::term::error << "Didn't find anything after applying filter for \'" << color::f::yellow << *name << color::reset << "\'\n";
 					break;
 				}
 			}
@@ -395,7 +395,7 @@ namespace caco_alch {
 				const auto ingr{ find_ingr(str::tolower(it)) };
 				if ( ingr != _registry._ingr.end() )
 					cont.push_back(*ingr);
-				else os << sys::warn << "Couldn't find ingredient: \"" << it << "\"\n";
+				else os << sys::term::warn << "Couldn't find ingredient: \"" << it << "\"\n";
 			}
 			if ( cont.size() > 4 ) cont.erase(cont.begin() + 4u, cont.end());
 			return print_build_to(os, std::forward<std::vector<Ingredient>>(cont));
