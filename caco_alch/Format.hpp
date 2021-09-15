@@ -252,19 +252,13 @@ namespace caco_alch {
 			const auto fx_color{ resolveEffectColor(fx) };
 			for ( auto i{ 0u }; i < repeatIndentation; ++i )
 				os << indentation;
-			color::setcolor(fx_color, true);
-			os << pre << color::reset;
-			color::setcolor(_color_highlight, true);
-			os << highlight;
-			color::setcolor(fx_color, true);
-			os << post << color::reset;
+			os << color::setcolor(fx_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::setcolor(fx_color, true) << post << color::reset;
 			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
 					os << std::setw(static_cast<std::streamsize>(indent) + 2u) << ' ';
 				else
 					os << std::setw(ind_fac - static_cast<std::streamsize>(indent)) << ' ';
-				color::setcolor(color, true);
-				os << num;
+				os << color::setcolor(color, true) << num << color::reset;
 				return num.size();
 			} };
 			auto size_factor{ fx._name.size() };
@@ -297,19 +291,13 @@ namespace caco_alch {
 			const auto fx_color{ resolveEffectColor(fx) };
 			for ( auto i{ 0u }; i < repeatIndentation; ++i )
 				os << indentation;
-			color::setcolor(fx_color, true);
-			os << pre << color::reset;
-			color::setcolor(_color_highlight, true);
-			os << highlight;
-			color::setcolor(fx_color, true);
-			os << post << color::reset;
+			os << color::setcolor(fx_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::setcolor(fx_color, true) << post << color::reset;
 			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
 					os << std::setw(indent + 2u) << ' ';
 				else
 					os << std::setw(ind_fac - indent) << ' ';
-				color::setcolor(color, true);
-				os << num;
+				os << color::setcolor(color, true) << num;
 				return num.size();
 			} };
 			auto size_factor{ fx._name.size() };
@@ -335,13 +323,7 @@ namespace caco_alch {
 		{
 			const auto indentation{ std::string(_indent, ' ') }; // get indentation string
 			const auto [pre, highlight, post]{ get_tuple(ingr._name, search_str) };
-			os << indentation; // insert indentation
-			color::setcolor(_color, true); // set color
-			os << pre << color::reset;
-			color::setcolor(_color_highlight, true);
-			os << highlight << color::reset;
-			color::setcolor(_color, true); // set color
-			os << post << color::reset << '\n';
+			os << indentation << color::setcolor(_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::reset << color::setcolor(_color, true) << post << color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, { search_str }) ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, search_str, indentation, 2u, 25u);
 			return os;
@@ -359,9 +341,7 @@ namespace caco_alch {
 		{
 			const auto indentation{ std::string(_indent, ' ') };
 			const auto to_stream{ [this, &os, &search_strings, &indentation](const SortedIngrList::iterator it) {
-				os << indentation;
-				color::setcolor(_color, true);
-				os << it->_name << color::reset << '\n';
+				os << indentation << color::setcolor(_color, true) << it->_name << color::reset << '\n';
 				for ( auto& fx : it->_effects )
 					this->to_stream(os, fx, search_strings, indentation);
 			} };
@@ -385,13 +365,7 @@ namespace caco_alch {
 		std::ostream& to_stream(std::ostream& os, const Potion& potion, const std::string& indentation) const
 		{
 			const auto [pre, highlight, post]{ get_tuple(potion.name(), "") };
-			os << indentation; // insert indentation
-			color::setcolor(_color, true); // set color
-			os << pre << color::reset;
-			color::setcolor(_color_highlight, true);
-			os << highlight << color::reset;
-			color::setcolor(_color, true); // set color
-			os << post << color::reset << '\n';
+			os << indentation << color::setcolor(_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::reset << color::setcolor(_color, true) << post << color::reset << '\n';
 			for ( auto& fx : potion.effects() ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, "", indentation, 2u, 25u);
 			return os;
@@ -414,9 +388,7 @@ namespace caco_alch {
 					vec.push_back(str::tolower(it._name));
 				return vec;
 			}() };
-			os << indentation;
-			color::setcolor(_color, true);
-			os << ingr._name << color::reset << '\n';
+			os << indentation << color::setcolor(_color, true) << ingr._name << color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, names_lc) ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, "", indentation);
 			return os;

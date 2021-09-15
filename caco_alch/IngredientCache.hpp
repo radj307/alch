@@ -99,5 +99,115 @@ namespace caco_alch {
 			return *this;
 		}
 	};
-	using RegistryType = IngredientCache<std::set<Ingredient, _internal::less<Ingredient>>>;
+	struct RegistryType : IngredientCache<std::set<Ingredient, _internal::less<Ingredient>>> {
+
+		explicit RegistryType(const Format& fmt) : IngredientCache(fmt) {}
+		explicit RegistryType(Container&& ingr_cont, const Format& fmt) : IngredientCache(std::move(ingr_cont), fmt) {}
+		RegistryType(IngrList&& ingr_cont, const Format& fmt) : IngredientCache(std::move(ingr_cont), fmt) {}
+
+		enum class FindType {
+			BOTH,
+			INGR,
+			EFFECT
+		};
+
+		Container find(std::string name, const FindType& search = FindType::BOTH) const
+		{
+			name = str::tolower(name);
+
+			Container cont;
+
+			switch (search) {
+			case FindType::INGR:
+				for (auto& it : _ingr)
+					if (const auto name_lc{ str::tolower(it._name) }; name_lc == name || !_fmt->exact() && str::pos_valid(name_lc.find(name)))
+						cont.insert(it);
+				break;
+			case FindType::BOTH:
+				for (auto& it : _ingr)
+					if (const auto name_lc{ str::tolower(it._name) }; name_lc == name || !_fmt->exact() && str::pos_valid(name_lc.find(name)) || std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { const auto lc{ str::tolower(fx._name) }; return lc == name || !_fmt->exact() && str::pos_valid(lc.find(name)); }))
+						cont.insert(it);
+				break;
+			case FindType::EFFECT:
+				for (auto& it : _ingr)
+					if (std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { const auto lc{ str::tolower(fx._name) }; return lc == name || !_fmt->exact() && str::pos_valid(lc.find(name)); }))
+						cont.insert(it);
+			}
+			return cont;
+		}
+		RegistryType find_and_duplicate(std::string name, const FindType& search = FindType::BOTH) const
+		{
+			name = str::tolower(name);
+
+			Container cont;
+
+			switch (search) {
+			case FindType::INGR:
+				for (auto& it : _ingr)
+					if (const auto name_lc{ str::tolower(it._name) }; name_lc == name || !_fmt->exact() && str::pos_valid(name_lc.find(name)))
+						cont.insert(it);
+				break;
+			case FindType::BOTH:
+				for (auto& it : _ingr)
+					if (const auto name_lc{ str::tolower(it._name) }; name_lc == name || !_fmt->exact() && str::pos_valid(name_lc.find(name)) || std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { const auto lc{ str::tolower(fx._name) }; return lc == name || !_fmt->exact() && str::pos_valid(lc.find(name)); }))
+						cont.insert(it);
+				break;
+			case FindType::EFFECT:
+				for (auto& it : _ingr)
+					if (std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { const auto lc{ str::tolower(fx._name) }; return lc == name || !_fmt->exact() && str::pos_valid(lc.find(name)); }))
+						cont.insert(it);
+			}
+			return RegistryType{ std::move(cont), *_fmt };
+		}
+		Container::const_iterator find_best_fit(std::string name, const FindType& search = FindType::INGR) const
+		{
+			std::vector<Container::const_iterator> vec;
+
+			switch (search) {
+			case FindType::INGR:
+				for (auto it{ _ingr.begin() }; it != _ingr.end(); ++it) {
+					const auto name_lc{ str::tolower(it->_name) };
+					if (name_lc == name)
+						return it;
+					else if (str::pos_valid(name_lc.find(name)))
+						vec.emplace_back(it);
+				}
+				break;
+			case FindType::BOTH:
+				for (auto it{ _ingr.begin() }; it != _ingr.end(); ++it ) {
+					const auto name_lc{ str::tolower(it->_name) };
+					if (name_lc == name)
+						return it;
+					else if (!_fmt->exact() && str::pos_valid(name_lc.find(name)))
+						vec.emplace_back(it);
+					else for (auto fx{ it->_effects.begin() }; fx != it->_effects.end(); ++fx) {
+						const auto lc{ str::tolower(fx->_name) };
+						if (lc == name)
+							return it;
+						else if (str::pos_valid(lc.find(name)))
+							vec.emplace_back(it);
+					}
+				}
+				break;
+			case FindType::EFFECT:
+				for (auto it{ _ingr.begin() }; it != _ingr.end(); ++it) {
+					for (auto fx{ it->_effects.begin() }; fx != it->_effects.end(); ++fx) {
+						const auto lc{ str::tolower(fx->_name) };
+						if (lc == name)
+							return it;
+						else if (str::pos_valid(lc.find(name)))
+							vec.emplace_back(it);
+					}
+				}
+				break;
+			}
+			if (vec.empty())
+				return _ingr.end();
+			return vec.front();
+		}
+
+		explicit operator Container() const { return _ingr; }
+	};
+
+	//using RegistryType = IngredientCache<std::set<Ingredient, _internal::less<Ingredient>>>;
 }

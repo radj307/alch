@@ -1,6 +1,7 @@
 #pragma once
 #include <set>
 #include <strconv.hpp>
+#include <strmanip.hpp>
 #include <file.h>
 #include "using.h"
 #include "Ingredient.hpp"
@@ -18,9 +19,6 @@ namespace caco_alch {
 	 * @brief Contains the ingredient registry and functions related to interacting with it.
 	 */
 	class Alchemy {
-	public:
-		const std::exception not_found{ "NOT_FOUND" };	///< @brief Exception thrown when a given search parameter couldn't be found
-		const std::exception invalid_param{ "INVALID_PARAMETERS" }; ///< @brief Exception thrown when a function receives an invalid parameter.
 	protected:
 		const Format _fmt;
 		RegistryType
@@ -80,107 +78,6 @@ namespace caco_alch {
 					ret.insert(Effect{ fx._name, -0.0, 0u });
 			return ret;
 		}
-
-		/**
-		 * @function find_ingr(const std::string&, const size_t = 0)
-		 * @brief Retrieve a case-insensitive match from the ingredient list.
-		 * @param name			- Name to search for.
-		 * @param off	- Position in the list to start search from.
-		 * @returns IngrList::iterator
-		 */
-		[[nodiscard]] SortedIngrList::iterator find_ingr(const std::string& name, const SortedIngrList::iterator& off)
-		{
-			return std::find_if(off, _registry._ingr.end(), [&name, this](const IngrList::value_type& ingr) -> bool
-			{
-				return str::tolower(ingr._name) == name || !_fmt.exact() && str::pos_valid(str::tolower(ingr._name).find(name));
-			});
-		}
-
-		[[nodiscard]] SortedIngrList::iterator find_ingr(const std::string& name)
-		{
-			return find_ingr(name, _registry._ingr.begin());
-		}
-
-		[[nodiscard]] SortedIngrList find_ingr_list(const std::string& name)
-		{
-			SortedIngrList list;
-			for ( auto it{ find_ingr(name) }; it != _registry._ingr.end(); it = find_ingr(name, ++it) )
-				list.insert(*it);
-			return list;
-		}
-
-		/**
-		 * @function find_ingr_with_effect(const std::string& name)
-		 * @brief Retrieve all ingredients that have a given effect.
-		 * @param name			- Name to search for.
-		 * @returns std::vector<Ingredient>
-		 */
-		[[nodiscard]] SortedIngrList find_ingr_with_effect(std::string name)
-		{
-			name = str::tolower(name);
-			SortedIngrList set;
-			for ( auto& it : _registry._ingr ) {
-				for ( const auto& fx : it._effects ) {
-					if ( const auto lc{ str::tolower(fx._name) }; lc == name || ( !_fmt.exact() && lc.find(name) != std::string::npos ) ) {
-						set.insert(it);
-						break; // from nested loop
-					}
-				}
-			}
-			return set;
-		}
-
-		/**
-		 * @function find_ingr_with_effect(const std::string& name)
-		 * @brief Retrieve all ingredients that have a given effect.
-		 * @param names			- Names to search for.
-		 * @returns std::vector<Ingredient>
-		 */
-		[[nodiscard]] SortedIngrList find_ingr_with_all_effects(std::vector<std::string> names)
-		{
-			for (auto& it : names) it = str::tolower(it);
-			const auto matches{ [&names, this](const std::array<Effect, 4>& fx) {
-				bool is_match{ true };
-				for ( auto& name : names ) {
-					if ( !std::any_of(fx.begin(), fx.end(), [&name, this](const Effect& effect) {
-						return str::tolower(effect._name) == name || !_fmt.exact() && str::pos_valid(str::tolower(effect._name).find(name));
-					}) )
-						is_match = false;
-				}
-				return is_match;
-			} };
-			SortedIngrList set;
-			for ( auto& it : _registry._ingr )
-				if (matches(it._effects))
-					set.insert(it);
-			return set;
-		}
-
-		/**
-		 * @function find_ingr_with_effect(const std::string& name)
-		 * @brief Retrieve all ingredients that have a given effect.
-		 * @param names			- Names to search for.
-		 * @returns std::vector<Ingredient>
-		 */
-		[[nodiscard]] SortedIngrList find_ingr_with_any_effects(std::vector<std::string> names)
-		{
-			for (auto& it : names) it = str::tolower(it);
-			const auto matches{ [&names, this](const std::string& lc_name) {
-				return std::any_of(names.begin(), names.end(), [&lc_name, this](const std::string& name) {
-					return str::tolower(name) == lc_name || !_fmt.exact() && str::pos_valid(str::tolower(name).find(lc_name));
-				});
-			} };
-			SortedIngrList set;
-			for ( auto& it : _registry._ingr ) {
-				for ( const auto& fx : it._effects ) {
-					if (matches(str::tolower(fx._name))) {
-						set.insert(it);
-						break;
-					}
-				}
-			}
-			return set;
-		}
 #pragma endregion GETTERS
 
 		/**
@@ -219,9 +116,9 @@ namespace caco_alch {
 		{
 			const auto name_lowercase{ str::tolower(name) };
 			if ( SortedIngrList cont{ [&name_lowercase, this]() -> const SortedIngrList {
-				if ( const auto&& tmp{ find_ingr_list(name_lowercase) }; !tmp.empty() )
+				if ( const auto&& tmp{ _registry.find(name_lowercase) }; !tmp.empty() )
 					return tmp;
-				if ( const auto&& tmp{ find_ingr_with_effect(name_lowercase) }; !tmp.empty() )
+				if ( const auto&& tmp{ _registry.find(name_lowercase) }; !tmp.empty() )
 					return tmp;
 				return {};
 			}() }; !cont.empty() ) {
@@ -274,10 +171,10 @@ namespace caco_alch {
 			for ( auto name{ names.begin() }; name != names.end(); ++name ) {
 				if ( !is_cache ) { // if cache hasn't been populated yet
 					is_cache = true;
-					if ( !_cache.empty() )
+					if (!_cache.empty())
 						cache = _cache; // currently there is no way to use the long-term cache
 					else
-						cache = find_ingr_with_effect(*name);
+						cache = std::move(_registry.find_and_duplicate(*name, RegistryType::FindType::EFFECT));
 				}
 				else {
 					decltype(cache._ingr) tmp{  };
@@ -377,7 +274,7 @@ namespace caco_alch {
 				os.precision(precision); // Reset precision
 				return os;
 			}
-			throw invalid_param;
+			throw std::exception(std::string("Build failed! Try including more than one ingredient.").c_str());
 		}
 
 		/**
@@ -392,7 +289,7 @@ namespace caco_alch {
 			if ( names.size() > 4 ) throw std::exception("Too many ingredients! (Build Mode Max 4)"); else if ( names.size() < 2 ) throw std::exception("Not enough ingredients! (Build Mode Min 2)");
 			std::vector<Ingredient> cont;
 			for ( auto& it : names ) {
-				const auto ingr{ find_ingr(str::tolower(it)) };
+				const auto ingr{ _registry.find_best_fit(str::tolower(it)) };
 				if ( ingr != _registry._ingr.end() )
 					cont.push_back(*ingr);
 				else os << sys::term::warn << "Couldn't find ingredient: \"" << it << "\"\n";
