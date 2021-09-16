@@ -8,10 +8,10 @@
 // must be in debug configuration, and have DEBUG_SWITCH defined.
 #if defined(DEBUG_SWITCH) && defined(_DEBUG)
 #define ENABLE_DEBUG
-#include <xRand.h>
 #endif
 
 #include <TermAPI.hpp>
+#include <CaptureStream.hpp>
 #include "UserAssist.hpp"
 #include "init.hpp"
 
@@ -36,12 +36,30 @@ int main(const int argc, char* argv[], char* envp[])
 	// TODO: Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
 	try {
 		std::cout << sys::term::EnableANSI; // enable virtual terminal sequences
-	#ifdef ENABLE_DEBUG // DEBUG MODE
-		auto pr{ init(argc, argv, envp) };
-		return handle_arguments(std::move(pr));
-	#else // RELEASE MODE
-		return handle_arguments(init(argc, argv, envp));
-	#endif
+		// parse arguments
+		opt::Params args(argc, argv, DefaultObjects._matcher);
+
+		const auto local_path{ opt::resolve_split_path(envp, argv[0]).first };
+
+		const auto getOptOrDefault{ [&args](const std::string& optname, const std::string& defv) {
+			const auto val{ args.getv(optname) };
+			if (val.has_value())
+				return val.value();
+			return defv;
+		} };
+
+		DefaultPaths paths(
+			local_path,
+			getOptOrDefault(DefaultObjects._load_config, DefaultObjects._default_filename_config),
+			getOptOrDefault(DefaultObjects._load_gamesettings, DefaultObjects._default_filename_gamesettings),
+			getOptOrDefault(DefaultObjects._load_registry, DefaultObjects._default_filename_registry)
+		);
+
+		if (args.check_opt("validate")) // Process "--validate" opt
+			validate(args, paths, { argv[0] }, local_path, 16);
+
+		int res{ handle_arguments(init(args, paths)) };
+		return res;
 	} catch ( std::exception& ex ) {
 		std::cout << sys::term::error << ex.what() << std::endl;
 		return -1;

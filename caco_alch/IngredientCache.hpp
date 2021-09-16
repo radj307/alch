@@ -32,7 +32,7 @@ namespace caco_alch {
 		 */
 		static std::pair<Container, unsigned> sort(IngrList&& ingr_cont)
 		{
-			Container list;
+			Container list{};
 			unsigned count{ 0u };
 			for (auto& it : ingr_cont)
 				if ( const auto [existing, state]{ list.insert(it) }; !state )
@@ -52,7 +52,7 @@ namespace caco_alch {
 		{
 			return std::find_if(off, _ingr.end(), [&name, &only_effects](const Ingredient& i) -> bool {
 				if ( only_effects )
-					return std::any_of( i._effects.begin(), i._effects.end(), [&name](const Effect& fx){ return fx._name == name; } );
+					return std::any_of( i._effects.begin(), i._effects.end(), [&name, this](const Effect& fx){ return _fmt->match(str::tolower(fx._name), name); } );
 				return i._name == name;
 			});
 		}
@@ -68,6 +68,10 @@ namespace caco_alch {
 			_ingr = Container{};
 			return tmp;
 		}
+		/**
+		 * @brief Copy the cache to an IngrList and return it.
+		 * @returns IngrList
+		 */
 		[[nodiscard]] IngrList getList() const
 		{
 			IngrList vec;
@@ -77,6 +81,10 @@ namespace caco_alch {
 			vec.shrink_to_fit();
 			return vec;
 		}
+		/**
+		 * @brief Copy the cache to a SortedIngrList and return it.
+		 * @returns SortedIngrList
+		 */
 		[[nodiscard]] SortedIngrList getSortedList() const
 		{
 			SortedIngrList vec;
@@ -84,15 +92,19 @@ namespace caco_alch {
 				vec.insert(it);
 			return vec;
 		}
+		/**
+		 * @brief Check if the ingredient cache is empty.
+		 * @returns bool
+		 */
 		[[nodiscard]] bool empty() const
 		{
 			return _ingr.empty() || _fmt == nullptr;
 		}
-		IngredientCache& operator=(const Container& cont)
-		{
-			_ingr = cont;
-			return *this;
-		}
+		/**
+		 * @brief Set the ingredient cache by moving a given ingredient container.
+		 * @param cont	- Container to move.
+		 * @returns IngredientCache&
+		 */
 		IngredientCache& operator=(Container&& cont)
 		{
 			_ingr = std::move(cont);
@@ -119,18 +131,24 @@ namespace caco_alch {
 
 			switch (search) {
 			case FindType::INGR:
-				for (auto& it : _ingr)
-					if (const auto name_lc{ str::tolower(it._name) }; name_lc == name || !_fmt->exact() && str::pos_valid(name_lc.find(name)))
+				for (auto& it : _ingr) {
+					if (_fmt->match(str::tolower(it._name), name))
 						cont.insert(it);
+				}
 				break;
 			case FindType::BOTH:
-				for (auto& it : _ingr)
-					if (const auto name_lc{ str::tolower(it._name) }; name_lc == name || !_fmt->exact() && str::pos_valid(name_lc.find(name)) || std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { const auto lc{ str::tolower(fx._name) }; return lc == name || !_fmt->exact() && str::pos_valid(lc.find(name)); }))
+				for (auto& it : _ingr) {
+					if (_fmt->match(str::tolower(it._name), name) || std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) {
+						return _fmt->match(str::tolower(fx._name), name);
+					}))
 						cont.insert(it);
+				}
 				break;
 			case FindType::EFFECT:
 				for (auto& it : _ingr)
-					if (std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { const auto lc{ str::tolower(fx._name) }; return lc == name || !_fmt->exact() && str::pos_valid(lc.find(name)); }))
+					if (std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) {
+						return _fmt->match(str::tolower(fx._name), name);
+					}))
 						cont.insert(it);
 			}
 			return cont;
@@ -144,17 +162,19 @@ namespace caco_alch {
 			switch (search) {
 			case FindType::INGR:
 				for (auto& it : _ingr)
-					if (const auto name_lc{ str::tolower(it._name) }; name_lc == name || !_fmt->exact() && str::pos_valid(name_lc.find(name)))
+					if (_fmt->match(str::tolower(it._name), name))
 						cont.insert(it);
 				break;
 			case FindType::BOTH:
 				for (auto& it : _ingr)
-					if (const auto name_lc{ str::tolower(it._name) }; name_lc == name || !_fmt->exact() && str::pos_valid(name_lc.find(name)) || std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { const auto lc{ str::tolower(fx._name) }; return lc == name || !_fmt->exact() && str::pos_valid(lc.find(name)); }))
+					if (_fmt->match(str::tolower(it._name), name) || std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { return _fmt->match(str::tolower(fx._name), name); }))
 						cont.insert(it);
 				break;
 			case FindType::EFFECT:
 				for (auto& it : _ingr)
-					if (std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) { const auto lc{ str::tolower(fx._name) }; return lc == name || !_fmt->exact() && str::pos_valid(lc.find(name)); }))
+					if (std::any_of(it._effects.begin(), it._effects.end(), [&name, this](auto&& fx) {
+						return _fmt->match(str::tolower(fx._name), name);
+					}))
 						cont.insert(it);
 			}
 			return RegistryType{ std::move(cont), *_fmt };
@@ -169,7 +189,7 @@ namespace caco_alch {
 					const auto name_lc{ str::tolower(it->_name) };
 					if (name_lc == name)
 						return it;
-					else if (str::pos_valid(name_lc.find(name)))
+					else if ((name_lc.find(name) < name_lc.size()))
 						vec.emplace_back(it);
 				}
 				break;
@@ -178,13 +198,13 @@ namespace caco_alch {
 					const auto name_lc{ str::tolower(it->_name) };
 					if (name_lc == name)
 						return it;
-					else if (!_fmt->exact() && str::pos_valid(name_lc.find(name)))
+					else if ( (name_lc.find(name) < name_lc.size()))
 						vec.emplace_back(it);
 					else for (auto fx{ it->_effects.begin() }; fx != it->_effects.end(); ++fx) {
 						const auto lc{ str::tolower(fx->_name) };
 						if (lc == name)
 							return it;
-						else if (str::pos_valid(lc.find(name)))
+						else if ((lc.find(name) < lc.size()))
 							vec.emplace_back(it);
 					}
 				}
@@ -195,7 +215,7 @@ namespace caco_alch {
 						const auto lc{ str::tolower(fx->_name) };
 						if (lc == name)
 							return it;
-						else if (str::pos_valid(lc.find(name)))
+						else if ((lc.find(name) < lc.size()))
 							vec.emplace_back(it);
 					}
 				}
@@ -208,6 +228,4 @@ namespace caco_alch {
 
 		explicit operator Container() const { return _ingr; }
 	};
-
-	//using RegistryType = IngredientCache<std::set<Ingredient, _internal::less<Ingredient>>>;
 }

@@ -13,14 +13,24 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "alch-windows", "alch_win\al
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "parserlib", "..\cpp-opt-parser\parserlib\parserlib.vcxitems", "{D67CD0B3-39B2-4B74-944A-CF68A393AEDE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "file-parser-lib", "..\cpp-file-parser\file-parser-lib\file-parser-lib.vcxitems", "{A0D69755-A4F6-4983-B2D1-11FF2532BA70}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TEST", "TEST\TEST.vcxproj", "{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		caco_alch\caco_alch.vcxitems*{1f0703fc-9f14-4db6-8d2e-2209aaf48389}*SharedItemsImports = 4
+		..\cpp-file-parser\file-parser-lib\file-parser-lib.vcxitems*{1f0703fc-9f14-4db6-8d2e-2209aaf48389}*SharedItemsImports = 4
+		..\cpp-opt-parser\parserlib\parserlib.vcxitems*{1f0703fc-9f14-4db6-8d2e-2209aaf48389}*SharedItemsImports = 4
+		..\shared library\SharedLib\SharedLib.vcxitems*{1f0703fc-9f14-4db6-8d2e-2209aaf48389}*SharedItemsImports = 4
 		..\shared library\SharedLib\SharedLib.vcxitems*{25144a18-ee89-4ceb-92e5-fdacf4247449}*SharedItemsImports = 9
 		caco_alch\caco_alch.vcxitems*{6b0ef6df-d397-44ce-b827-6ab2ee279f84}*SharedItemsImports = 4
 		..\shared library\SharedLib\SharedLib.vcxitems*{6b0ef6df-d397-44ce-b827-6ab2ee279f84}*SharedItemsImports = 4
 		caco_alch\caco_alch.vcxitems*{6f1aba7f-4bbe-4d68-a5d1-a625452cddda}*SharedItemsImports = 4
+		..\cpp-file-parser\file-parser-lib\file-parser-lib.vcxitems*{6f1aba7f-4bbe-4d68-a5d1-a625452cddda}*SharedItemsImports = 4
 		..\cpp-opt-parser\parserlib\parserlib.vcxitems*{6f1aba7f-4bbe-4d68-a5d1-a625452cddda}*SharedItemsImports = 4
 		..\shared library\SharedLib\SharedLib.vcxitems*{6f1aba7f-4bbe-4d68-a5d1-a625452cddda}*SharedItemsImports = 4
+		..\cpp-file-parser\file-parser-lib\file-parser-lib.vcxitems*{a0d69755-a4f6-4983-b2d1-11ff2532ba70}*SharedItemsImports = 9
 		..\cpp-opt-parser\parserlib\parserlib.vcxitems*{d67cd0b3-39b2-4b74-944a-cf68a393aede}*SharedItemsImports = 9
 		caco_alch\caco_alch.vcxitems*{fc2e44f0-3525-476a-91ff-97fe78b57ec7}*SharedItemsImports = 9
 	EndGlobalSection
@@ -57,6 +67,18 @@ Global
 		{6F1ABA7F-4BBE-4D68-A5D1-A625452CDDDA}.Release|x64.Build.0 = Release|x64
 		{6F1ABA7F-4BBE-4D68-A5D1-A625452CDDDA}.Release|x86.ActiveCfg = Release|Win32
 		{6F1ABA7F-4BBE-4D68-A5D1-A625452CDDDA}.Release|x86.Build.0 = Release|Win32
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Debug|ARM.ActiveCfg = Debug|Win32
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Debug|x64.ActiveCfg = Debug|x64
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Debug|x64.Build.0 = Debug|x64
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Debug|x86.ActiveCfg = Debug|Win32
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Debug|x86.Build.0 = Debug|Win32
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Release|ARM.ActiveCfg = Release|Win32
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Release|ARM64.ActiveCfg = Release|Win32
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Release|x64.ActiveCfg = Release|x64
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Release|x64.Build.0 = Release|x64
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Release|x86.ActiveCfg = Release|Win32
+		{1F0703FC-9F14-4DB6-8D2E-2209AAF48389}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

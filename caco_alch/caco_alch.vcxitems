@@ -23,6 +23,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Effect.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Format.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSettings.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Help.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Ingredient.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IngredientCache.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Keyword.hpp" />

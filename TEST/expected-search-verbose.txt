@@ -1,0 +1,27 @@
+[1mSearch results for: '[38;5;208mnirnroot[0m[1m'
+[38;5;1m{
+[0m   [38;5;7m[1mCrimson [0m[38;5;208m[1mNirnroot[0m[38;5;7m[1m[0m
+      [38;5;1mDamage Health[0m[38;5;208m[38;5;1m[1m            [38;5;5m12.16          [38;5;6m1.00[22ms[0m
+         [38;5;8mMagicAlchDamageHealth
+         [38;5;8mMagicAlchHarmful
+      [38;5;2mInvisibility[0m[38;5;208m[38;5;2m[1m             [38;5;6m397.00[22ms[0m
+         [38;5;8mMagicAlchBeneficial
+         [38;5;8mMagicAlchDurationBased
+         [38;5;8mMagicInvisibility
+      [38;5;2mResist Magic[0m[38;5;208m[38;5;2m[1m             [38;5;5m0.99           [38;5;6m60.00[22ms[0m
+         [38;5;8mMagicAlchBeneficial
+         [38;5;8mMagicAlchResistMagic
+      [38;5;7mDrain Strength[0m[38;5;208m[38;5;7m[1m           [38;5;5m2.75           [38;5;6m30.00[22ms[0m
+   [38;5;7m[1m[0m[38;5;208m[1mNirnroot[0m[38;5;7m[1m[0m
+      [38;5;1mDamage Health[0m[38;5;208m[38;5;1m[1m            [38;5;5m9.38           [38;5;6m1.00[22ms[0m
+         [38;5;8mMagicAlchDamageHealth
+         [38;5;8mMagicAlchHarmful
+      [38;5;2mInvisibility[0m[38;5;208m[38;5;2m[1m             [38;5;6m364.00[22ms[0m
+         [38;5;8mMagicAlchBeneficial
+         [38;5;8mMagicAlchDurationBased
+         [38;5;8mMagicInvisibility
+      [38;5;2mResist Magic[0m[38;5;208m[38;5;2m[1m             [38;5;5m0.81           [38;5;6m60.00[22ms[0m
+         [38;5;8mMagicAlchBeneficial
+         [38;5;8mMagicAlchResistMagic
+      [38;5;7mDrain Strength[0m[38;5;208m[38;5;7m[1m           [38;5;5m1.65           [38;5;6m30.00[22ms[0m
+[38;5;1m}[0m

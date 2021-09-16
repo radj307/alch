@@ -3,30 +3,81 @@
 #include <iomanip>
 #include <TermAPI.hpp>
 #include <strconv.hpp>
+#include <INI.hpp>
 
+#include "Potion.hpp"
 #include "using.h"
 #include "Ingredient.hpp"
 
 namespace caco_alch {
+	/**
+	 * @struct OutputFormat
+	 * @brief Contains all of the variables used within the Format struct.
+	 */
+	struct OutputFormat {
+		bool
+			_flag_quiet,
+			_flag_verbose,
+			_flag_exact,
+			_flag_all,
+			_flag_export,
+			_flag_reverse,
+			_flag_color,
+			_flag_smart;
+		unsigned
+			_indent,
+			_precision;
+		short
+			_color_misc,
+			_color_highlight,
+			_color_fx_positive,
+			_color_fx_negative,
+			_color_fx_neutral,
+			_color_fx_magnitude,
+			_color_fx_duration;
+
+		explicit OutputFormat(const bool quiet, const bool verbose, const bool exact, const bool all, const bool fileExport, const bool reverse, const bool color, const bool smart, const size_t indent, const size_t precision, const short colMisc, const short colHighlight, const short colFxPos, const short colFxNeg, const short colFxNeu, const short colFxMag, const short colFxDur) :
+			_flag_quiet{ quiet },
+			_flag_verbose{ verbose },
+			_flag_exact{ exact },
+			_flag_all{ all },
+			_flag_export{ fileExport },
+			_flag_reverse{ reverse },
+			_flag_color{ color },
+			_flag_smart{ smart },
+			_indent{ indent },
+			_precision{ precision },
+			_color_misc{ colMisc },
+			_color_highlight{ colHighlight },
+			_color_fx_positive{ colFxPos },
+			_color_fx_negative{ colFxNeg },
+			_color_fx_neutral{ colFxNeu },
+			_color_fx_magnitude{ colFxMag },
+			_color_fx_duration{ colFxDur }
+		{}
+		virtual ~OutputFormat() = default;
+
+		[[nodiscard]] bool match(const std::string& objName, const std::string& searchName) const
+		{
+			return _flag_exact ? (objName == searchName) : (objName == searchName || objName.find(searchName) < objName.size());
+		}
+
+		[[nodiscard]] bool quiet() const { return _flag_quiet; }
+		[[nodiscard]] bool verbose() const { return _flag_verbose; }
+		[[nodiscard]] bool all() const { return _flag_all; }
+		[[nodiscard]] bool file_export() const { return _flag_export; }
+		[[nodiscard]] bool reverse_output() const { return _flag_reverse; }
+		[[nodiscard]] bool doLocalCaching() const { return _flag_smart; }
+		[[nodiscard]] size_t indent() const { return _indent; }
+		[[nodiscard]] size_t precision() const { return _precision; }
+		[[nodiscard]] unsigned short color() const { return _flag_color; }
+	};
 
 	/**
 	 * @struct Format
 	 * @brief Provides formatting information for some output stream methods in the Alchemy class.
 	 */
-	struct Format {
-	private:
-		bool _quiet, _verbose, _exact, _all, _file_export, _reverse_output, _force_color, _allow_color_fx, _cache; // see UserAssist.hpp
-		size_t _indent, _precision;
-		short
-			_color,									// Ingredient color
-			_color_highlight{ color::yellow },	// Search string highlight color.
-			_color_fx_positive{ color::intense_green },		// Positive effect color.
-			_color_fx_negative{ color::intense_red },		// Negative effect color.
-			_color_fx_neutral{ color::intense_blue },		// Negative effect color.
-			_color_fx_mag{ color::intense_magenta },		// Effect Magnitude color.
-			_color_fx_dur{ color::intense_cyan };		// Effect Duration color.
-
-	public:
+	struct Format : OutputFormat {
 		/**
 		 * @constructor Format(const bool = false, const bool = true, const bool = false, const bool = false, const size_t = 3u, const size_t = 2u, const unsigned short = color::_f_white)
 		 * @brief Default Constructor
@@ -42,20 +93,44 @@ namespace caco_alch {
 		 * @param precision			- How many decimal points of precision to use when outputting floating points.
 		 * @param color				- General color override, changes the color of Ingredient names for search, list, and build.
 		 */
-		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const bool use_local_cache = false, const size_t indent = 3u, const size_t precision = 2u, const short color = color::white) : _quiet{ quiet }, _verbose{ verbose }, _exact{ exact }, _all{ all }, _file_export{ file_export }, _reverse_output{ reverse_output }, _force_color{ color != color::white }, _allow_color_fx{ allow_color_fx }, _cache{ use_local_cache }, _indent{ indent }, _precision{ precision }, _color{ color } {}
-
-#pragma region GETTERS
-		[[nodiscard]] bool quiet() const { return _quiet; }
-		[[nodiscard]] bool verbose() const { return _verbose; }
-		[[nodiscard]] bool exact() const { return _exact; }
-		[[nodiscard]] bool all() const { return _all; }
-		[[nodiscard]] bool file_export() const { return _file_export; }
-		[[nodiscard]] bool reverse_output() const { return _reverse_output; }
-		[[nodiscard]] bool doLocalCaching() const { return _cache; }
-		[[nodiscard]] size_t indent() const { return _indent; }
-		[[nodiscard]] size_t precision() const { return _precision; }
-		[[nodiscard]] unsigned short color() const { return _color; }
-#pragma endregion GETTERS
+		explicit Format(const file::ini::INI& ini, const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const bool use_local_cache = false, const size_t cli_precision = 2u) : OutputFormat(
+			quiet,
+			verbose,
+			exact,
+			all,
+			file_export,
+			reverse_output,
+			allow_color_fx,
+			use_local_cache,
+			str::stoui(ini.getv("format", "indent")),
+			(ini.check("format", "precision") ? str::stoui(ini.getv("format", "precision")) : cli_precision),
+			str::stos(ini.getv("color", "general")),
+			str::stos(ini.getv("color", "highlight")),
+			str::stos(ini.getv("color", "fx-positive")),
+			str::stos(ini.getv("color", "fx-negative")),
+			str::stos(ini.getv("color", "fx-neutral")),
+			str::stos(ini.getv("color", "fx-magnitude")),
+			str::stos(ini.getv("color", "fx-duration"))
+		) {}
+		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const bool use_local_cache = false, const size_t cli_precision = 2u) : OutputFormat(
+			quiet,
+			verbose,
+			exact,
+			all,
+			file_export,
+			reverse_output,
+			allow_color_fx,
+			use_local_cache,
+			3u,
+			cli_precision,
+			color::white,
+			color::orange,
+			color::green,
+			color::red,
+			color::intense_yellow,
+			color::magenta,
+			color::cyan
+		) {}
 
 #pragma region SPECIAL_GETTERS
 		/**
@@ -106,11 +181,12 @@ namespace caco_alch {
 			std::vector<Effect> vec;
 			vec.reserve(4llu);
 			for ( auto it{ arr.begin() }; it != arr.end(); ++it ) {
-				if ( !_quiet )
+				if ( !_flag_quiet )
 					vec.push_back(*it);
-				else if (const auto lc{str::tolower(it->_name)}; std::find_if(names_lowercase.begin(), names_lowercase.end(), [this, &lc](const std::string& name) -> bool { return lc == name || !_exact && str::pos_valid(lc.find(name)); }) != names_lowercase.end()) {
+				else if (const auto lc{str::tolower(it->_name)}; std::any_of(names_lowercase.begin(), names_lowercase.end(), [this, &lc](const std::string& name) -> bool { return match(lc, name); })) {
 					vec.push_back(*it);
-					if ( _exact ) break;
+					if ( _flag_exact )
+						break;
 				}
 			}
 			return vec;
@@ -118,46 +194,29 @@ namespace caco_alch {
 #pragma endregion SPECIAL_GETTERS
 
 		/**
-		 * @function resolveEffectColor(const Effect&) const
-		 * @brief Resolve the color to use when printing an effect's name by checking its keywords.
-		 * @param fx	The effect to resolve.
-		 * @returns unsigned short
+		 * @brief Retrieve a color to use when outputting a given effect.
+		 * @param effect	- The effect to check.
+		 * @param fmt		- Color & flag data.
+		 * @returns short
 		 */
-		[[nodiscard]] short resolveEffectColor(const Effect& fx) const
+		short resolveEffectColor(const Effect& effect) const
 		{
-			if ( !_allow_color_fx || _force_color )
-				return _color;
-			if (!fx._keywords.empty()) {
-				if (hasNegative(fx))
+			// check if color override is enabled
+			if (_flag_color)
+				return _color_misc;
+			// check keywords
+			if (!effect._keywords.empty()) {
+				if (hasNegative(effect))
 					return _color_fx_negative;
-				if (hasPositive(fx))
+				if (hasPositive(effect))
 					return _color_fx_positive;
-				if (!fx.hasKeyword(Keywords::KYWD_MagicInfluence))
+				if (!effect.hasKeyword(Keywords::KYWD_MagicInfluence))
 					return _color_fx_neutral;
 			}
-			const auto name_lc{ str::tolower(fx._name) };
-			if ( // NEGATIVE EFFECTS
-				str::pos_valid(name_lc.find("damage"))
-			 || str::pos_valid(name_lc.find("ravage"))
-			 || str::pos_valid(name_lc.find("drain"))
-			 || str::pos_valid(name_lc.find("frenzy"))
-			 || str::pos_valid(name_lc.find("fear"))
-			 || str::pos_valid(name_lc.find("aversion"))
-				)
-				return _color_fx_negative;
-			if ( // POSITIVE EFFECTS
-				str::pos_valid(name_lc.find("restore"))
-			 || str::pos_valid(name_lc.find("fortify"))
-			 || str::pos_valid(name_lc.find("resist"))
-			 || str::pos_valid(name_lc.find("detect"))
-			 || str::pos_valid(name_lc.find("night eye"))
-			 || str::pos_valid(name_lc.find("speed"))
-			)
-				return _color_fx_positive;
 			return color::white; // else return white
 		}
 
-#pragma region FSTREAM
+	#pragma region BASE
 		/**
 		 * @function to_fstream(std::ostream&, const Ingredient&) const
 		 * @brief Insert a registry-formatted ingredient into an output stream.
@@ -175,51 +234,6 @@ namespace caco_alch {
 		}
 
 		/**
-		 * @function to_fstream(std::ostream&, const SortedIngrList&) const
-		 * @brief Insert a registry-formatted list of ingredients into an output stream.
-		 * @param os	- Target output stream.
-		 * @param ingr	- Target ingredient list.
-		 * @returns std::ostream&
-		 */
-		std::ostream& to_fstream(std::ostream& os, const SortedIngrList& ingr) const
-		{
-			if ( _reverse_output )
-				for ( auto it{ ingr.rbegin() }; it != ingr.rend(); ++it )
-					to_fstream(os, *it);
-			else
-				for ( auto it{ ingr.begin() }; it != ingr.end(); ++it )
-					to_fstream(os, *it);
-			return os;
-		}
-
-		/**
-		 * @function to_fstream(std::ostream&, const SortedIngrList&) const
-		 * @brief Insert a registry-formatted list of ingredients into an output stream.
-		 * @param os	- Target output stream.
-		 * @param ingr	- Target ingredient list.
-		 * @returns std::ostream&
-		 */
-		std::ostream& to_fstream(std::ostream& os, const IngrList& ingr) const
-		{
-			if ( _reverse_output )
-				for ( auto it{ ingr.rbegin() }; it != ingr.rend(); ++it )
-					to_fstream(os, *it);
-			else
-				for ( auto it{ ingr.begin() }; it != ingr.end(); ++it )
-					to_fstream(os, *it);
-			return os;
-		}
-
-		[[nodiscard]] std::stringstream to_fstream(const SortedIngrList& ingr) const
-		{
-			std::stringstream ss;
-			to_fstream(ss, ingr);
-			return ss;
-		}
-#pragma endregion FSTREAM
-
-#pragma region STREAM
-		/**
 		 * @function to_stream(std::ostream&, const Keyword&, const std::string&, const unsigned = 3u)
 		 * @brief Insert a Keyword into an output stream in human-readable format.
 		 * @param os				- Target output stream.
@@ -230,7 +244,7 @@ namespace caco_alch {
 		 */
 		std::ostream& to_stream(std::ostream& os, const Keyword& kywd, const std::string& indentation, const unsigned repeatIndentation = 3u) const
 		{
-			for ( auto i{ 0u }; i < repeatIndentation; ++i )
+			for (auto i{ 0u }; i < repeatIndentation; ++i)
 				os << indentation;
 			os << color::f::gray << kywd._name << '\n';
 			return os;
@@ -248,29 +262,33 @@ namespace caco_alch {
 		 */
 		std::ostream& to_stream(std::ostream& os, const Effect& fx, const std::string& search_str, const std::string& indentation, const unsigned repeatIndentation = 2u, const size_t ind_fac = 25u) const
 		{
-			const auto [pre, highlight, post]{ get_tuple(fx._name, search_str) };
+			const auto [pre, highlight, post] { get_tuple(fx._name, search_str) };
 			const auto fx_color{ resolveEffectColor(fx) };
-			for ( auto i{ 0u }; i < repeatIndentation; ++i )
+			for (auto i{ 0u }; i < repeatIndentation; ++i)
 				os << indentation;
-			os << color::setcolor(fx_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::setcolor(fx_color, true) << post << color::reset;
+
+			os << color::setcolor(fx_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::setcolor(fx_color, true) << post << color::bold;
+
 			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
 					os << std::setw(static_cast<std::streamsize>(indent) + 2u) << ' ';
 				else
 					os << std::setw(ind_fac - static_cast<std::streamsize>(indent)) << ' ';
-				os << color::setcolor(color, true) << num << color::reset;
+				os << color::setcolor(color, true) << num;
 				return num.size();
 			} };
+
 			auto size_factor{ fx._name.size() };
-			if ( fx._magnitude > 0.0 || _all )
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _color_fx_mag, size_factor) + 10u;
-			if ( fx._duration > 0u || _all ) {
-				insert_num(str::to_string(fx._duration, _precision), _color_fx_dur, size_factor);
-				os << 's';
+
+			if (fx._magnitude > 0.0 || _flag_all)
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _color_fx_magnitude, size_factor) + 10u;
+			if (fx._duration > 0u || _flag_all) {
+				insert_num(str::to_string(fx._duration, _precision), _color_fx_duration, size_factor);
+				os << color::reset_bold << 's';
 			}
 			os << color::reset << '\n';
-			if ( _verbose || _all )
-				for ( auto& KYWD : fx._keywords )
+			if (_flag_verbose || _flag_all)
+				for (auto& KYWD : fx._keywords)
 					to_stream(os, KYWD, indentation);
 			return os;
 		}
@@ -285,26 +303,26 @@ namespace caco_alch {
 		 * @param ind_fac			- Subtract the number of used chars from this value to get final indentation when printing magnitude & duration.
 		 * @returns std::ostream&
 		 */
-		std::ostream& to_stream(std::ostream& os, const Effect& fx, const std::vector<std::string>& search_strings, const std::string& indentation, const unsigned repeatIndentation = 2u, const size_t ind_fac = 25u) const
+		std::ostream& to_stream(std::ostream& os, const Effect& fx, const std::vector<std::string>& search_strings, const std::string& indentation, const unsigned repeatIndentation = 2u, const std::streamsize ind_fac = 25) const
 		{
-			const auto [pre, highlight, post]{ get_tuple(fx._name, search_strings) };
+			const auto [pre, highlight, post] { get_tuple(fx._name, search_strings) };
 			const auto fx_color{ resolveEffectColor(fx) };
-			for ( auto i{ 0u }; i < repeatIndentation; ++i )
+			for (auto i{ 0u }; i < repeatIndentation; ++i)
 				os << indentation;
 			os << color::setcolor(fx_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::setcolor(fx_color, true) << post << color::reset;
-			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
+			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const std::streamsize indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
-					os << std::setw(indent + 2u) << ' ';
+					os << std::setw(indent + 2) << ' ';
 				else
 					os << std::setw(ind_fac - indent) << ' ';
 				os << color::setcolor(color, true) << num;
 				return num.size();
 			} };
 			auto size_factor{ fx._name.size() };
-			if ( fx._magnitude > 0.0 || _all )
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _color_fx_mag, size_factor) + 10u;
-			if ( fx._duration > 0u || _all ) {
-				insert_num(str::to_string(fx._duration, _precision), _color_fx_dur, size_factor);
+			if (fx._magnitude > 0.0 || _flag_all)
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _color_fx_magnitude, size_factor) + 10u;
+			if (fx._duration > 0u || _flag_all) {
+				insert_num(str::to_string(fx._duration, _precision), _color_fx_duration, size_factor);
 				os << 's';
 			}
 			os << color::reset << '\n';
@@ -322,12 +340,59 @@ namespace caco_alch {
 		std::ostream& to_stream(std::ostream& os, const Ingredient& ingr, const std::string& search_str = "") const
 		{
 			const auto indentation{ std::string(_indent, ' ') }; // get indentation string
-			const auto [pre, highlight, post]{ get_tuple(ingr._name, search_str) };
-			os << indentation << color::setcolor(_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::reset << color::setcolor(_color, true) << post << color::reset << '\n';
-			for ( auto& fx : get_fx(ingr._effects, { search_str }) ) // iterate through this ingredient's effects, and insert them as well.
+			const auto [pre, highlight, post] { get_tuple(ingr._name, search_str) };
+			os << indentation << color::setcolor(_color_misc, true) << color::bold << pre << color::reset << color::setcolor(_color_highlight, true) << color::bold << highlight << color::reset << color::setcolor(_color_misc, true) << color::bold << post << color::reset << '\n';
+			for (auto& fx : get_fx(ingr._effects, { search_str })) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, search_str, indentation, 2u, 25u);
 			return os;
 		}
+	#pragma endregion BASE
+	#pragma region FSTREAM
+		/**
+		 * @function to_fstream(std::ostream&, const SortedIngrList&) const
+		 * @brief Insert a registry-formatted list of ingredients into an output stream.
+		 * @param os	- Target output stream.
+		 * @param ingr	- Target ingredient list.
+		 * @returns std::ostream&
+		 */
+		std::ostream& to_fstream(std::ostream& os, const SortedIngrList& ingr) const
+		{
+			if ( _flag_reverse )
+				for ( auto it{ ingr.rbegin() }; it != ingr.rend(); ++it )
+					to_fstream(os, *it);
+			else
+				for ( auto it{ ingr.begin() }; it != ingr.end(); ++it )
+					to_fstream(os, *it);
+			return os;
+		}
+
+		/**
+		 * @function to_fstream(std::ostream&, const SortedIngrList&) const
+		 * @brief Insert a registry-formatted list of ingredients into an output stream.
+		 * @param os	- Target output stream.
+		 * @param ingr	- Target ingredient list.
+		 * @returns std::ostream&
+		 */
+		std::ostream& to_fstream(std::ostream& os, const IngrList& ingr) const
+		{
+			if ( _flag_reverse )
+				for ( auto it{ ingr.rbegin() }; it != ingr.rend(); ++it )
+					to_fstream(os, *it);
+			else
+				for ( auto it{ ingr.begin() }; it != ingr.end(); ++it )
+					to_fstream(os, *it);
+			return os;
+		}
+
+		[[nodiscard]] std::stringstream to_fstream(const SortedIngrList& ingr) const
+		{
+			std::stringstream ss;
+			to_fstream(ss, ingr);
+			return ss;
+		}
+#pragma endregion FSTREAM
+
+#pragma region STREAM
 
 		/**
 		 * @function to_fstream(std::ostream&, const SortedIngrList&, const std::vector<std::string>&) const
@@ -341,11 +406,11 @@ namespace caco_alch {
 		{
 			const auto indentation{ std::string(_indent, ' ') };
 			const auto to_stream{ [this, &os, &search_strings, &indentation](const SortedIngrList::iterator it) {
-				os << indentation << color::setcolor(_color, true) << it->_name << color::reset << '\n';
+				os << indentation << color::setcolor(_color_misc, true) << it->_name << color::reset << '\n';
 				for ( auto& fx : it->_effects )
 					this->to_stream(os, fx, search_strings, indentation);
 			} };
-			if ( _reverse_output )
+			if ( _flag_reverse )
 				for ( auto it{ ingr.rbegin() }; it != ingr.rend(); ++it )
 					to_stream(it.base());
 			else
@@ -365,7 +430,7 @@ namespace caco_alch {
 		std::ostream& to_stream(std::ostream& os, const Potion& potion, const std::string& indentation) const
 		{
 			const auto [pre, highlight, post]{ get_tuple(potion.name(), "") };
-			os << indentation << color::setcolor(_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::reset << color::setcolor(_color, true) << post << color::reset << '\n';
+			os << indentation << color::setcolor(_color_misc, true) << color::bold << pre << color::reset << color::setcolor(_color_highlight, true) << color::bold << highlight << color::reset << color::setcolor(_color_misc, true) << color::bold << post << color::reset << '\n';
 			for ( auto& fx : potion.effects() ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, "", indentation, 2u, 25u);
 			return os;
@@ -388,7 +453,7 @@ namespace caco_alch {
 					vec.push_back(str::tolower(it._name));
 				return vec;
 			}() };
-			os << indentation << color::setcolor(_color, true) << ingr._name << color::reset << '\n';
+			os << indentation << color::setcolor(_color_misc, true) << color::bold << ingr._name << color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, names_lc) ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, "", indentation);
 			return os;

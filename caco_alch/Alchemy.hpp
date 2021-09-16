@@ -115,20 +115,14 @@ namespace caco_alch {
 		std::ostream& print_search_to(std::ostream& os, const std::string& name)
 		{
 			const auto name_lowercase{ str::tolower(name) };
-			if ( SortedIngrList cont{ [&name_lowercase, this]() -> const SortedIngrList {
-				if ( const auto&& tmp{ _registry.find(name_lowercase) }; !tmp.empty() )
-					return tmp;
-				if ( const auto&& tmp{ _registry.find(name_lowercase) }; !tmp.empty() )
-					return tmp;
-				return {};
-			}() }; !cont.empty() ) {
+			if ( SortedIngrList cont{ _registry.find(name) }; !cont.empty() ) {
 				os << std::fixed; // Set forced standard notation
 				const auto precision{ os.precision() }; // copy current output stream precision
 				os.precision(_fmt.precision()); // Set floating-point-precision.
 				if ( _fmt.file_export() ) // export registry-format ingredients
 					_fmt.to_fstream(os, cont);
 				else { // insert search results
-					os << color::f::green << "Search results for: \'" << color::f::yellow << name << color::f::green << "\'\n" << color::f::red << "{\n" << color::reset;
+					os << color::bold << "Search results for: \'" << color::f::orange << name << color::reset << color::bold << "\'\n" << color::f::red << "{\n" << color::reset;
 					if ( _fmt.reverse_output() )
 						for ( auto it{ cont.rbegin() }; it != cont.rend(); ++it )
 							_fmt.to_stream(os, *it, name_lowercase);
@@ -179,7 +173,7 @@ namespace caco_alch {
 				else {
 					decltype(cache._ingr) tmp{  };
 					for ( auto& it : cache._ingr )
-						if ( std::any_of(it._effects.begin(), it._effects.end(), [&name, this](const Effect& fx){ const auto lc{ str::tolower(fx._name) }; return lc == *name || !_fmt.exact() && str::pos_valid(lc.find(*name)); }) )
+						if ( std::any_of(it._effects.begin(), it._effects.end(), [&name, this](const Effect& fx){ const auto lc{ str::tolower(fx._name) }; return lc == *name || !_fmt._flag_exact && str::pos_valid(lc.find(*name)); }) )
 							tmp.insert(it);
 					cache._ingr = tmp;
 				}
@@ -251,9 +245,9 @@ namespace caco_alch {
 				os << std::fixed;
 
 				const auto skill_base{ _GMST.fAlchemyAV() };
-				os << color::f::green << "Potion Builder [Alchemy Skill: " << color::f::cyan << skill_base;
+				os << color::f::green << "Potion Builder [Alchemy Skill: " << color::f::cyan << color::bold << skill_base << color::reset;
 				if ( const auto skill_mod{ _GMST.fAlchemyMod() }; skill_mod > 0.0 )
-					os << color::reset << "(" << color::f::green << skill_base + skill_mod << color::reset << ")";
+					os << "(" << color::f::green << skill_base + skill_mod << color::reset << ")";
 				os << color::f::green << ']' << color::reset << '\n';
 
 				const auto potion{ build(set) };

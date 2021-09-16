@@ -2,6 +2,7 @@
 #include <file.h>
 #include <resolve-path.hpp>
 #include <StrToColor.hpp>
+#include <INI.hpp>
 
 #include "Alchemy.hpp"
 #include "GameSettings.hpp"
@@ -67,15 +68,24 @@ namespace caco_alch {
 			}
 		}
 		return gs; // RETURN
+
 	}
 
-	inline file::xINI handleINI(const std::string& filename, const opt::Params& args, const std::string& def_filename)
+	/**
+	 * @brief Print whether critical files were successfully located.
+	 * @param args			- Args ref
+	 * @param paths			- Paths ref
+	 * @param argv0			- argv[0]
+	 * @param local_path	- The path to the directory where the program is located
+	 * @param indent_max	- Max indentation, used to align output.
+	 */
+	inline void validate(const opt::Params& args, const DefaultPaths& paths, const std::string& argv0, const std::string& local_path, const std::streamsize indent_max)
 	{
-		if ( file::exists(filename) )
-			return file::xINI{ filename };
-		else if ( filename != def_filename && file::exists(def_filename) )
-			return file::xINI{ def_filename };
-		else return {};
+		std::cout << "argv[0]" << std::setw(indent_max - 7u) << ' ' << argv0 << std::endl;
+		std::cout << "directory" << std::setw(indent_max - 9u) << ' ' << local_path << std::endl;
+		std::cout << "registry" << std::setw(indent_max - 8u) << ' ' << (file::exists(paths._path_registry) ? color::f::green : color::f::red) << paths._path_registry << color::reset << std::endl;
+		std::cout << "INI Config" << std::setw(indent_max - 10u) << ' ' << (file::exists(paths._path_config) ? color::f::green : color::f::red) << paths._path_config << color::reset << std::endl;
+		std::cout << "GMST Config" << std::setw(indent_max - 11u) << ' ' << (file::exists(paths._path_gamesettings) ? color::f::green : color::f::red) << paths._path_gamesettings << color::reset << std::endl;
 	}
 
 	/**
@@ -89,10 +99,8 @@ namespace caco_alch {
 	 *\n		1	- Alchemy instance containing the parsed ingredient registry.
 	 *\n		2	- Parsed INI config including all default settings.
 	 */
-	inline std::tuple<opt::Params, Alchemy> init(const int argc, char** argv, char** envp)
+	inline std::tuple<opt::Params, Alchemy> init(opt::Params& args, const DefaultPaths& paths)
 	{
-		// parse arguments
-		opt::Params args(argc, argv, DefaultObjects._matcher);
 	#ifndef ENABLE_DEBUG
 		if ( args.empty() ) { // print help if no valid parameters found.
 			print(DefaultObjects._help_doc);
@@ -102,53 +110,17 @@ namespace caco_alch {
 		if ( args.check_flag('h') || args.check_opt(DefaultObjects._help) )
 			print(DefaultObjects._help_doc);
 
-		const auto local_path{ opt::resolve_split_path(envp, argv[0]).first };
-
-		const auto getOptOrDefault{ [&args](const std::string& optname, const std::string& defv){
-			const auto val{ args.getv(optname) };
-			if (val.has_value())
-				return val.value();
-			return defv;
-		} };
-
-		DefaultPaths paths(
-			local_path,
-			getOptOrDefault(DefaultObjects._load_config, DefaultObjects._default_filename_config),
-			getOptOrDefault(DefaultObjects._load_gamesettings, DefaultObjects._default_filename_gamesettings),
-			getOptOrDefault(DefaultObjects._load_registry, DefaultObjects._default_filename_registry)
-		);
-
-		auto ini{ handleINI(paths._path_config, args, DefaultObjects._default_filename_config) };
+	//	file::ini::INI ini{ handleINI(args, local_path + DefaultObjects._default_filename_config, local_path + paths._path_config) };
 
 		// add ini functions here
-		if ( const auto regPath{ ini.getv("registry", "path") }; !regPath.empty() && !args.check_opt(DefaultObjects._load_registry) )
+		/*if ( const auto regPath{ ini.getv("registry", "path") }; !regPath.empty() && !args.check_opt(DefaultObjects._load_registry) )
 			paths._path_registry = regPath;
 
 		if ( const auto GMSTPath{ ini.getv("GMST", "path") }; !GMSTPath.empty() && !args.check_opt(DefaultObjects._load_gamesettings) )
 			paths._path_gamesettings = GMSTPath;
-
+			*/
 		auto gmst{ handleGameSettings(paths._path_gamesettings, args, DefaultObjects._settings) };
 
-		if ( args.check_opt("validate") ) { // Process "--validate" opt
-			constexpr auto indent_max{ 16u };
-			std::cout << "argv[0]" << std::setw(indent_max - 7u) << ' ' << argv[0] << std::endl;
-			std::cout << "directory" << std::setw(indent_max - 9u) << ' ' << local_path << std::endl;
-			std::cout << "registry" << std::setw(indent_max - 8u) << ' ' << paths._path_registry << std::endl;
-			std::cout << "INI Config" << std::setw(indent_max - 10u) << ' ' << paths._path_config << std::endl;
-			std::cout << "GMST Config" << std::setw(indent_max - 11u) << ' ' << paths._path_gamesettings << std::endl;
-
-			if ( validate_file(paths._path_registry) )
-				std::cout << sys::term::msg << "Registry Validation Succeeded." << std::endl;
-			else std::cout << sys::term::warn << "Failed to find Registry!" << std::endl;
-
-			if ( file::exists(paths._path_config) )
-				std::cout << sys::term::msg << "INI Config Exists." << std::endl;
-			else std::cout << sys::term::warn << "Failed to find INI Config!" << std::endl;
-
-			if ( file::exists(paths._path_gamesettings) )
-				std::cout << sys::term::msg << "GMST Config Exists." << std::endl;
-			else std::cout << sys::term::warn << "Failed to find GMST Config!" << std::endl;
-		}
 
 		Format _format{
 			args.check_flag('q'),	// quiet
@@ -159,9 +131,7 @@ namespace caco_alch {
 			args.check_flag('R'),	// reverse
 			args.check_flag('c'),	// allow color
 			args.check_flag('S'),	// smart search
-			3u,						// indent
 			[&args]() { const auto val{ args.getv("precision") }; return val.has_value() && !val.value().empty() ? str::stoui(val.value()) : 2u; }(),
-			[&args]() { const auto val{ args.getv("color") }; return val.has_value() && !val.value().empty() ? color::strToColor(val.value()) : color::white; }()
 		};
 
 		return { args, Alchemy(loadFromFile(paths._path_registry), _format, gmst) };

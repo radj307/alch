@@ -83,7 +83,7 @@ namespace caco_alch {
 			os << gmst._name << " = ";
 			if (const auto str{ std::get<0>(gmst._value) }; str.has_value() )
 				os << str.value();
-			else if (const auto dbl{ std::get<1>(gmst._value) }; dbl.has_value() )
+			else if (const auto& dbl{ std::get<1>(gmst._value) }; dbl.has_value() )
 				os << std::to_string(dbl.value());
 			else if (const auto b{ std::get<2>(gmst._value) }; b.has_value() ) {
 				if ( b.value() )
@@ -424,9 +424,12 @@ namespace caco_alch {
 		[[nodiscard]] Effect calculate(const Effect& effect) const
 		{
 			const auto AlchemyAV{ fAlchemyAV() };
-			if (effect.hasKeyword(Keywords::KYWD_DurationBased))
-				return Effect{ effect._name, std::round(calculate_perks(calculate_base(effect._magnitude, AlchemyAV), effect, AlchemyAV)), effect._duration, effect._keywords };
-			return Effect{ effect._name, effect._magnitude, static_cast<unsigned>(std::round(calculate_perks(calculate_base(effect._duration, AlchemyAV), effect, AlchemyAV))), effect._keywords };
+			if (effect.hasKeyword(Keywords::KYWD_DurationBased)) {
+				double mag{ std::round(calculate_perks(calculate_base(effect._magnitude, AlchemyAV), effect, AlchemyAV)) };
+				return Effect{ effect._name, mag, effect._duration, effect._keywords };
+			}
+			unsigned dur{ static_cast<unsigned>(std::round(calculate_perks(calculate_base(effect._duration, AlchemyAV), effect, AlchemyAV))) };
+			return Effect{ effect._name, effect._magnitude, dur, effect._keywords };
 		}
 
 		/**

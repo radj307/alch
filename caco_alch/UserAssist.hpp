@@ -8,7 +8,6 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
-//#include <optlib.hpp>
 #include <Params.hpp>
 #include <utility>
 

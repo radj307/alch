@@ -75,7 +75,39 @@ namespace caco_alch {
 		bool operator<(const Effect& o) const { return _name == o._name && _magnitude < o._magnitude; }
 		bool operator>(const Effect& o) const { return _name == o._name && _magnitude > o._magnitude; }
 	};
+
 	// KEYWORD CHECKERS
-	inline bool hasPositive(const Effect& effect) { return effect.hasKeyword(Keywords::positive); }
-	inline bool hasNegative(const Effect& effect) { return effect.hasKeyword(Keywords::negative); }
+	/**
+	 * @brief Fallback method for identifying postive/negative effects that checks the effect's lowercase name.
+	 * @param name_lc	- The name of an effect.
+	 * @returns short
+	 *\n		0		- Nothing found, effect name does not indicate either positive or negative.
+	 *\n		1		- Negative word found, effect name indicates it is negative.
+	 *\n		2		- Positive word found, effect name indicates it is positive.
+	 */
+	inline short hasKeywordTypeFallback(const std::string& name_lc)
+	{
+		if ( // NEGATIVE EFFECTS
+			str::pos_valid(name_lc.find("damage"))
+			|| str::pos_valid(name_lc.find("ravage"))
+			|| str::pos_valid(name_lc.find("drain"))
+			|| str::pos_valid(name_lc.find("frenzy"))
+			|| str::pos_valid(name_lc.find("fear"))
+			|| str::pos_valid(name_lc.find("aversion"))
+			)
+			return 1;
+		if ( // POSITIVE EFFECTS
+			str::pos_valid(name_lc.find("restore"))
+			|| str::pos_valid(name_lc.find("fortify"))
+			|| str::pos_valid(name_lc.find("resist"))
+			|| str::pos_valid(name_lc.find("detect"))
+			|| str::pos_valid(name_lc.find("night eye"))
+			|| str::pos_valid(name_lc.find("speed"))
+			)
+			return 2;
+		return 0;
+	}
+
+	inline bool hasPositive(const Effect& effect) { return effect.hasKeyword(Keywords::positive) || hasKeywordTypeFallback(str::tolower(effect._name)) == 2; }
+	inline bool hasNegative(const Effect& effect) { return effect.hasKeyword(Keywords::negative) || hasKeywordTypeFallback(str::tolower(effect._name)) == 1; }
 }
