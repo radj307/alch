@@ -11,8 +11,6 @@
 #endif
 
 #include <TermAPI.hpp>
-#include <CaptureStream.hpp>
-#include "UserAssist.hpp"
 #include "init.hpp"
 
 using namespace caco_alch;

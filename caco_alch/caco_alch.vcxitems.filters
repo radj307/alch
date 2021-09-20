@@ -23,7 +23,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Effect.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameSettings.hpp">
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameConfig.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Ingredient.hpp">
@@ -38,7 +38,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)reloader.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)UserAssist.hpp">
+    <ClInclude Include="$(MSBuildThisFileDirectory)handle_arguments.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)using.h">
@@ -53,7 +53,13 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IngredientCache.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Help.hpp">
+    <ClInclude Include="$(MSBuildThisFileDirectory)ColorAPI.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ColorConfigLoader.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DefaultObjects.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

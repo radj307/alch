@@ -5,7 +5,7 @@
 
 namespace caco_alch {
 	namespace _internal {
-		// Use internally by the GMST struct to prevent its type from being changed.
+		// Use internally by the GameConfigBase struct to prevent its type from being changed.
 		enum class GMST_T {
 			STRING = 0,
 			DOUBLE = 1,
@@ -25,10 +25,10 @@ namespace caco_alch {
 	}
 
 	/**
-	 * @struct GMST
+	 * @struct GameConfigBase
 	 * @brief Represents a single game setting, with one of three types.
 	 */
-	struct GMST : ObjectBase {
+	struct GameConfigBase : ObjectBase {
 		using STRING = std::optional<std::string>;	///< @brief Variable type
 		using DOUBLE = std::optional<double>;		///< @brief Variable type
 		using BOOL = std::optional<bool>;			///< @brief Variable type
@@ -37,9 +37,9 @@ namespace caco_alch {
 		Tuple _value;
 		const _internal::GMST_T _type;
 
-		GMST(const std::string& name, const std::string& value) : ObjectBase(name), _value{ value, std::nullopt, std::nullopt }, _type{ _internal::GMST_T::STRING } {}
-		GMST(const std::string& name, const double value) : ObjectBase(name), _value{ std::nullopt, value, std::nullopt }, _type{ _internal::GMST_T::DOUBLE } {}
-		GMST(const std::string& name, const bool value) : ObjectBase(name), _value{ std::nullopt, std::nullopt, value }, _type{ _internal::GMST_T::BOOL } {}
+		GameConfigBase(const std::string& name, const std::string& value) : ObjectBase(name), _value{ value, std::nullopt, std::nullopt }, _type{ _internal::GMST_T::STRING } {}
+		GameConfigBase(const std::string& name, const double value) : ObjectBase(name), _value{ std::nullopt, value, std::nullopt }, _type{ _internal::GMST_T::DOUBLE } {}
+		GameConfigBase(const std::string& name, const bool value) : ObjectBase(name), _value{ std::nullopt, std::nullopt, value }, _type{ _internal::GMST_T::BOOL } {}
 
 		void set(const std::string& value)
 		{
@@ -78,7 +78,7 @@ namespace caco_alch {
 			return{};
 		}
 
-		friend std::ostream& operator<<(std::ostream& os, const GMST& gmst)
+		friend std::ostream& operator<<(std::ostream& os, const GameConfigBase& gmst)
 		{
 			os << gmst._name << " = ";
 			if (const auto str{ std::get<0>(gmst._value) }; str.has_value() )
@@ -95,11 +95,11 @@ namespace caco_alch {
 	};
 
 	/**
-	 * @struct GameSettings
+	 * @struct GameConfig
 	 * @brief Contains values parsed from the INI config used in potion building.
 	 */
-	struct GameSettings {
-		using Cont = std::vector<GMST>;
+	struct GameConfig {
+		using Cont = std::vector<GameConfigBase>;
 	private:
 		Cont _settings; ///< @brief Game Setting Container.
 
@@ -107,9 +107,9 @@ namespace caco_alch {
 		 * @function find(const std::string&)
 		 * @brief Retrieve a pointer to the game settings with a given name.
 		 * @param name	- Target GameSetting name.
-		 * @returns GMST*
+		 * @returns GameConfigBase*
 		 */
-		GMST* find(const std::string& name)
+		GameConfigBase* find(const std::string& name)
 		{
 			for ( auto& it : _settings )
 				if ( it._name == name )
@@ -117,20 +117,20 @@ namespace caco_alch {
 			return nullptr;
 		}
 	public:
-		GameSettings() = delete;
+		GameConfig() = delete;
 		/**
-		 * @constructor GameSettings(Cont)
+		 * @constructor GameConfig(Cont)
 		 * @brief Copy-Move Constructor
 		 * @param settings	- A settings object to import.
 		 */
-		explicit GameSettings(Cont settings) : _settings{ std::move(settings) } {}
+		explicit GameConfig(Cont settings) : _settings{ std::move(settings) } {}
 		/**
-		 * @constructor GameSettings(Cont, const std::string&)
+		 * @constructor GameConfig(Cont, const std::string&)
 		 * @brief Default Constructor, reads values from a given file
 		 * @param default_settings	- The default settings used to fill in any missing entries.
 		 * @param filename			- The filepath to read settings from.
 		 */
-		explicit GameSettings(Cont default_settings, const std::string& filename) : _settings{ set(std::move(default_settings), file::read(filename)) } {}
+		explicit GameConfig(Cont default_settings, const std::string& filename) : _settings{ set(std::move(default_settings), file::read(filename)) } {}
 
 #pragma region GENERIC_GETTERS_SETTERS
 		/**
@@ -140,11 +140,11 @@ namespace caco_alch {
 		 */
 		[[nodiscard]] Cont::const_iterator find(const std::string& name, const int off = 0) const
 		{
-			return std::find_if(off + _settings.begin(), _settings.end(), [&name](const GMST& setting) { return setting._name == name; });
+			return std::find_if(off + _settings.begin(), _settings.end(), [&name](const GameConfigBase& setting) { return setting._name == name; });
 		}
 		/**
 		 * @function getValue(const std::string&, const int = 0) const
-		 * @brief Wrapper for find() & GMST::safe_get()
+		 * @brief Wrapper for find() & GameConfigBase::safe_get()
 		 * @returns std::string
 		 */
 		[[nodiscard]] std::string getValue(const std::string& name, const int off = 0) const
@@ -162,7 +162,7 @@ namespace caco_alch {
 		[[nodiscard]] bool getBoolValue(const std::string& name, const int off = 0) const
 		{
 			try {
-				return std::get<GMST::BOOL>(find(name, off)->_value).value();
+				return std::get<GameConfigBase::BOOL>(find(name, off)->_value).value();
 			} catch (std::exception&) {
 				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
@@ -176,7 +176,7 @@ namespace caco_alch {
 		[[nodiscard]] double getDoubleValue(const std::string& name, const int off = 0) const
 		{
 			try {
-				return std::get<GMST::DOUBLE>(find(name, off)->_value).value();
+				return std::get<GameConfigBase::DOUBLE>(find(name, off)->_value).value();
 			} catch (std::exception&) {
 				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
@@ -190,7 +190,7 @@ namespace caco_alch {
 		[[nodiscard]] std::string getStringValue(const std::string& name, const int off = 0) const
 		{
 			try {
-				return std::get<GMST::STRING>(find(name, off)->_value).value();
+				return std::get<GameConfigBase::STRING>(find(name, off)->_value).value();
 			} catch (std::exception&) {
 				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
@@ -443,13 +443,13 @@ namespace caco_alch {
 		}
 
 		/**
-		 * @operator<<(std::ostream&, const GameSettings&)
+		 * @operator<<(std::ostream&, const GameConfig&)
 		 * @brief Stream insertion operator.
 		 * @param os	- Target output stream.
-		 * @param gs	- Target GameSettings instance.
+		 * @param gs	- Target GameConfig instance.
 		 * @returns std::ostream&
 		 */
-		friend std::ostream& operator<<(std::ostream& os, const GameSettings& gs)
+		friend std::ostream& operator<<(std::ostream& os, const GameConfig& gs)
 		{
 			for ( auto& it : gs._settings )
 				os << it << '\n';

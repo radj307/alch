@@ -1,5 +1,6 @@
 #pragma once
 #include <set>
+#include <TermAPI.hpp>
 #include <strconv.hpp>
 #include <strmanip.hpp>
 #include <file.h>
@@ -24,7 +25,7 @@ namespace caco_alch {
 		RegistryType
 			_registry,
 			_cache;
-		const GameSettings _GMST;
+		const GameConfig _GMST;
 
 	public:
 #pragma region GETTERS
@@ -85,9 +86,9 @@ namespace caco_alch {
 		 * @brief Default Constructor
 		 * @param ingr	- rvalue ref of loadFromFile output.
 		 * @param fmt	- Format instance.
-		 * @param gs	- GameSettings instance.
+		 * @param gs	- GameConfig instance.
 		 */
-		explicit Alchemy(IngrList&& ingr, const Format& fmt, const GameSettings& gs) :
+		explicit Alchemy(IngrList&& ingr, const Format& fmt, const GameConfig& gs) :
 			_fmt{ fmt },
 			_registry{ std::move(ingr), fmt },
 			_cache{ _fmt },
@@ -95,8 +96,8 @@ namespace caco_alch {
 		{}
 
 		/**
-		 * @function build(SortedIngrList&&, const GameSettings&)
-		 * @brief Builds & returns a potion using a list of ingredients & a GameSettings instance.
+		 * @function build(SortedIngrList&&, const GameConfig&)
+		 * @brief Builds & returns a potion using a list of ingredients & a GameConfig instance.
 		 * @param ingredients	- SortedIngrList rvalue ref.
 		 * @returns Potion
 		 */
@@ -122,19 +123,19 @@ namespace caco_alch {
 				if ( _fmt.file_export() ) // export registry-format ingredients
 					_fmt.to_fstream(os, cont);
 				else { // insert search results
-					os << color::bold << "Search results for: \'" << color::f::orange << name << color::reset << color::bold << "\'\n" << color::f::red << "{\n" << color::reset;
+					os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Search results for: \'" << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << _fmt._colors.set(UIElement::SEARCH_HEADER) << "\'\n" << _fmt._colors.set(UIElement::BRACKET) << "{\n" << color::reset;
 					if ( _fmt.reverse_output() )
 						for ( auto it{ cont.rbegin() }; it != cont.rend(); ++it )
 							_fmt.to_stream(os, *it, name_lowercase);
 					else
 						for ( auto it{ cont.begin() }; it != cont.end(); ++it )
 							_fmt.to_stream(os, *it, name_lowercase);
-					os << color::f::red << "}" << color::reset << std::endl;
+					os << _fmt._colors.set(UIElement::BRACKET) << "}" << color::reset << std::endl;
 				}
 				os.precision(precision); // reset output stream precision
 			}
 			else // no results found
-				os << sys::term::error << "Didn't find any ingredients or effects matching \'" << color::f::yellow << name << color::reset << "\'\n";
+				os << sys::term::error << "Didn't find any ingredients or effects matching \'" << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << "\'\n";
 			return os;
 		}
 
@@ -147,17 +148,17 @@ namespace caco_alch {
 		 */
 		std::ostream& print_smart_search_to(std::ostream& os, std::vector<std::string> names)
 		{
-			os << color::f::green << "Search results for ";
+			os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Search results for " << color::reset;
 			for ( auto it{ names.begin() }; it != names.end(); ++it ) {
 				*it = str::tolower(*it);
-				os << color::f::green << '\'' << color::f::yellow << *it << color::f::green << '\'';
+				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << '\'' << color::reset << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << *it << color::reset << _fmt._colors.set(UIElement::SEARCH_HEADER) << '\'';
 				const auto has_next{ it + 1 != names.end() };
 				if ( has_next && it + 2 == names.end() )
 					os << " and ";
 				else if ( has_next )
 					os << ", ";
 			}
-			os << color::reset << '\n' << color::f::red << "{\n" << color::reset;
+			os << color::reset << '\n' << _fmt._colors.set(UIElement::BRACKET) << "{\n" << color::reset;
 
 			RegistryType cache{ _fmt };
 
@@ -188,11 +189,11 @@ namespace caco_alch {
 					os.precision(precision); // reset output stream precision
 				}
 				if ( is_cache && cache.empty() ) {
-					os << sys::term::error << "Didn't find anything after applying filter for \'" << color::f::yellow << *name << color::reset << "\'\n";
+					os << sys::term::error << "Didn't find anything after applying filter for \'" << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << *name << color::reset << "\'\n";
 					break;
 				}
 			}
-			os << color::f::red << "}\n" << color::reset;
+			os << _fmt._colors.set(UIElement::BRACKET) << "}\n" << color::reset;
 			_cache = std::move(cache);
 			return os;
 		}
@@ -213,9 +214,9 @@ namespace caco_alch {
 				if ( _fmt.file_export() )
 					_fmt.to_fstream(os, _registry._ingr);
 				else {
-					os << color::f::green << "Ingredients" << color::reset << '\n' << color::f::red << '{' << color::reset << '\n';
+					os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Ingredients" << color::reset << '\n' << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n';
 					_fmt.list_to_stream(os, _registry.getSortedList());
-					os << color::f::red << '}' << color::reset << '\n';
+					os << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				}
 
 				os.precision(precision); // reset precision
@@ -224,7 +225,7 @@ namespace caco_alch {
 		}
 
 		/**
-		 * @function print_build_to(std::ostream&, IngrList&&, const GameSettings&, const Format& = {})
+		 * @function print_build_to(std::ostream&, IngrList&&, const GameConfig&, const Format& = {})
 		 * @brief Construct a potion with the specified ingredients, and output the result to os.
 		 * @param os	- Target output stream
 		 * @param cont	- List of ingredients ( Min. 2 <= x <= Max. 4 ). If more than 4 ingredients are passed in, the first 4 are used and the rest are discarded.
@@ -245,26 +246,26 @@ namespace caco_alch {
 				os << std::fixed;
 
 				const auto skill_base{ _GMST.fAlchemyAV() };
-				os << color::f::green << "Potion Builder [Alchemy Skill: " << color::f::cyan << color::bold << skill_base << color::reset;
+				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Potion Builder [Alchemy Skill: " << _fmt._colors.set(UIElement::ALCHEMY_SKILL) << skill_base << color::reset;
 				if ( const auto skill_mod{ _GMST.fAlchemyMod() }; skill_mod > 0.0 )
-					os << "(" << color::f::green << skill_base + skill_mod << color::reset << ")";
-				os << color::f::green << ']' << color::reset << '\n';
+					os << "(" << _fmt._colors.set(UIElement::ALCHEMY_SKILL) << skill_base + skill_mod << color::reset << ")";
+				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << ']' << color::reset << '\n';
 
 				const auto potion{ build(set) };
 
-				os << color::f::green << "Input:\n" << color::f::red << '{' << color::reset << '\n';
+				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Input:\n" << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n';
 				for ( auto& it : set )
 					_fmt.to_stream_build(os, it, potion);
-				os << color::f::red << '}' << color::reset << '\n';
+				os << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 
 				if ( potion.effects().empty() )
 					throw std::exception("Potion creation failed.");
 
-				os << color::f::green << "Output:\n" << color::f::red << '{' << color::reset << '\n';
+				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Output:\n" << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n';
 
 				_fmt.to_stream(os, potion, indentation);
 
-				os << color::f::red << '}' << color::reset << '\n';
+				os << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				os.precision(precision); // Reset precision
 				return os;
 			}
@@ -272,7 +273,7 @@ namespace caco_alch {
 		}
 
 		/**
-		 * @function print_build_to(std::ostream&, const std::vector<std::string>&, const GameSettings&, const Format& = {})
+		 * @function print_build_to(std::ostream&, const std::vector<std::string>&, const GameConfig&, const Format& = {})
 		 * @brief Construct a potion with the specified ingredients, and output the result to os.
 		 * @param os	- Target output stream
 		 * @param names	- List of ingredient names ( Min. 2 <= x <= Max. 4 ). If more than 4 ingredients are passed in, the first 4 are used and the rest are discarded.

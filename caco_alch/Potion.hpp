@@ -4,7 +4,7 @@
 
 #include "using.h"
 #include "Ingredient.hpp"
-#include "GameSettings.hpp"
+#include "GameConfig.hpp"
 
 namespace caco_alch {
 
@@ -85,7 +85,7 @@ namespace caco_alch {
 
 	/**
 	 * @struct PotionBase
-	 * @brief Contains the base effects of a potion, before using GameSettings to calculate the expected resulting magnitude for each effect.
+	 * @brief Contains the base effects of a potion, before using GameConfig to calculate the expected resulting magnitude for each effect.
 	 */
 	struct PotionBase : ObjectBase {
 	protected:
@@ -143,13 +143,13 @@ namespace caco_alch {
 		EffectList _fx; ///< @brief The final effects of a potion, these are applied when using it.
 
 		/**
-		 * @function calculate_stats(const EffectList, GameSettings&)
+		 * @function calculate_stats(const EffectList, GameConfig&)
 		 * @brief Calculate a potion's final stats, including the players level & perks, etc.
 		 * @param base	- Base effects.
-		 * @param gs	- Ref of a GameSettings instance.
+		 * @param gs	- Ref of a GameConfig instance.
 		 * @returns EffectList
 		 */
-		[[nodiscard]] EffectList calculate_stats(const EffectList& base, const GameSettings& gs) const
+		[[nodiscard]] EffectList calculate_stats(const EffectList& base, const GameConfig& gs) const
 		{
 			EffectList vec;
 			for ( auto& it : base )
@@ -158,9 +158,9 @@ namespace caco_alch {
 		}
 
 	public:
-		Potion(const IngrList& ingredients, const GameSettings& gs) : PotionBase(ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(IngrList&& ingredients, const GameSettings& gs) : PotionBase(std::forward<IngrList>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
-		Potion(const SortedIngrList& ingredients, const GameSettings& gs) : PotionBase(ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const IngrList& ingredients, const GameConfig& gs) : PotionBase(ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(IngrList&& ingredients, const GameConfig& gs) : PotionBase(std::forward<IngrList>(ingredients)), _fx{ calculate_stats(_base_fx, gs) } {}
+		Potion(const SortedIngrList& ingredients, const GameConfig& gs) : PotionBase(ingredients), _fx{ calculate_stats(_base_fx, gs) } {}
 
 		/**
 		 * @function name() const

@@ -27,6 +27,11 @@ namespace caco_alch {
 		return str;
 	}
 
+	/**
+	 * @brief Uses the reparser.hpp header to parse a given stringstream into an IngrList
+	 * @param ss	- Stringstream to parse, should contain data in valid format from an ingredient cache.
+	 * @returns IngrList
+	 */
 	inline IngrList parseFileContent(std::stringstream& ss)
 	{
 		constexpr auto get_fx{ [] (reparse::Elem::Cont::value_type& elem) -> std::array<Effect, 4> {

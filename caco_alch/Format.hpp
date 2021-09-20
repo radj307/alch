@@ -1,13 +1,13 @@
 #pragma once
 #include <set>
 #include <iomanip>
-#include <TermAPI.hpp>
 #include <strconv.hpp>
-#include <INI.hpp>
 
-#include "Potion.hpp"
-#include "using.h"
-#include "Ingredient.hpp"
+#include <using.h>
+#include <ColorAPI.hpp>
+#include <Potion.hpp>
+#include <Ingredient.hpp>
+#include <ColorConfigLoader.hpp>
 
 namespace caco_alch {
 	/**
@@ -27,16 +27,9 @@ namespace caco_alch {
 		unsigned
 			_indent,
 			_precision;
-		short
-			_color_misc,
-			_color_highlight,
-			_color_fx_positive,
-			_color_fx_negative,
-			_color_fx_neutral,
-			_color_fx_magnitude,
-			_color_fx_duration;
+		ColorAPI _colors;
 
-		explicit OutputFormat(const bool quiet, const bool verbose, const bool exact, const bool all, const bool fileExport, const bool reverse, const bool color, const bool smart, const size_t indent, const size_t precision, const short colMisc, const short colHighlight, const short colFxPos, const short colFxNeg, const short colFxNeu, const short colFxMag, const short colFxDur) :
+		explicit OutputFormat(const bool quiet, const bool verbose, const bool exact, const bool all, const bool fileExport, const bool reverse, const bool color, const bool smart, const size_t indent, const size_t precision, ColorAPI colors) :
 			_flag_quiet{ quiet },
 			_flag_verbose{ verbose },
 			_flag_exact{ exact },
@@ -47,13 +40,7 @@ namespace caco_alch {
 			_flag_smart{ smart },
 			_indent{ indent },
 			_precision{ precision },
-			_color_misc{ colMisc },
-			_color_highlight{ colHighlight },
-			_color_fx_positive{ colFxPos },
-			_color_fx_negative{ colFxNeg },
-			_color_fx_neutral{ colFxNeu },
-			_color_fx_magnitude{ colFxMag },
-			_color_fx_duration{ colFxDur }
+			_colors{ std::move(colors) }
 		{}
 		virtual ~OutputFormat() = default;
 
@@ -70,7 +57,7 @@ namespace caco_alch {
 		[[nodiscard]] bool doLocalCaching() const { return _flag_smart; }
 		[[nodiscard]] size_t indent() const { return _indent; }
 		[[nodiscard]] size_t precision() const { return _precision; }
-		[[nodiscard]] unsigned short color() const { return _flag_color; }
+		[[nodiscard]] bool color() const { return _flag_color; }
 	};
 
 	/**
@@ -104,13 +91,7 @@ namespace caco_alch {
 			use_local_cache,
 			str::stoui(ini.getv("format", "indent")),
 			(ini.check("format", "precision") ? str::stoui(ini.getv("format", "precision")) : cli_precision),
-			str::stos(ini.getv("color", "general")),
-			str::stos(ini.getv("color", "highlight")),
-			str::stos(ini.getv("color", "fx-positive")),
-			str::stos(ini.getv("color", "fx-negative")),
-			str::stos(ini.getv("color", "fx-neutral")),
-			str::stos(ini.getv("color", "fx-magnitude")),
-			str::stos(ini.getv("color", "fx-duration"))
+			loadColorConfig(ini)
 		) {}
 		explicit Format(const bool quiet = false, const bool verbose = true, const bool exact = false, const bool all = false, const bool file_export = false, const bool reverse_output = false, const bool allow_color_fx = true, const bool use_local_cache = false, const size_t cli_precision = 2u) : OutputFormat(
 			quiet,
@@ -123,13 +104,7 @@ namespace caco_alch {
 			use_local_cache,
 			3u,
 			cli_precision,
-			color::white,
-			color::orange,
-			color::green,
-			color::red,
-			color::intense_yellow,
-			color::magenta,
-			color::cyan
+			ColorAPI{ DefaultObjects._default_colors }
 		) {}
 
 #pragma region SPECIAL_GETTERS
@@ -196,24 +171,23 @@ namespace caco_alch {
 		/**
 		 * @brief Retrieve a color to use when outputting a given effect.
 		 * @param effect	- The effect to check.
-		 * @param fmt		- Color & flag data.
-		 * @returns short
+		 * @returns ColorAPI::ColorSetter
 		 */
-		short resolveEffectColor(const Effect& effect) const
+		ColorAPI::ColorSetter resolveEffectColor(const Effect& effect) const
 		{
 			// check if color override is enabled
 			if (_flag_color)
-				return _color_misc;
+				return _colors.set(UIElement::EFFECT_NAME_NEUTRAL);
 			// check keywords
 			if (!effect._keywords.empty()) {
 				if (hasNegative(effect))
-					return _color_fx_negative;
+					return _colors.set(UIElement::EFFECT_NAME_NEGATIVE);
 				if (hasPositive(effect))
-					return _color_fx_positive;
+					return _colors.set(UIElement::EFFECT_NAME_POSITIVE);
 				if (!effect.hasKeyword(Keywords::KYWD_MagicInfluence))
-					return _color_fx_neutral;
+					return _colors.set(UIElement::EFFECT_NAME_NEUTRAL);
 			}
-			return color::white; // else return white
+			return _colors.set(UIElement::EFFECT_NAME_DEFAULT); // else return white
 		}
 
 	#pragma region BASE
@@ -267,23 +241,23 @@ namespace caco_alch {
 			for (auto i{ 0u }; i < repeatIndentation; ++i)
 				os << indentation;
 
-			os << color::setcolor(fx_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::setcolor(fx_color, true) << post << color::bold;
+			os << fx_color << pre << color::reset << _colors.set(UIElement::SEARCH_HIGHLIGHT) << highlight << fx_color << post << color::bold;
 
-			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
+			const auto insert_num{ [&os, &ind_fac](const std::string& num, const ColorAPI::ColorSetter color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
 					os << std::setw(static_cast<std::streamsize>(indent) + 2u) << ' ';
 				else
 					os << std::setw(ind_fac - static_cast<std::streamsize>(indent)) << ' ';
-				os << color::setcolor(color, true) << num;
+				os << color << num;
 				return num.size();
 			} };
 
 			auto size_factor{ fx._name.size() };
 
 			if (fx._magnitude > 0.0 || _flag_all)
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _color_fx_magnitude, size_factor) + 10u;
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _colors.set(UIElement::EFFECT_MAGNITUDE), size_factor) + 10u;
 			if (fx._duration > 0u || _flag_all) {
-				insert_num(str::to_string(fx._duration, _precision), _color_fx_duration, size_factor);
+				insert_num(str::to_string(fx._duration, _precision), _colors.set(UIElement::EFFECT_DURATION), size_factor);
 				os << color::reset_bold << 's';
 			}
 			os << color::reset << '\n';
@@ -309,20 +283,20 @@ namespace caco_alch {
 			const auto fx_color{ resolveEffectColor(fx) };
 			for (auto i{ 0u }; i < repeatIndentation; ++i)
 				os << indentation;
-			os << color::setcolor(fx_color, true) << pre << color::reset << color::setcolor(_color_highlight, true) << highlight << color::setcolor(fx_color, true) << post << color::reset;
-			const auto insert_num{ [&os, &ind_fac](const std::string& num, const short color, const std::streamsize indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
+			os << fx_color << pre << color::reset << _colors.set(UIElement::SEARCH_HIGHLIGHT) << highlight << fx_color << post << color::reset;
+			const auto insert_num{ [&os, &ind_fac](const std::string& num, const ColorAPI::ColorSetter color, const std::streamsize indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
 				if (indent > ind_fac)
 					os << std::setw(indent + 2) << ' ';
 				else
 					os << std::setw(ind_fac - indent) << ' ';
-				os << color::setcolor(color, true) << num;
+				os << color << num;
 				return num.size();
 			} };
 			auto size_factor{ fx._name.size() };
 			if (fx._magnitude > 0.0 || _flag_all)
-				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _color_fx_magnitude, size_factor) + 10u;
+				size_factor = insert_num(str::to_string(fx._magnitude, _precision), _colors.set(UIElement::EFFECT_MAGNITUDE), size_factor) + 10u;
 			if (fx._duration > 0u || _flag_all) {
-				insert_num(str::to_string(fx._duration, _precision), _color_fx_duration, size_factor);
+				insert_num(str::to_string(fx._duration, _precision), _colors.set(UIElement::EFFECT_DURATION), size_factor);
 				os << 's';
 			}
 			os << color::reset << '\n';
@@ -341,7 +315,7 @@ namespace caco_alch {
 		{
 			const auto indentation{ std::string(_indent, ' ') }; // get indentation string
 			const auto [pre, highlight, post] { get_tuple(ingr._name, search_str) };
-			os << indentation << color::setcolor(_color_misc, true) << color::bold << pre << color::reset << color::setcolor(_color_highlight, true) << color::bold << highlight << color::reset << color::setcolor(_color_misc, true) << color::bold << post << color::reset << '\n';
+			os << indentation << _colors.set(UIElement::INGREDIENT_NAME) << pre << color::reset << _colors.set(UIElement::SEARCH_HIGHLIGHT) << color::bold << highlight << color::reset << _colors.set(UIElement::INGREDIENT_NAME) << post << color::reset << '\n';
 			for (auto& fx : get_fx(ingr._effects, { search_str })) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, search_str, indentation, 2u, 25u);
 			return os;
@@ -406,7 +380,7 @@ namespace caco_alch {
 		{
 			const auto indentation{ std::string(_indent, ' ') };
 			const auto to_stream{ [this, &os, &search_strings, &indentation](const SortedIngrList::iterator it) {
-				os << indentation << color::setcolor(_color_misc, true) << it->_name << color::reset << '\n';
+				os << indentation << _colors.set(UIElement::INGREDIENT_NAME) << it->_name << color::reset << '\n';
 				for ( auto& fx : it->_effects )
 					this->to_stream(os, fx, search_strings, indentation);
 			} };
@@ -430,7 +404,7 @@ namespace caco_alch {
 		std::ostream& to_stream(std::ostream& os, const Potion& potion, const std::string& indentation) const
 		{
 			const auto [pre, highlight, post]{ get_tuple(potion.name(), "") };
-			os << indentation << color::setcolor(_color_misc, true) << color::bold << pre << color::reset << color::setcolor(_color_highlight, true) << color::bold << highlight << color::reset << color::setcolor(_color_misc, true) << color::bold << post << color::reset << '\n';
+			os << indentation << _colors.set(UIElement::INGREDIENT_NAME) << pre << color::reset << _colors.set(UIElement::SEARCH_HIGHLIGHT) << color::bold << highlight << color::reset << _colors.set(UIElement::INGREDIENT_NAME) << post << color::reset << '\n';
 			for ( auto& fx : potion.effects() ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, "", indentation, 2u, 25u);
 			return os;
@@ -453,7 +427,7 @@ namespace caco_alch {
 					vec.push_back(str::tolower(it._name));
 				return vec;
 			}() };
-			os << indentation << color::setcolor(_color_misc, true) << color::bold << ingr._name << color::reset << '\n';
+			os << indentation << _colors.set(UIElement::INGREDIENT_NAME) << ingr._name << color::reset << '\n';
 			for ( auto& fx : get_fx(ingr._effects, names_lc) ) // iterate through this ingredient's effects, and insert them as well.
 				to_stream(os, fx, "", indentation);
 			return os;

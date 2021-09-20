@@ -9,7 +9,7 @@ using namespace caco_alch;
 #pragma region GLOBALS
 const std::string local_path{ "X:\\_Workspace\\_repo\\alch\\Debug\\" }; // default local path (location of INI, GMST cfg, and Ingredient Cache)
 
-const DefaultPaths paths{ // default paths
+DefaultPaths paths{ // default paths
 	local_path,
 	DefaultObjects._default_filename_config,
 	DefaultObjects._default_filename_gamesettings,
