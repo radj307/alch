@@ -301,6 +301,12 @@ namespace caco_alch {
 				return os;
 			}
 		};
+
+		template<class T>
+		ToStream<T> print(T&& obj, Indentation&& ind, std::optional<std::vector<std::string>>&& searched) const
+		{
+			return{ *this, std::forward<T>(obj), std::forward<Indentation>(ind), std::forward<std::optional<std::vector<std::string>>>(searched) };
+		}
 	};
 
 	/**

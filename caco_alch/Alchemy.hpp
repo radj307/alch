@@ -120,6 +120,7 @@ namespace caco_alch {
 				os << std::fixed; // Set forced standard notation
 				const auto precision{ os.precision() }; // copy current output stream precision
 				os.precision(_fmt.precision()); // Set floating-point-precision.
+
 				if ( _fmt.file_export() ) // export registry-format ingredients
 					_fmt.to_fstream(os, cont);
 				else { // insert search results
