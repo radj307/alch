@@ -12,7 +12,7 @@ namespace caco_alch {
 	private:
 		static std::string combine(std::string left, std::string&& right)
 		{
-			return left.append(right);
+			return left.append(std::move(right));
 		}
 	public:
 		DefaultPaths(std::string local_path, std::string config, std::string gamesettings, std::string registry) : _path_config{ combine(local_path, std::move(config)) }, _path_gamesettings{ combine(local_path, std::move(gamesettings)) }, _path_registry{ combine(local_path, std::move(registry)) } {}
@@ -20,6 +20,22 @@ namespace caco_alch {
 			_path_config,
 			_path_gamesettings,
 			_path_registry;
+
+		/**
+		 * @brief Checks if the given paths exist, and returns the highest priority extant path, or nullopt.
+		 * @param path		- Path defined by the user on the commandline. Accepts an optional string.
+		 * @param defPath	- Default path located in DefaultPaths instance.
+		 * @returns std::optional<std::string>
+		 */
+		static std::optional<std::string> resolve_path(const std::optional<std::string>& path, const std::string& defPath)
+		{
+			if (path.has_value() && file::exists(path.value())) // first check the user-defined path
+				return path;
+			else if (file::exists(defPath)) // second check the default path
+				return defPath;
+			else // if neither exist, return nullopt
+				return std::nullopt;
+		}
 	};
 	/**
 	 * @struct DefaultObjects
