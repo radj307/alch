@@ -30,7 +30,7 @@
     <ClInclude Include="resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="init.hpp">
+    <ClInclude Include="Instance.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>

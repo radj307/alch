@@ -7,6 +7,18 @@
     <Filter Include="Headers">
       <UniqueIdentifier>{d8170615-f749-42d7-9e84-fd9db86b5c2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\Ingredients">
+      <UniqueIdentifier>{5dbacf92-4899-46f2-80a5-178683a77861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Potions">
+      <UniqueIdentifier>{e70867d6-3a5f-4b65-b988-36e1b407ea4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\API">
+      <UniqueIdentifier>{87f6fdd9-0cad-4d1d-bf5c-ad9e4908a940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\Defaults">
+      <UniqueIdentifier>{7b4c1d79-af56-47ec-9b47-47d8cfcec004}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)caco-alch.ini">
@@ -21,46 +33,49 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Effect.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameConfig.hpp">
-      <Filter>Headers</Filter>
+      <Filter>Headers\Ingredients</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Ingredient.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Potion.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)reloader.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)handle_arguments.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)using.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Keyword.hpp">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Format.hpp">
-      <Filter>Headers</Filter>
+      <Filter>Headers\Ingredients</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)IngredientCache.hpp">
-      <Filter>Headers</Filter>
+      <Filter>Headers\Ingredients</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Keyword.hpp">
+      <Filter>Headers\Ingredients</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Potion.hpp">
+      <Filter>Headers\Potions</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameConfig.hpp">
+      <Filter>Headers\Potions</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ColorAPI.hpp">
-      <Filter>Headers</Filter>
+      <Filter>Headers\API</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ColorConfigLoader.hpp">
-      <Filter>Headers</Filter>
+      <Filter>Headers\API</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Format.hpp">
+      <Filter>Headers\API</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)OutputFormat.hpp">
+      <Filter>Headers\API</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DefaultObjects.hpp">
-      <Filter>Headers</Filter>
+      <Filter>Headers\Defaults</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.hpp">
+      <Filter>Headers\Defaults</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)using.h">
+      <Filter>Headers\Defaults</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)reloader.hpp">
+      <Filter>Headers\API</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Formatter.hpp">
+      <Filter>Headers\API</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -166,7 +166,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="init.hpp" />
+    <ClInclude Include="Instance.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>

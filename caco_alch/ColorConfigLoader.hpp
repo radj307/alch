@@ -40,4 +40,9 @@ namespace caco_alch {
 		ss << colors;
 		return file::write(filename, ss, false);
 	}
+
+	inline ColorAPI buildColorConfigFrom(const ColorAPI::PaletteType& palette)
+	{
+		return ColorAPI{ palette };
+	}
 }

@@ -22,6 +22,23 @@ namespace caco_alch {
 		explicit IngredientCache(Container&& ingr_cont, const Format& fmt) : _ingr{ std::move(ingr_cont) }, _fmt{ &fmt } {}
 		IngredientCache(IngrList&& ingr_cont, const Format& fmt) : _ingr{ sort(std::move(ingr_cont)).first }, _fmt{ &fmt } {}
 
+		auto begin() const
+		{
+			return _ingr.begin();
+		}
+		auto end() const
+		{
+			return _ingr.end();
+		}
+		auto rbegin() const
+		{
+			return _ingr.rbegin();
+		}
+		auto rend() const
+		{
+			return _ingr.rend();
+		}
+
 		/**
 		 * @function sort(IngrList&&)
 		 * @brief Sort an IngrList into a Container.

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "..\alch_win\init.hpp"
 #include "alch_win_unit-tests.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -27,27 +26,27 @@ namespace TEST {
 		 */
 		TEST_METHOD(Test_Search)
 		{
-			Assert::AreEqual(test_search(), 0);
+			test_search();
 		}
 		TEST_METHOD(Test_Build)
 		{
-			Assert::AreEqual(test_build(), 0);
+			test_build();
 		}
 		TEST_METHOD(Test_SmartSearch)
 		{
-			Assert::AreEqual(test_ssearch(), 0);
+			test_ssearch();
 		}
 		TEST_METHOD(Test_ListAll)
 		{
-			Assert::AreEqual(test_list_all(), 0);
+			test_list_all();
 		}
 		TEST_METHOD(Test_SearchExact)
 		{
-			Assert::AreEqual(test_search_exact(), 0);
+			test_search_exact();
 		}
 		TEST_METHOD(Test_SearchVerbose)
 		{
-			Assert::AreEqual(test_search_verbose(), 0);
+			test_search_verbose();
 		}
 	};
 }

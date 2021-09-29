@@ -4,17 +4,9 @@
  * @brief Contains methods related to user-interaction; such as the Help namespace, and the opt::Matcher instance used to specify valid commandline options.
  */
 #pragma once
-#include <map>
-#include <string>
-#include <iostream>
-#include <iomanip>
 #include <Params.hpp>
-#include <utility>
-
-#include <Help.hpp>
-
-#include "Alchemy.hpp"
-#include "reloader.hpp"
+#include <Alchemy.hpp>
+#include <reloader.hpp>
 
 namespace caco_alch {
 	/**
@@ -30,12 +22,12 @@ namespace caco_alch {
 		if ( args.check_flag('i') ) { // check for receive STDIN flag
 			std::stringstream buffer;
 			buffer << std::cin.rdbuf();
-			alch.print_build_to(std::cout, parseFileContent(buffer)).flush();
+			alch.print_build(std::cout, parseFileContent(buffer)).flush();
 			return 0;
 		}
 
 		else if (args.check_flag('l')) { // check for list flag
-			alch.print_list_to(std::cout).flush();
+			alch.print_list(std::cout).flush();
 			return 0;
 		}
 
@@ -43,14 +35,14 @@ namespace caco_alch {
 			const auto params{ args.getAllWithType<opt::Parameter>() };
 
 			if (args.check_flag('b')) // Build mode
-				alch.print_build_to(std::cout, params).flush();
+				alch.print_build(std::cout, params).flush();
 
 			else if ( const auto smart{ args.check_flag('S') }; args.check_flag('s') || smart ) { // Search mode
 				if ( smart )
-					alch.print_smart_search_to(std::cout, params).flush();
+					alch.print_smart_search(std::cout, params).flush();
 				else
 					for (auto it{ params.begin() }; it != params.end(); ++it)
-						alch.print_search_to(std::cout, *it).flush();
+						alch.print_search(std::cout, *it).flush();
 			}
 			return 0;
 		}

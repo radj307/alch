@@ -1,4 +1,0 @@
-<map id="caco_alch::Help::Helper::validate" name="caco_alch::Help::Helper::validate">
-<area shape="rect" id="node1" title="Called at construction time, iterates through _doc and corrects any abnormalities." alt="" coords="213,5,373,47"/>
-<area shape="rect" id="node2" href="$structcaco__alch_1_1_help_1_1_helper.html#a760e316506cac5920071e171ec00f93e" title="Default constructor, takes a string containing usage instructions, and a map of all commandline param..." alt="" coords="5,5,165,47"/>
-</map>

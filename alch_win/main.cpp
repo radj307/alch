@@ -11,7 +11,8 @@
 #endif
 
 #include <TermAPI.hpp>
-#include "init.hpp"
+//#include "init.hpp"
+#include "Instance.hpp"
 
 using namespace caco_alch;
 
@@ -56,7 +57,9 @@ int main(const int argc, char* argv[], char* envp[])
 		if (args.check_opt("validate")) // Process "--validate" opt
 			validate(args, paths, { argv[0] }, local_path, 16);
 
-		int res{ handle_arguments(init(args, paths)) };
+		//int res{ handle_arguments(init(args, paths)) };
+		Instance inst{ std::move(args), paths };
+		const auto res{ inst.handleArguments() };
 		return res;
 	} catch ( std::exception& ex ) {
 		std::cout << sys::term::error << ex.what() << std::endl;

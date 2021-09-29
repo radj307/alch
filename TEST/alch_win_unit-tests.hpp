@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "..\alch_win\init.hpp"
+#include "..\alch_win\Instance.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace caco_alch;
@@ -15,6 +15,16 @@ DefaultPaths paths{ // default paths
 	DefaultObjects._default_filename_gamesettings,
 	DefaultObjects._default_filename_registry
 };
+
+inline Instance getInstance(opt::Params& args)
+{
+	return Instance{ args, paths };
+}
+
+inline int getResult(std::ostream& os, const Instance& inst)
+{
+	return inst.handleArguments();
+}
 
 inline void compare_sstream(std::stringstream& expected, std::stringstream& buffer, const wchar_t* message = NULL, const __LineInfo* pLineInfo = NULL)
 {
@@ -42,11 +52,11 @@ inline int test_search()
 	});
 
 	std::stringstream buffer;
-	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
+//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
 
-	int result{ handle_arguments(init(args, paths)) }; // get the result of the test
+	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
 
-	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
+//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -66,11 +76,11 @@ inline int test_build()
 	});
 
 	std::stringstream buffer;
-	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
+//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
 
-	int result{ handle_arguments(init(args, paths)) }; // get the result of the test
+	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
 
-	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
+//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -89,11 +99,11 @@ inline int test_ssearch()
 	});
 
 	std::stringstream buffer;
-	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
+//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
 
-	int result{ handle_arguments(init(args, paths)) }; // get the result of the test
+	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
 
-	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
+//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -110,11 +120,11 @@ inline int test_list_all()
 	});
 
 	std::stringstream buffer;
-	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
+//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
 
-	int result{ handle_arguments(init(args, paths)) }; // get the result of the test
+	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
 
-	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
+//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -133,11 +143,11 @@ inline int test_search_exact()
 	});
 
 	std::stringstream buffer;
-	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
+//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
 
-	int result{ handle_arguments(init(args, paths)) }; // get the result of the test
+	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
 
-	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
+//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -155,11 +165,11 @@ inline int test_search_verbose()
 	});
 
 	std::stringstream buffer;
-	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
+	//auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
 
-	int result{ handle_arguments(init(args, paths)) }; // get the result of the test
+	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
 
-	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
+	//swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 

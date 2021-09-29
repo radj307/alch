@@ -107,197 +107,155 @@ namespace caco_alch {
 		}
 
 		/**
-		 * @function print_search_to(std::ostream&, const std::string&, const bool = true)
 		 * @brief Retrieve a stringstream containing the information about the given target. Does not use cache.
 		 * @param os			- Output stream to print to.
 		 * @param name			- Name of the target ingredient, or target effect. This is NOT case-sensitive.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_search_to(std::ostream& os, const std::string& name)
+		std::ostream& print_search(std::ostream& os, const std::string& name) const
 		{
-			const auto name_lowercase{ str::tolower(name) };
-			if ( SortedIngrList cont{ _registry.find(name) }; !cont.empty() ) {
-				os << std::fixed; // Set forced standard notation
-				const auto precision{ os.precision() }; // copy current output stream precision
-				os.precision(_fmt.precision()); // Set floating-point-precision.
-
-				if ( _fmt.file_export() ) // export registry-format ingredients
-					_fmt.to_fstream(os, cont);
-				else { // insert search results
-					os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Search results for: \'" << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << _fmt._colors.set(UIElement::SEARCH_HEADER) << "\'\n" << _fmt._colors.set(UIElement::BRACKET) << "{\n" << color::reset;
-					if ( _fmt.reverse_output() )
-						for ( auto it{ cont.rbegin() }; it != cont.rend(); ++it )
-							_fmt.to_stream(os, *it, name_lowercase);
-					else
-						for ( auto it{ cont.begin() }; it != cont.end(); ++it )
-							_fmt.to_stream(os, *it, name_lowercase);
-					os << _fmt._colors.set(UIElement::BRACKET) << "}" << color::reset << std::endl;
-				}
-				os.precision(precision); // reset output stream precision
+			if (const auto results{ _registry.find(name) }; !results.empty()) {
+				const auto precision{ os.precision() };
+				os.precision(_fmt._precision);
+				os << std::fixed << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << _fmt._colors.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(results, std::vector<std::string>{ name }) << '\n' << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				os.precision(precision);
 			}
-			else // no results found
-				os << sys::term::error << "Didn't find any ingredients or effects matching \'" << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << "\'\n";
+			else
+				os << sys::term::error << "Didn't find any ingredients or effects matching \"" << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << "\"\n";
 			return os;
 		}
 
 		/**
-		 * @function print_search_to(std::ostream&, const std::string&, const bool = true)
 		 * @brief Retrieve a stringstream containing the information about the given target.
 		 * @param os			- Output stream to print to.
 		 * @param names			- Names of the target effects. This is NOT case-sensitive.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_smart_search_to(std::ostream& os, std::vector<std::string> names)
+		std::ostream& print_smart_search(std::ostream& os, std::vector<std::string> names) const
 		{
+			RegistryType cache{ _fmt };
+			bool init{ false };
 			os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Search results for " << color::reset;
-			for ( auto it{ names.begin() }; it != names.end(); ++it ) {
-				*it = str::tolower(*it);
-				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << '\'' << color::reset << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << *it << color::reset << _fmt._colors.set(UIElement::SEARCH_HEADER) << '\'';
-				const auto has_next{ it + 1 != names.end() };
-				if ( has_next && it + 2 == names.end() )
+			for (auto name{ names.begin() }; name != names.end(); ++name) {
+				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << *name << color::reset << _fmt._colors.set(UIElement::SEARCH_HEADER) << '\"';
+				const auto has_next{ name + 1 != names.end() };
+				if (has_next && name + 2 == names.end())
 					os << " and ";
-				else if ( has_next )
+				else if (has_next)
 					os << ", ";
 			}
-			os << color::reset << '\n' << _fmt._colors.set(UIElement::BRACKET) << "{\n" << color::reset;
-
-			RegistryType cache{ _fmt };
-
-			bool is_cache{ false };
-			for ( auto name{ names.begin() }; name != names.end(); ++name ) {
-				if ( !is_cache ) { // if cache hasn't been populated yet
-					is_cache = true;
-					if (!_cache.empty())
-						cache = _cache; // currently there is no way to use the long-term cache
-					else
-						cache = std::move(_registry.find_and_duplicate(*name, RegistryType::FindType::EFFECT));
+			os << '\n' << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n';
+			for (auto name{ names.begin() }; name != names.end(); ++name) {
+				if (!init) {
+					cache = std::move(_registry.find_and_duplicate(*name, RegistryType::FindType::EFFECT));
+					init = true;
 				}
 				else {
-					decltype(cache._ingr) tmp{  };
-					for ( auto& it : cache._ingr )
-						if ( std::any_of(it._effects.begin(), it._effects.end(), [&name, this](const Effect& fx){ const auto lc{ str::tolower(fx._name) }; return lc == *name || !_fmt._flag_exact && str::pos_valid(lc.find(*name)); }) )
+					decltype(cache._ingr) tmp{};
+					for (auto& it : cache._ingr) {
+						if (std::any_of(it._effects.begin(), it._effects.end(), [&name, this](const Effect& fx) {
+							const auto lc{ str::tolower(fx._name) };
+							return lc == *name || !_fmt._flag_exact && str::pos_valid(lc.find(*name));
+							}
+						)) {
 							tmp.insert(it);
+						}
+					}
 					cache._ingr = tmp;
 				}
-				if ( name + 1 == names.end() ) {
-					os << std::fixed; // Set forced standard notation
-					const auto precision{ os.precision() }; // copy current output stream precision
-					os.precision(_fmt.precision()); // Set floating-point-precision.
-					if ( _fmt.file_export() ) // export registry-format ingredients
-						_fmt.to_fstream(os, cache._ingr);
-					else
-						_fmt.to_stream(os, cache._ingr, names);
-					os.precision(precision); // reset output stream precision
+				if (name + 1 == names.end()) {
+					os << std::fixed;
+					const auto precision{ os.precision() };
+					os.precision(_fmt._precision);
+					os << std::fixed << _fmt.print(cache._ingr, names);
+					os.precision(precision);
 				}
-				if ( is_cache && cache.empty() ) {
-					os << sys::term::error << "Didn't find anything after applying filter for \'" << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << *name << color::reset << "\'\n";
+				if (init && cache.empty()) {
+					os << sys::term::error << "Didn't find anything after applying filter for \"" << _fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << *name << color::reset << "\"\n";
 					break;
 				}
 			}
-			os << _fmt._colors.set(UIElement::BRACKET) << "}\n" << color::reset;
-			_cache = std::move(cache);
+			os << '\n' << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 			return os;
 		}
 
 		/**
-		 * @function print_list_to(std::ostream&, const bool, const bool = false, const bool = false, const size_t = 3)
 		 * @brief Insert the ingredient list into an output stream.
 		 * @param os				- Target Output Stream.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_list_to(std::ostream& os) const
+		std::ostream& print_list(std::ostream& os) const
 		{
-			if ( !_registry._ingr.empty() ) {
-				os << std::fixed; // force standard notation
-				const auto precision{ os.precision() }; // copy the current precision
-				os.precision(_fmt.precision()); // set precision to 2 decimal places
-
-				if ( _fmt.file_export() )
-					_fmt.to_fstream(os, _registry._ingr);
-				else {
-					os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Ingredients" << color::reset << '\n' << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n';
-					_fmt.list_to_stream(os, _registry.getSortedList());
-					os << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
-				}
-
-				os.precision(precision); // reset precision
-			}
+			os << std::fixed;
+			const auto precision{ os.precision() };
+			os.precision(_fmt._precision);
+			os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Ingredients" << color::reset << '\n' << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(_registry._ingr, std::nullopt) << '\n' << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+			os.precision(precision);
 			return os;
 		}
-
 		/**
-		 * @function print_build_to(std::ostream&, IngrList&&, const GameConfig&, const Format& = {})
-		 * @brief Construct a potion with the specified ingredients, and output the result to os.
-		 * @param os	- Target output stream
-		 * @param cont	- List of ingredients ( Min. 2 <= x <= Max. 4 ). If more than 4 ingredients are passed in, the first 4 are used and the rest are discarded.
-		 * @param max4	- Whether to enforce the 4 ingredient limit or not.
+		 * @brief Build a potion and print it the given output stream, using a set of ingredients.
+		 * @param os	- Target output stream.
+		 * @param ingr	- Ingredients to use.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_build_to(std::ostream& os, const IngrList& cont, const bool max4 = true) const
+		std::ostream& print_build(std::ostream& os, SortedIngrList ingr) const
 		{
-			SortedIngrList set{};
-			for ( auto& it : cont )
-				set.insert(it);
-			if ( set.size() >= 2 ) { // if at least 2 valid ingredients were found
-				if ( max4 && set.size() > 4 )
-					set = [](const SortedIngrList& set){ SortedIngrList nset; unsigned count{0u}; for (auto& it : set) { nset.insert(it); if (++count == 4u) break; } return nset; }(set);
-				const auto indentation{ std::string(_fmt.indent(), ' ') };
-				const auto precision{ os.precision() };
-				os.precision(_fmt.precision());
+			if (ingr.size() >= 2) {
 				os << std::fixed;
+				const auto precision{ os.precision() };
+				os.precision(_fmt._precision); // set precision
 
 				const auto skill_base{ _GMST.fAlchemyAV() };
-				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Potion Builder [Alchemy Skill: " << _fmt._colors.set(UIElement::ALCHEMY_SKILL) << skill_base << color::reset;
-				if ( const auto skill_mod{ _GMST.fAlchemyMod() }; skill_mod > 0.0 )
-					os << "(" << _fmt._colors.set(UIElement::ALCHEMY_SKILL) << skill_base + skill_mod << color::reset << ")";
-				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << ']' << color::reset << '\n';
+				const auto skill_mod{ _GMST.fAlchemyMod() };
+				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Potion Builder [Alchemy Skill: " << color::reset << _fmt._colors.set(UIElement::ALCHEMY_SKILL) << skill_base;
+				if (skill_mod > 0.0)
+					os << '(' << static_cast<unsigned>(std::round(static_cast<double>(skill_base) + skill_mod)) << ')';
+				os << color::reset << "]\n";
+				// Print input
+				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Input:" << color::reset << '\n' << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(ingr) << '\n' << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				// Print output
 
-				const auto potion{ build(set) };
-
-				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Input:\n" << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n';
-				for ( auto& it : set )
-					_fmt.to_stream_build(os, it, potion);
-				os << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
-
-				if ( potion.effects().empty() )
-					throw std::exception("Potion creation failed.");
-
-				os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Output:\n" << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n';
-
-				_fmt.to_stream(os, potion, indentation);
-
-				os << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
-				os.precision(precision); // Reset precision
-				return os;
+				if (const auto potion{ build(ingr) }; potion.effects().empty())
+					throw std::exception("Potion Creation Failed.");
+				else
+					os << _fmt._colors.set(UIElement::SEARCH_HEADER) << "Output:" << color::reset << '\n' << _fmt._colors.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(potion) << '\n' << _fmt._colors.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				os.precision(precision); // reset precision
 			}
-			throw std::exception(std::string("Build failed! Try including more than one ingredient.").c_str());
+			else
+				throw std::exception("Build failed! At least two valid ingredients must be specified.");
+			return os;
 		}
-
 		/**
-		 * @function print_build_to(std::ostream&, const std::vector<std::string>&, const GameConfig&, const Format& = {})
-		 * @brief Construct a potion with the specified ingredients, and output the result to os.
-		 * @param os	- Target output stream
-		 * @param names	- List of ingredient names ( Min. 2 <= x <= Max. 4 ). If more than 4 ingredients are passed in, the first 4 are used and the rest are discarded.
+		 * @brief Build a potion and print it to the given output stream, using a vector of strings to search for.
+		 * @param os	- Target output stream.
+		 * @param names	- Ingredient names to search for.
 		 * @returns std::ostream&
 		 */
-		std::ostream& print_build_to(std::ostream& os, const std::vector<std::string>& names)
+		std::ostream& print_build(std::ostream& os, std::vector<std::string> names, const unsigned max = 4) const
 		{
-			if ( names.size() > 4 ) throw std::exception("Too many ingredients! (Build Mode Max 4)"); else if ( names.size() < 2 ) throw std::exception("Not enough ingredients! (Build Mode Min 2)");
-			std::vector<Ingredient> cont;
-			for ( auto& it : names ) {
-				const auto ingr{ _registry.find_best_fit(str::tolower(it)) };
-				if ( ingr != _registry._ingr.end() )
-					cont.push_back(*ingr);
-				else os << sys::term::warn << "Couldn't find ingredient: \"" << it << "\"\n";
+			SortedIngrList ingr;
+			// search for ingredient names
+			for (auto& name : names) {
+				if (const auto it{ _registry.find_best_fit(name, RegistryType::FindType::INGR) }; it != _registry.end())
+					ingr.insert(*it);
+				if (ingr.size() >= max)
+					break;
 			}
-			if ( cont.size() > 4 ) cont.erase(cont.begin() + 4u, cont.end());
-			return print_build_to(os, std::forward<std::vector<Ingredient>>(cont));
+			return print_build(os, std::move(ingr));
 		}
-		[[nodiscard]] bool writeCacheToFile(const std::string& filename, const bool append = false) const
+		/**
+		 * @brief Build a potion and print it to the given output stream, using a vector of ingredients.
+		 * @param os	- Target output stream.
+		 * @param ingr	- Ingredients to use.
+		 * @returns std::ostream&
+		 */
+		std::ostream& print_build(std::ostream& os, const IngrList& ingr) const
 		{
-			if ( !_cache.empty() )
-				return file::write(filename, std::stringstream{ _fmt.to_fstream(_cache._ingr) }, append);
-			return false;
+			SortedIngrList set;
+			for (auto& it : ingr)
+				set.insert(it);
+			return print_build(os, std::move(set));
 		}
 	};
 }

@@ -25,14 +25,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DefaultObjects.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Effect.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Format.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Formatter.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameConfig.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Ingredient.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)IngredientCache.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Keyword.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ObjectBase.hpp" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OutputFormat.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Potion.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)reloader.hpp" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)handle_arguments.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)using.h" />
   </ItemGroup>
 </Project>
