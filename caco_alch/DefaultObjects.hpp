@@ -15,8 +15,9 @@ namespace caco_alch {
 			return left.append(std::move(right));
 		}
 	public:
-		DefaultPaths(std::string local_path, std::string config, std::string gamesettings, std::string registry) : _path_config{ combine(local_path, std::move(config)) }, _path_gamesettings{ combine(local_path, std::move(gamesettings)) }, _path_registry{ combine(local_path, std::move(registry)) } {}
+		DefaultPaths(std::string local_path, std::string config, std::string gamesettings, std::string registry) : _local{ local_path }, _path_config{combine(local_path, std::move(config))}, _path_gamesettings{combine(local_path, std::move(gamesettings))}, _path_registry{combine(local_path, std::move(registry))} {}
 		std::string
+			_local,
 			_path_config,
 			_path_gamesettings,
 			_path_registry;

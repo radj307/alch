@@ -74,8 +74,5 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)reloader.hpp">
       <Filter>Headers\API</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Formatter.hpp">
-      <Filter>Headers\API</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

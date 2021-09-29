@@ -31,12 +31,6 @@ inline void compare_sstream(std::stringstream& expected, std::stringstream& buff
 	Assert::AreEqual(expected.str(), buffer.str());
 	Assert::AreEqual(expected.rdbuf()->view(), buffer.rdbuf()->view()); // compare strings
 }
-
-inline std::streambuf* swapBuffer(std::streambuf* sbuf)
-{
-	std::cout.rdbuf(sbuf);
-	return sbuf;
-}
 #pragma endregion GLOBALS
 
 #pragma region TEST_FUNCTIONS
@@ -52,11 +46,7 @@ inline int test_search()
 	});
 
 	std::stringstream buffer;
-//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
-
 	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
-
-//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -76,11 +66,7 @@ inline int test_build()
 	});
 
 	std::stringstream buffer;
-//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
-
 	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
-
-//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -99,11 +85,7 @@ inline int test_ssearch()
 	});
 
 	std::stringstream buffer;
-//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
-
 	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
-
-//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -120,11 +102,7 @@ inline int test_list_all()
 	});
 
 	std::stringstream buffer;
-//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
-
 	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
-
-//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -143,11 +121,8 @@ inline int test_search_exact()
 	});
 
 	std::stringstream buffer;
-//	auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
 
 	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
-
-//	swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 
@@ -165,11 +140,7 @@ inline int test_search_verbose()
 	});
 
 	std::stringstream buffer;
-	//auto sbuf{ swapBuffer(buffer.rdbuf()) }; // swap std::cout with buffer
-
 	const auto result{ getResult(buffer, getInstance(args)) }; // get the result of the test
-
-	//swapBuffer(sbuf); // swap std::cout with sbuf (reset)
 
 	compare_sstream(expected, buffer); // run test comparison using expected buffer & output buffer
 

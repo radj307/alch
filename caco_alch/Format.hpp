@@ -95,7 +95,14 @@ namespace caco_alch {
 				if (!effect.hasKeyword(Keywords::KYWD_MagicInfluence))
 					return _colors.set(UIElement::EFFECT_NAME_NEUTRAL);
 			}
-			return _colors.set(UIElement::EFFECT_NAME_DEFAULT); // else return white
+			switch (hasKeywordTypeFallback(str::tolower(effect._name))) {
+			case 1: // negative name
+				return _colors.set(UIElement::EFFECT_NAME_NEGATIVE);
+			case 2: // positive name
+				return _colors.set(UIElement::EFFECT_NAME_POSITIVE);
+			default:
+				return _colors.set(UIElement::EFFECT_NAME_DEFAULT); // else return white
+			}
 		}
 
 		/**
@@ -123,6 +130,10 @@ namespace caco_alch {
 				return os;
 			}
 		};
+		/**
+		 * @struct PrintableBase
+		 * @brief Contains the required variables for the PrintObject struct.
+		 */
 		struct PrintableBase {
 			using SearchedType = std::optional<std::vector<std::string>>;
 		protected:

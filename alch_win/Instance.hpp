@@ -63,23 +63,6 @@ namespace caco_alch {
 
 	}
 
-	/**
-	 * @brief Print whether critical files were successfully located.
-	 * @param args			- Args ref
-	 * @param paths			- Paths ref
-	 * @param argv0			- argv[0]
-	 * @param local_path	- The path to the directory where the program is located
-	 * @param indent_max	- Max indentation, used to align output.
-	 */
-	inline void validate(const opt::Params& args, const DefaultPaths& paths, const std::string& argv0, const std::string& local_path, const std::streamsize indent_max)
-	{
-		std::cout << "argv[0]" << std::setw(indent_max - 7u) << ' ' << argv0 << std::endl;
-		std::cout << "directory" << std::setw(indent_max - 9u) << ' ' << local_path << std::endl;
-		std::cout << "registry" << std::setw(indent_max - 8u) << ' ' << (file::exists(paths._path_registry) ? color::f::green : color::f::red) << paths._path_registry << color::reset << std::endl;
-		std::cout << "INI Config" << std::setw(indent_max - 10u) << ' ' << (file::exists(paths._path_config) ? color::f::green : color::f::red) << paths._path_config << color::reset << std::endl;
-		std::cout << "GMST Config" << std::setw(indent_max - 11u) << ' ' << (file::exists(paths._path_gamesettings) ? color::f::green : color::f::red) << paths._path_gamesettings << color::reset << std::endl;
-	}
-
 	struct Instance {
 		using ConfigType = std::optional<file::ini::INI>;
 
@@ -100,6 +83,16 @@ namespace caco_alch {
 
 		const static int RETURN_SUCCESS{ 0 };
 		const static int RETURN_FAILURE{ 1 };
+
+		void validate(std::ostream& os, const std::streamsize indent = 20ll) const
+		{
+			os << "argv[0]" << std::setw(indent - 7) << ' ' << Arguments.argv0() << '\n';
+			os << "directory" << std::setw(indent - 9) << ' ' << Paths._local << '\n';
+			os << "registry" << std::setw(indent - 8) << ' ' << (file::exists(Paths._path_registry) ? color::f::green : color::f::red) << Paths._path_registry << color::reset << '\n';
+			os << "INI Config" << std::setw(indent - 10) << ' ' << (file::exists(Paths._path_config) ? color::f::green : color::f::red) << Paths._path_config << color::reset << '\n';
+			os << "Game Config" << std::setw(indent - 11) << ' ' << (file::exists(Paths._path_gamesettings) ? color::f::green : color::f::red) << Paths._path_gamesettings << color::reset << '\n';
+		}
+		void validate() const { validate(std::cout); }
 
 		int handleArguments(std::ostream& os) const
 		{

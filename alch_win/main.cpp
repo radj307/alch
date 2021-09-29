@@ -54,11 +54,11 @@ int main(const int argc, char* argv[], char* envp[])
 			getOptOrDefault(DefaultObjects._load_registry, DefaultObjects._default_filename_registry)
 		);
 
-		if (args.check_opt("validate")) // Process "--validate" opt
-			validate(args, paths, { argv[0] }, local_path, 16);
+		Instance inst{ args, paths };
 
-		//int res{ handle_arguments(init(args, paths)) };
-		Instance inst{ std::move(args), paths };
+		if (args.check_opt("validate")) // Process "--validate" opt
+			inst.validate();
+
 		const auto res{ inst.handleArguments() };
 		return res;
 	} catch ( std::exception& ex ) {
