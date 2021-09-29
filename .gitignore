@@ -31,3 +31,4 @@ _ReSharper*/
 #Nuget packages folder
 packages/
 /alch_win/alch.ini
+/documentation/*
