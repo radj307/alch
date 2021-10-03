@@ -179,6 +179,8 @@
     <None Update="X:\_Workspace\_repo\alch\caco_alch\caco-ingredient-list.dat">
       <FileType>Document</FileType>
     </None>
+    <None Include="..\Release\alch-GameConfig.ini" />
+    <None Include="..\Release\alch.ingredients" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

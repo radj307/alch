@@ -10,6 +10,9 @@
     <Filter Include="Headers">
       <UniqueIdentifier>{7897edbf-7e06-49a4-a11e-ce3069fcb0b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Config-Release">
+      <UniqueIdentifier>{1ef2112d-bc22-478e-82dc-98a1e02b6bc2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -33,5 +36,13 @@
     <ClInclude Include="Instance.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Release\alch.ingredients">
+      <Filter>Config-Release</Filter>
+    </None>
+    <None Include="..\Release\alch-GameConfig.ini">
+      <Filter>Config-Release</Filter>
+    </None>
   </ItemGroup>
 </Project>

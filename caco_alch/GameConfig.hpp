@@ -199,15 +199,31 @@ namespace caco_alch {
 		[[nodiscard]] static bool set(const Cont::iterator target, const Cont::iterator end, const std::string& value_str)
 		{
 			if (target != end) {
-				try { // catch std::stod exceptions to detect type
-					target->set(std::stod(value_str));
-				} catch (...) {
-					if (str::tolower(value_str) == "true")
-						target->set(true);
-					else if (str::tolower(value_str) == "false")
-						target->set(false);
-					else target->set(value_str);
+				if (std::all_of(value_str.begin(), value_str.end(), [](const char c) { switch (c) {
+				case '.': [[fallthrough]];
+				case '-': [[fallthrough]];
+				case '0': [[fallthrough]];
+				case '1': [[fallthrough]];
+				case '2': [[fallthrough]];
+				case '3': [[fallthrough]];
+				case '4': [[fallthrough]];
+				case '5': [[fallthrough]];
+				case '6': [[fallthrough]];
+				case '7': [[fallthrough]];
+				case '8': [[fallthrough]];
+				case '9':
+					return true;
+				default:
+					return false;
 				}
+					}))
+					target->set(str::stod(value_str));
+				else if (str::tolower(value_str) == "true")
+					target->set(true);
+				else if (str::tolower(value_str) == "false")
+					target->set(false);
+				else
+					target->set(value_str);
 				return true;
 			}
 			return false;

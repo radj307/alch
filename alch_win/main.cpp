@@ -30,15 +30,10 @@ using namespace caco_alch;
 int main(const int argc, char* argv[], char* envp[])
 {
 	// TODO: Add check & INI value for CACO's locked-duration potions. (1s, 5s, 10s)
-	// TODO: Implement the 'E' file-export option for build mode
 	// TODO: Add a "request" system to the potion-building mechanic that allows the user to request an automatically-generated potion of a certain type.
-	// TODO: Implement alternative sorting algorithms for SortedIngrList container, for example to sort by magnitude or duration.
 	try {
 		std::cout << sys::term::EnableANSI; // enable virtual terminal sequences
-		// parse arguments
-		opt::Params args(argc, argv, DefaultObjects._matcher);
-
-		const auto local_path{ opt::resolve_split_path(envp, argv[0]).first };
+		opt::Params args(argc, argv, DefaultObjects._matcher); // parse arguments
 
 		const auto getOptOrDefault{ [&args](const std::string& optname, const std::string& defv) {
 			const auto val{ args.getv(optname) };
@@ -48,7 +43,7 @@ int main(const int argc, char* argv[], char* envp[])
 		} };
 
 		DefaultPaths paths(
-			local_path,
+			opt::resolve_split_path(envp, argv[0]).first,
 			getOptOrDefault(DefaultObjects._load_config, DefaultObjects._default_filename_config),
 			getOptOrDefault(DefaultObjects._load_gamesettings, DefaultObjects._default_filename_gamesettings),
 			getOptOrDefault(DefaultObjects._load_registry, DefaultObjects._default_filename_registry)
@@ -59,8 +54,7 @@ int main(const int argc, char* argv[], char* envp[])
 		if (args.check_opt("validate")) // Process "--validate" opt
 			inst.validate();
 
-		const auto res{ inst.handleArguments() };
-		return res;
+		return inst.handleArguments();
 	} catch ( std::exception& ex ) {
 		std::cout << sys::term::error << ex.what() << std::endl;
 		return -1;

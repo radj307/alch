@@ -51,7 +51,7 @@ namespace caco_alch {
 				for (auto& highlight : highlights)
 					if (const auto dPos{ str::tolower(str).find(highlight) }; dPos != std::string::npos)
 						return { str.substr(0, dPos), str.substr(dPos, highlight.size()), str.substr(dPos + highlight.size()) };
-			return{ str, { }, { } }; // by default, return blanks for unused tuple slots. This is used to hide the text color when nothing was found.
+			return{ str, { }, { } }; // Return blanks for unused tuple slots. This is used to hide the text color when nothing was found.
 		}
 
 		/**
@@ -168,14 +168,14 @@ namespace caco_alch {
 			 * @param os	- Output Stream Ref
 			 * @param kywd	- Keyword
 			 */
-			void print(std::ostream& os, const Keyword& kywd) const
+			void print(std::ostream& os, const Keyword& obj) const
 			{
 				if (fmt.file_export())
-					os << ind << kywd._form_id << " = " << kywd._name;
+					os << ind << obj._form_id << " = " << obj._name;
 				else {
-					os << ind << fmt._colors.set(UIElement::KEYWORD) << kywd._name << color::reset;
+					os << ind << fmt._colors.set(UIElement::KEYWORD) << obj._name << color::reset;
 					if (fmt.all())
-						os << std::setw(30llu - kywd._name.size()) << fmt._colors.set(UIElement::KEYWORD) << kywd._form_id << color::reset;
+						os << std::setw(30llu - obj._name.size()) << fmt._colors.set(UIElement::KEYWORD) << obj._form_id << color::reset;
 				}
 			}
 			/**
@@ -183,11 +183,11 @@ namespace caco_alch {
 			 * @param os	- Output Stream Ref
 			 * @param kwda	- KeywordList
 			 */
-			void print(std::ostream& os, const KeywordList& kwda) const
+			void print(std::ostream& os, const KeywordList& list) const
 			{
-				for (auto kywd{ kwda.begin() }; kywd != kwda.end(); ) {
+				for (auto kywd{ list.begin() }; kywd != list.end(); ) {
 					os << PrintObject(*kywd, *this);
-					if (++kywd != kwda.end())
+					if (++kywd != list.end())
 						os << '\n';
 				}
 			}
@@ -196,11 +196,11 @@ namespace caco_alch {
 			 * @param os	- Output Stream Ref
 			 * @param mgef	- Effect
 			 */
-			void print(std::ostream& os, const Effect& mgef) const
+			void print(std::ostream& os, const Effect& obj) const
 			{
 				if (fmt.file_export()) {
 					const auto nextIndent{ ind.getNext() };
-					os << ind << mgef._name << '\n' << nextIndent << "{\n" << PrintObject(mgef, *this, true) << '\n' << nextIndent << "}";
+					os << ind << obj._name << '\n' << nextIndent << "{\n" << PrintObject(obj, *this, true) << '\n' << nextIndent << "}";
 				}
 				else {
 					const auto insert_num{ [&os](const std::string& num, const ColorAPI::ColorSetter color, const unsigned indent) -> unsigned {  // NOLINT(clang-diagnostic-c++20-extensions)
@@ -211,24 +211,24 @@ namespace caco_alch {
 						os << color << num;
 						return num.size();
 					} };
-					auto szFactor{ mgef._name.size() };
+					auto szFactor{ obj._name.size() };
 					os << ind;
 					// Print the effect's name
 					if (searched.has_value()) { // split effect name
-						const auto [pre, highlight, post] {fmt.split_name(mgef._name, searched.value())};
-						const auto color{ fmt.resolveEffectColor(mgef) };
+						const auto [pre, highlight, post] {fmt.split_name(obj._name, searched.value())};
+						const auto color{ fmt.resolveEffectColor(obj) };
 						os << color << pre << color::reset << fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << highlight << color::reset << color << post << color::reset;
 					}
 					else // don't split effect name if searched is null
-						os << fmt.resolveEffectColor(mgef) << mgef._name << color::reset;
+						os << fmt.resolveEffectColor(obj) << obj._name << color::reset;
 					// Print the effect's magnitude & duration
-					os << std::setw(30llu - mgef._name.size());
-					szFactor = insert_num(str::to_string(mgef._magnitude, fmt._precision), fmt._colors.set(UIElement::EFFECT_MAGNITUDE), szFactor) + 10llu;
+					os << std::setw(30llu - obj._name.size());
+					szFactor = insert_num(str::to_string(obj._magnitude, fmt._precision), fmt._colors.set(UIElement::EFFECT_MAGNITUDE), szFactor) + 10llu;
 					os << color::reset;
-					insert_num(str::to_string(mgef._duration, fmt._precision), fmt._colors.set(UIElement::EFFECT_DURATION), szFactor);
+					insert_num(str::to_string(obj._duration, fmt._precision), fmt._colors.set(UIElement::EFFECT_DURATION), szFactor);
 					os << 's' << color::reset;
-					if ((fmt.verbose() || fmt.all()) && !mgef._keywords.empty())
-						os << '\n' << PrintObject(mgef._keywords, *this, true);
+					if ((fmt.verbose() || fmt.all()) && !obj._keywords.empty())
+						os << '\n' << PrintObject(obj._keywords, *this, true);
 				}
 			}
 			/**
@@ -261,23 +261,23 @@ namespace caco_alch {
 			 * @param os	- Output Stream Ref
 			 * @param ingr	- Ingredient
 			 */
-			void print(std::ostream& os, const Ingredient& ingr) const
+			void print(std::ostream& os, const Ingredient& obj) const
 			{
 				if (fmt.file_export()) {
-					os << ind << ingr._name << "\n{\n";
-					os << PrintObject(getEffects(ingr), *this, true);
+					os << ind << obj._name << "\n{\n";
+					os << PrintObject(getEffects(obj), *this, true);
 					os << "\n}";
 				}
 				else {
-					// print ingredient name
+					// print objedient name
 					os << ind;
 					if (searched.has_value()) {
-						const auto [pre, highlight, post] { fmt.split_name(ingr._name, searched.value()) };
+						const auto [pre, highlight, post] { fmt.split_name(obj._name, searched.value()) };
 						os << fmt._colors.set(UIElement::INGREDIENT_NAME) << pre << color::reset << fmt._colors.set(UIElement::SEARCH_HIGHLIGHT) << highlight << color::reset << fmt._colors.set(UIElement::INGREDIENT_NAME) << post << color::reset;
 					}
 					else
-						os << fmt._colors.set(UIElement::INGREDIENT_NAME) << ingr._name << color::reset;
-					if (const auto effects{ getEffects(ingr) }; !effects.empty())
+						os << fmt._colors.set(UIElement::INGREDIENT_NAME) << obj._name << color::reset;
+					if (const auto effects{ getEffects(obj) }; !effects.empty())
 						os << '\n' << PrintObject(effects, *this, true);
 				}
 			}
@@ -299,14 +299,14 @@ namespace caco_alch {
 			 * @param os	 - Output Stream Ref
 			 * @param potion - Potion
 			 */
-			void print(std::ostream& os, const Potion& potion) const
+			void print(std::ostream& os, const Potion& obj) const
 			{
 				if (fmt.file_export()) {
 					const auto nextIndent{ ind.getNext() };
-					os << ind << potion._name << '\n' << ind << "{\n" << PrintObject(potion.effects(), *this, true) << "\n}";
+					os << ind << obj._name << '\n' << ind << "{\n" << PrintObject(obj.effects(), *this, true) << "\n}";
 				}
 				else
-					os << ind << fmt._colors.set(UIElement::POTION_NAME) << potion._name << color::reset << '\n' << PrintObject(potion.effects(), *this, true);
+					os << ind << fmt._colors.set(UIElement::POTION_NAME) << obj._name << color::reset << '\n' << PrintObject(obj.effects(), *this, true);
 			}
 
 		public:

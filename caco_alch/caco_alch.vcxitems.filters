@@ -21,14 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)caco-alch.ini">
-      <Filter>Config</Filter>
-    </None>
-    <None Include="$(MSBuildThisFileDirectory)caco-ingredient-list.dat">
-      <Filter>Config</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Alchemy.hpp">
       <Filter>Headers</Filter>
     </ClInclude>

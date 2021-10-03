@@ -14,55 +14,49 @@
 namespace caco_alch {
 	inline GameConfig loadGameConfig(const std::string& filename, const opt::Params& args, const GameConfig::Cont& defaults)
 	{
-		const auto exists{ file::exists(filename) };
-
 		GameConfig gs(defaults); // INIT
-		// Load current INI settings if the file exists
-		if (exists) gs.read_ini(filename);
-		if (exists || args.check_opt(DefaultObjects._set_gamesetting) || args.check_opt(DefaultObjects._reset_gamesettings)) {
-			bool update_ini_before_return{ false }; ///< @brief Changed by the set() lambda, updates the ini with new values before returning when true.
-
-			// Lambda that writes GameConfig to INI
-			const auto write_ini{ [&filename, &gs]() { return file::write(filename, gs.to_stream(), false); } };
-
-			// check if the --ini-reset option was specified, and write to INI if it was
-			if (args.check_opt(DefaultObjects._reset_gamesettings) && write_ini())
-				std::cout << sys::term::msg << "Successfully reset GMST Config. ( " << filename << " )\n";
-
-			// check for INI option
-			if (args.check_opt(DefaultObjects._set_gamesetting)) {
-				// lambda used to set INI variables
-				const auto set{ [&gs, &update_ini_before_return](const std::string& name, const std::string& value) {
-					try {
-						if (gs.set(name, value)) {
-							std::cout << sys::term::msg << "\'" << name << "\' = \'" << value << "\'\n";
-							update_ini_before_return = true;
-						}
-						else std::cout << sys::term::warn << "Operation failed without exception.\n";
-					} catch (std::exception& ex) {
-						std::cout << sys::term::error << "\'" << name << "\' = \'" << value << "\' triggered an exception: \"" << ex.what() << '\"' << std::endl;
-					}
-				} };
-
-				// iterate through all --ini args
-				for (auto it{ args.find(DefaultObjects._set_gamesetting) }; it != args.end(); it = args.find(DefaultObjects._set_gamesetting, it + 1u))
-					if (const auto arg{ it->getv() }; arg.has_value() && !arg.value().empty()) {
-						if (const auto dPos{ arg.value().find(':') }; str::pos_valid(dPos) && !str::pos_valid(arg.value().find(':', dPos + 1)))
-							set(arg.value().substr(0u, dPos), arg.value().substr(dPos + 1u));
-						else std::cout << sys::term::warn << "Invalid Parameter for --ini: Couldn't find ':' in \"" << arg.value() << "\"" << std::endl;
-					}
+		// check for the reset INI option
+		if (args.check_opt(DefaultObjects._reset_gamesettings)) {
+			if (file::write(filename, gs.to_stream(), false))
+				std::cout << sys::term::msg << "Successfully reset Game Config \"" << filename << "\"\n";
+			else
+				std::cout << sys::term::error << "Failed to reset Game Config \"" << filename << "\" (Check write permissions)\n";
+		}
+		bool update_ini_before_return{ false };
+		const auto set{ [&gs, &update_ini_before_return](const std::string& name, const std::string& value) {
+			try {
+				if (gs.set(name, value)) {
+					std::cout << sys::term::msg << "\'" << name << "\' = \'" << value << "\'\n";
+					update_ini_before_return = true;
+				}
+				else
+					std::cout << sys::term::warn << "Operation failed without exception.\n";
+			} catch (std::exception& ex) {
+				std::cout << sys::term::error << "Setting \"" << name << "\" to \"" << value << "\" caused an exception: \"" << ex.what() << '\"' << std::endl;
 			}
-			// check if the INI should be updated
-			if (update_ini_before_return) {
-				if (write_ini())
-					std::cout << sys::term::msg << "Successfully wrote to \"" << filename << '\"' << std::endl;
-				else std::cout << sys::term::warn << "Failed to write to \"" << filename << '\"' << std::endl;
+		} };
+		// iterate through all --set arguments
+		for (auto it{ args.find(DefaultObjects._set_gamesetting) }; it != args.end(); it = args.find(DefaultObjects._set_gamesetting, it + 1)) {
+			if (const auto arg{ it->getv() }; arg.has_value() && !arg.value().empty()) {
+				if (const auto pos{ arg.value().find(':') }; str::pos_valid(pos) && !str::pos_valid(arg.value().find(':', pos + 1)))
+					set(arg.value().substr(0u, pos), arg.value().substr(pos + 1));
+				else
+					throw std::exception(std::string("Invalid \"--set\" command: \"" + arg.value() + "\"").c_str());
 			}
 		}
+		// if the INI configuration has changed, write it to file
+		if (update_ini_before_return) {
+			if (file::write(filename, gs.to_stream(), false))
+				std::cout << sys::term::msg << "Successfully wrote to \"" << filename << '\"' << std::endl;
+			else
+				std::cout << sys::term::warn << "Failed to write to \"" << filename << '\"' << std::endl;
+		}
 		return gs; // RETURN
-
 	}
-
+	/**
+	 * @struct Instance
+	 * @brief Represents an instance of the caco_alch program. Contains all the high-level methods used to run the program.
+	 */
 	struct Instance {
 		using ConfigType = std::optional<file::ini::INI>;
 
@@ -84,16 +78,28 @@ namespace caco_alch {
 		const static int RETURN_SUCCESS{ 0 };
 		const static int RETURN_FAILURE{ 1 };
 
+		/**
+		 * @brief Validate the location of the configuration files used by the program.
+		 * @param os	 - Target output stream.
+		 * @param indent - Maximum indentation value, from which the length of all prefixes are subtracted to create uniform aligned values.
+		 */
 		void validate(std::ostream& os, const std::streamsize indent = 20ll) const
 		{
-			os << "argv[0]" << std::setw(indent - 7) << ' ' << Arguments.argv0() << '\n';
-			os << "directory" << std::setw(indent - 9) << ' ' << Paths._local << '\n';
+			os << "argv[0]" << std::setw(indent - 7) << ' ' << (file::exists(Arguments.argv0()) ? color::f::green : color::f::red) << Arguments.argv0() << '\n';
+			os << "directory" << std::setw(indent - 9) << ' ' << (file::exists(Paths._local) ? color::f::green : color::f::red) << Paths._local << '\n';
 			os << "registry" << std::setw(indent - 8) << ' ' << (file::exists(Paths._path_registry) ? color::f::green : color::f::red) << Paths._path_registry << color::reset << '\n';
 			os << "INI Config" << std::setw(indent - 10) << ' ' << (file::exists(Paths._path_config) ? color::f::green : color::f::red) << Paths._path_config << color::reset << '\n';
 			os << "Game Config" << std::setw(indent - 11) << ' ' << (file::exists(Paths._path_gamesettings) ? color::f::green : color::f::red) << Paths._path_gamesettings << color::reset << '\n';
 		}
+		/**
+		 * @brief Validate the location of the configuration files used by the program and print it to std::cout.
+		 */
 		void validate() const { validate(std::cout); }
-
+		/**
+		 * @brief Handle the received commandline arguments and call the relevant functions with the remaining parameters.
+		 * @param os	- Target output stream.
+		 * @returns int
+		 */
 		int handleArguments(std::ostream& os) const
 		{
 			if (Arguments.check_flag('i')) {
@@ -126,6 +132,10 @@ namespace caco_alch {
 			}
 			return RETURN_FAILURE;
 		}
+		/**
+		 * @brief Handle the received commandline arguments and call the relevant functions with the remaining parameters.
+		 * @returns int
+		 */
 		int handleArguments() const
 		{
 			return handleArguments(std::cout);

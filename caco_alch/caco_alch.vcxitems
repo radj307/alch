@@ -15,10 +15,6 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)caco-alch.ini" />
-    <None Include="$(MSBuildThisFileDirectory)caco-ingredient-list.dat" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Alchemy.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColorAPI.hpp" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColorConfigLoader.hpp" />
