@@ -1,0 +1,1780 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						8,
+						9
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						10
+					]
+				},
+				{
+					"build" : "307lib",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"jsonFile" : "directory-307lib-Debug-831110098c829e80d33b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "307lib",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "307lib/shared",
+					"jsonFile" : "directory-307lib.shared-Debug-feb5445207b47c72b779.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "307lib/shared",
+					"targetIndexes" : 
+					[
+						2,
+						15
+					]
+				},
+				{
+					"build" : "307lib/str-lib",
+					"jsonFile" : "directory-307lib.str-lib-Debug-868e08fd1ecfddcb5137.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 3,
+					"source" : "307lib/str-lib",
+					"targetIndexes" : 
+					[
+						3,
+						16
+					]
+				},
+				{
+					"build" : "307lib/TermAPI",
+					"jsonFile" : "directory-307lib.TermAPI-Debug-56a0db44b858062697cf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 4,
+					"source" : "307lib/TermAPI",
+					"targetIndexes" : 
+					[
+						4,
+						9
+					]
+				},
+				{
+					"build" : "307lib/file-lib",
+					"jsonFile" : "directory-307lib.file-lib-Debug-19d1b1c0c38f8f151ae3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 5,
+					"source" : "307lib/file-lib",
+					"targetIndexes" : 
+					[
+						5,
+						13
+					]
+				},
+				{
+					"build" : "307lib/opt-lib",
+					"jsonFile" : "directory-307lib.opt-lib-Debug-e3fbff88afbb2c3732eb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 6,
+					"source" : "307lib/opt-lib",
+					"targetIndexes" : 
+					[
+						6,
+						14
+					]
+				},
+				{
+					"build" : "307lib/testing",
+					"jsonFile" : "directory-307lib.testing-Debug-29fcb01bed53d8e1a95e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 7,
+					"source" : "307lib/testing",
+					"targetIndexes" : 
+					[
+						7,
+						17
+					]
+				},
+				{
+					"build" : "alch-lib",
+					"jsonFile" : "directory-alch-lib-Debug-c508efe5f2dae4a6fc05.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 8,
+					"source" : "alch-lib",
+					"targetIndexes" : 
+					[
+						8,
+						12
+					]
+				},
+				{
+					"build" : "alch",
+					"jsonFile" : "directory-alch-Debug-72df5c9720606aeb2141.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "alch",
+					"targetIndexes" : 
+					[
+						11
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						8
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						9
+					],
+					"name" : "alch",
+					"targetIndexes" : 
+					[
+						0,
+						10,
+						11
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "307lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "shared",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						2,
+						15
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "str-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						3,
+						16
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "TermAPI",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						4,
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "file-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						5,
+						13
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						6
+					],
+					"name" : "opt-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						6,
+						14
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						7
+					],
+					"name" : "testing",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						7,
+						17
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						8
+					],
+					"name" : "alch-lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						8,
+						12
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-Debug-14504bcdb7bd0b33f47c.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ALL_BUILD::@cdbc50b619075c571c25",
+					"jsonFile" : "target-ALL_BUILD-Debug-0e0db7010ec09579d896.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ALL_BUILD::@8b53286333f9f62c825a",
+					"jsonFile" : "target-ALL_BUILD-Debug-4ddf80f64819269ea880.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ALL_BUILD::@e2a978e88270c9dd3aca",
+					"jsonFile" : "target-ALL_BUILD-Debug-4fc8125be76a2d4821f4.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "ALL_BUILD::@47f46cc73519d8e3e949",
+					"jsonFile" : "target-ALL_BUILD-Debug-7a1bece6e747dd0dfa91.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ALL_BUILD::@ad493b73c8fadda8ba41",
+					"jsonFile" : "target-ALL_BUILD-Debug-4d2da98259d612e2b59f.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ALL_BUILD::@2a05774a1ce7d8553352",
+					"jsonFile" : "target-ALL_BUILD-Debug-3b327d315ff6097dfc62.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "ALL_BUILD::@e7f27aac6fd2c3a67710",
+					"jsonFile" : "target-ALL_BUILD-Debug-4aa2646354616a92bcca.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 7
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "ALL_BUILD::@59a76424fe0ed4192274",
+					"jsonFile" : "target-ALL_BUILD-Debug-50bc4b51ad801725f245.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "TermAPI::@47f46cc73519d8e3e949",
+					"jsonFile" : "target-TermAPI-Debug-5f235746cd628e4c10e1.json",
+					"name" : "TermAPI",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-Debug-945b1649b50b5d5a2141.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "alch::@ee3bff711d34dfdba93b",
+					"jsonFile" : "target-alch-Debug-95d2e23bff3c9f9b2070.json",
+					"name" : "alch",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "alch-lib::@59a76424fe0ed4192274",
+					"jsonFile" : "target-alch-lib-Debug-a7c919fd276a9b045d73.json",
+					"name" : "alch-lib",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "file-lib::@ad493b73c8fadda8ba41",
+					"jsonFile" : "target-file-lib-Debug-c679d13a3f61186d0041.json",
+					"name" : "file-lib",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "opt-lib::@2a05774a1ce7d8553352",
+					"jsonFile" : "target-opt-lib-Debug-17f49d29b312623e439c.json",
+					"name" : "opt-lib",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "shared::@8b53286333f9f62c825a",
+					"jsonFile" : "target-shared-Debug-8dab9cd371d4ac3c081f.json",
+					"name" : "shared",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "str-lib::@e2a978e88270c9dd3aca",
+					"jsonFile" : "target-str-lib-Debug-16b02b96e9e8dccc61c4.json",
+					"name" : "str-lib",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "testing::@e7f27aac6fd2c3a67710",
+					"jsonFile" : "target-testing-Debug-e77f9ee96fef042caea8.json",
+					"name" : "testing",
+					"projectIndex" : 7
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						8,
+						9
+					],
+					"jsonFile" : "directory-.-Release-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						10
+					]
+				},
+				{
+					"build" : "307lib",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"jsonFile" : "directory-307lib-Release-831110098c829e80d33b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "307lib",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "307lib/shared",
+					"jsonFile" : "directory-307lib.shared-Release-feb5445207b47c72b779.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "307lib/shared",
+					"targetIndexes" : 
+					[
+						2,
+						15
+					]
+				},
+				{
+					"build" : "307lib/str-lib",
+					"jsonFile" : "directory-307lib.str-lib-Release-868e08fd1ecfddcb5137.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 3,
+					"source" : "307lib/str-lib",
+					"targetIndexes" : 
+					[
+						3,
+						16
+					]
+				},
+				{
+					"build" : "307lib/TermAPI",
+					"jsonFile" : "directory-307lib.TermAPI-Release-56a0db44b858062697cf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 4,
+					"source" : "307lib/TermAPI",
+					"targetIndexes" : 
+					[
+						4,
+						9
+					]
+				},
+				{
+					"build" : "307lib/file-lib",
+					"jsonFile" : "directory-307lib.file-lib-Release-19d1b1c0c38f8f151ae3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 5,
+					"source" : "307lib/file-lib",
+					"targetIndexes" : 
+					[
+						5,
+						13
+					]
+				},
+				{
+					"build" : "307lib/opt-lib",
+					"jsonFile" : "directory-307lib.opt-lib-Release-e3fbff88afbb2c3732eb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 6,
+					"source" : "307lib/opt-lib",
+					"targetIndexes" : 
+					[
+						6,
+						14
+					]
+				},
+				{
+					"build" : "307lib/testing",
+					"jsonFile" : "directory-307lib.testing-Release-29fcb01bed53d8e1a95e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 7,
+					"source" : "307lib/testing",
+					"targetIndexes" : 
+					[
+						7,
+						17
+					]
+				},
+				{
+					"build" : "alch-lib",
+					"jsonFile" : "directory-alch-lib-Release-c508efe5f2dae4a6fc05.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 8,
+					"source" : "alch-lib",
+					"targetIndexes" : 
+					[
+						8,
+						12
+					]
+				},
+				{
+					"build" : "alch",
+					"jsonFile" : "directory-alch-Release-72df5c9720606aeb2141.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "alch",
+					"targetIndexes" : 
+					[
+						11
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						8
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						9
+					],
+					"name" : "alch",
+					"targetIndexes" : 
+					[
+						0,
+						10,
+						11
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "307lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "shared",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						2,
+						15
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "str-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						3,
+						16
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "TermAPI",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						4,
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "file-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						5,
+						13
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						6
+					],
+					"name" : "opt-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						6,
+						14
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						7
+					],
+					"name" : "testing",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						7,
+						17
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						8
+					],
+					"name" : "alch-lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						8,
+						12
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-Release-14504bcdb7bd0b33f47c.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ALL_BUILD::@cdbc50b619075c571c25",
+					"jsonFile" : "target-ALL_BUILD-Release-0e0db7010ec09579d896.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ALL_BUILD::@8b53286333f9f62c825a",
+					"jsonFile" : "target-ALL_BUILD-Release-4ddf80f64819269ea880.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ALL_BUILD::@e2a978e88270c9dd3aca",
+					"jsonFile" : "target-ALL_BUILD-Release-4fc8125be76a2d4821f4.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "ALL_BUILD::@47f46cc73519d8e3e949",
+					"jsonFile" : "target-ALL_BUILD-Release-7a1bece6e747dd0dfa91.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ALL_BUILD::@ad493b73c8fadda8ba41",
+					"jsonFile" : "target-ALL_BUILD-Release-4d2da98259d612e2b59f.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ALL_BUILD::@2a05774a1ce7d8553352",
+					"jsonFile" : "target-ALL_BUILD-Release-3b327d315ff6097dfc62.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "ALL_BUILD::@e7f27aac6fd2c3a67710",
+					"jsonFile" : "target-ALL_BUILD-Release-4aa2646354616a92bcca.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 7
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "ALL_BUILD::@59a76424fe0ed4192274",
+					"jsonFile" : "target-ALL_BUILD-Release-50bc4b51ad801725f245.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "TermAPI::@47f46cc73519d8e3e949",
+					"jsonFile" : "target-TermAPI-Release-3cf5224c2cb1526e1fe7.json",
+					"name" : "TermAPI",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-Release-945b1649b50b5d5a2141.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "alch::@ee3bff711d34dfdba93b",
+					"jsonFile" : "target-alch-Release-e903b4c125d630aea6ca.json",
+					"name" : "alch",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "alch-lib::@59a76424fe0ed4192274",
+					"jsonFile" : "target-alch-lib-Release-b946e4d2eb386ccd8fe5.json",
+					"name" : "alch-lib",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "file-lib::@ad493b73c8fadda8ba41",
+					"jsonFile" : "target-file-lib-Release-b4722f9754b13b5f12c8.json",
+					"name" : "file-lib",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "opt-lib::@2a05774a1ce7d8553352",
+					"jsonFile" : "target-opt-lib-Release-978294aa3beb977e9f03.json",
+					"name" : "opt-lib",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "shared::@8b53286333f9f62c825a",
+					"jsonFile" : "target-shared-Release-24178e64396c9c10efc9.json",
+					"name" : "shared",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "str-lib::@e2a978e88270c9dd3aca",
+					"jsonFile" : "target-str-lib-Release-06831091f5f4f734d08a.json",
+					"name" : "str-lib",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "testing::@e7f27aac6fd2c3a67710",
+					"jsonFile" : "target-testing-Release-d2960d42d6fb945d362c.json",
+					"name" : "testing",
+					"projectIndex" : 7
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						8,
+						9
+					],
+					"jsonFile" : "directory-.-MinSizeRel-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						10
+					]
+				},
+				{
+					"build" : "307lib",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"jsonFile" : "directory-307lib-MinSizeRel-831110098c829e80d33b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "307lib",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "307lib/shared",
+					"jsonFile" : "directory-307lib.shared-MinSizeRel-feb5445207b47c72b779.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "307lib/shared",
+					"targetIndexes" : 
+					[
+						2,
+						15
+					]
+				},
+				{
+					"build" : "307lib/str-lib",
+					"jsonFile" : "directory-307lib.str-lib-MinSizeRel-868e08fd1ecfddcb5137.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 3,
+					"source" : "307lib/str-lib",
+					"targetIndexes" : 
+					[
+						3,
+						16
+					]
+				},
+				{
+					"build" : "307lib/TermAPI",
+					"jsonFile" : "directory-307lib.TermAPI-MinSizeRel-56a0db44b858062697cf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 4,
+					"source" : "307lib/TermAPI",
+					"targetIndexes" : 
+					[
+						4,
+						9
+					]
+				},
+				{
+					"build" : "307lib/file-lib",
+					"jsonFile" : "directory-307lib.file-lib-MinSizeRel-19d1b1c0c38f8f151ae3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 5,
+					"source" : "307lib/file-lib",
+					"targetIndexes" : 
+					[
+						5,
+						13
+					]
+				},
+				{
+					"build" : "307lib/opt-lib",
+					"jsonFile" : "directory-307lib.opt-lib-MinSizeRel-e3fbff88afbb2c3732eb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 6,
+					"source" : "307lib/opt-lib",
+					"targetIndexes" : 
+					[
+						6,
+						14
+					]
+				},
+				{
+					"build" : "307lib/testing",
+					"jsonFile" : "directory-307lib.testing-MinSizeRel-29fcb01bed53d8e1a95e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 7,
+					"source" : "307lib/testing",
+					"targetIndexes" : 
+					[
+						7,
+						17
+					]
+				},
+				{
+					"build" : "alch-lib",
+					"jsonFile" : "directory-alch-lib-MinSizeRel-c508efe5f2dae4a6fc05.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 8,
+					"source" : "alch-lib",
+					"targetIndexes" : 
+					[
+						8,
+						12
+					]
+				},
+				{
+					"build" : "alch",
+					"jsonFile" : "directory-alch-MinSizeRel-72df5c9720606aeb2141.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "alch",
+					"targetIndexes" : 
+					[
+						11
+					]
+				}
+			],
+			"name" : "MinSizeRel",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						8
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						9
+					],
+					"name" : "alch",
+					"targetIndexes" : 
+					[
+						0,
+						10,
+						11
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "307lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "shared",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						2,
+						15
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "str-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						3,
+						16
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "TermAPI",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						4,
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "file-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						5,
+						13
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						6
+					],
+					"name" : "opt-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						6,
+						14
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						7
+					],
+					"name" : "testing",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						7,
+						17
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						8
+					],
+					"name" : "alch-lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						8,
+						12
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-14504bcdb7bd0b33f47c.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ALL_BUILD::@cdbc50b619075c571c25",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-0e0db7010ec09579d896.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ALL_BUILD::@8b53286333f9f62c825a",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-4ddf80f64819269ea880.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ALL_BUILD::@e2a978e88270c9dd3aca",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-4fc8125be76a2d4821f4.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "ALL_BUILD::@47f46cc73519d8e3e949",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-7a1bece6e747dd0dfa91.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ALL_BUILD::@ad493b73c8fadda8ba41",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-4d2da98259d612e2b59f.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ALL_BUILD::@2a05774a1ce7d8553352",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-3b327d315ff6097dfc62.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "ALL_BUILD::@e7f27aac6fd2c3a67710",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-4aa2646354616a92bcca.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 7
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "ALL_BUILD::@59a76424fe0ed4192274",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-50bc4b51ad801725f245.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "TermAPI::@47f46cc73519d8e3e949",
+					"jsonFile" : "target-TermAPI-MinSizeRel-14c21118bcb9a49af334.json",
+					"name" : "TermAPI",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-MinSizeRel-945b1649b50b5d5a2141.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "alch::@ee3bff711d34dfdba93b",
+					"jsonFile" : "target-alch-MinSizeRel-adc4ad099234cde3269e.json",
+					"name" : "alch",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "alch-lib::@59a76424fe0ed4192274",
+					"jsonFile" : "target-alch-lib-MinSizeRel-821c34a54fb5195a0787.json",
+					"name" : "alch-lib",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "file-lib::@ad493b73c8fadda8ba41",
+					"jsonFile" : "target-file-lib-MinSizeRel-3216b1f179d7fe9c197a.json",
+					"name" : "file-lib",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "opt-lib::@2a05774a1ce7d8553352",
+					"jsonFile" : "target-opt-lib-MinSizeRel-999d2a3a966bcb1210ca.json",
+					"name" : "opt-lib",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "shared::@8b53286333f9f62c825a",
+					"jsonFile" : "target-shared-MinSizeRel-251efa21254fa81b51d6.json",
+					"name" : "shared",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "str-lib::@e2a978e88270c9dd3aca",
+					"jsonFile" : "target-str-lib-MinSizeRel-bd1c9b1a6b209229fa29.json",
+					"name" : "str-lib",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "testing::@e7f27aac6fd2c3a67710",
+					"jsonFile" : "target-testing-MinSizeRel-10bc4c71862fd083b06b.json",
+					"name" : "testing",
+					"projectIndex" : 7
+				}
+			]
+		},
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						8,
+						9
+					],
+					"jsonFile" : "directory-.-RelWithDebInfo-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						10
+					]
+				},
+				{
+					"build" : "307lib",
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"jsonFile" : "directory-307lib-RelWithDebInfo-831110098c829e80d33b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "307lib",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "307lib/shared",
+					"jsonFile" : "directory-307lib.shared-RelWithDebInfo-feb5445207b47c72b779.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "307lib/shared",
+					"targetIndexes" : 
+					[
+						2,
+						15
+					]
+				},
+				{
+					"build" : "307lib/str-lib",
+					"jsonFile" : "directory-307lib.str-lib-RelWithDebInfo-868e08fd1ecfddcb5137.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 3,
+					"source" : "307lib/str-lib",
+					"targetIndexes" : 
+					[
+						3,
+						16
+					]
+				},
+				{
+					"build" : "307lib/TermAPI",
+					"jsonFile" : "directory-307lib.TermAPI-RelWithDebInfo-56a0db44b858062697cf.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 4,
+					"source" : "307lib/TermAPI",
+					"targetIndexes" : 
+					[
+						4,
+						9
+					]
+				},
+				{
+					"build" : "307lib/file-lib",
+					"jsonFile" : "directory-307lib.file-lib-RelWithDebInfo-19d1b1c0c38f8f151ae3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 5,
+					"source" : "307lib/file-lib",
+					"targetIndexes" : 
+					[
+						5,
+						13
+					]
+				},
+				{
+					"build" : "307lib/opt-lib",
+					"jsonFile" : "directory-307lib.opt-lib-RelWithDebInfo-e3fbff88afbb2c3732eb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 6,
+					"source" : "307lib/opt-lib",
+					"targetIndexes" : 
+					[
+						6,
+						14
+					]
+				},
+				{
+					"build" : "307lib/testing",
+					"jsonFile" : "directory-307lib.testing-RelWithDebInfo-29fcb01bed53d8e1a95e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 7,
+					"source" : "307lib/testing",
+					"targetIndexes" : 
+					[
+						7,
+						17
+					]
+				},
+				{
+					"build" : "alch-lib",
+					"jsonFile" : "directory-alch-lib-RelWithDebInfo-c508efe5f2dae4a6fc05.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 8,
+					"source" : "alch-lib",
+					"targetIndexes" : 
+					[
+						8,
+						12
+					]
+				},
+				{
+					"build" : "alch",
+					"jsonFile" : "directory-alch-RelWithDebInfo-72df5c9720606aeb2141.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.15"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "alch",
+					"targetIndexes" : 
+					[
+						11
+					]
+				}
+			],
+			"name" : "RelWithDebInfo",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						8
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						9
+					],
+					"name" : "alch",
+					"targetIndexes" : 
+					[
+						0,
+						10,
+						11
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2,
+						3,
+						4,
+						5,
+						6,
+						7
+					],
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "307lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "shared",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						2,
+						15
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "str-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						3,
+						16
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "TermAPI",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						4,
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "file-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						5,
+						13
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						6
+					],
+					"name" : "opt-lib",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						6,
+						14
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						7
+					],
+					"name" : "testing",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						7,
+						17
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						8
+					],
+					"name" : "alch-lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						8,
+						12
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-14504bcdb7bd0b33f47c.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "ALL_BUILD::@cdbc50b619075c571c25",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-0e0db7010ec09579d896.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "ALL_BUILD::@8b53286333f9f62c825a",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-4ddf80f64819269ea880.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "ALL_BUILD::@e2a978e88270c9dd3aca",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-4fc8125be76a2d4821f4.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "ALL_BUILD::@47f46cc73519d8e3e949",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-7a1bece6e747dd0dfa91.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "ALL_BUILD::@ad493b73c8fadda8ba41",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-4d2da98259d612e2b59f.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "ALL_BUILD::@2a05774a1ce7d8553352",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-3b327d315ff6097dfc62.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "ALL_BUILD::@e7f27aac6fd2c3a67710",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-4aa2646354616a92bcca.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 7
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "ALL_BUILD::@59a76424fe0ed4192274",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-50bc4b51ad801725f245.json",
+					"name" : "ALL_BUILD",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "TermAPI::@47f46cc73519d8e3e949",
+					"jsonFile" : "target-TermAPI-RelWithDebInfo-a2133935971250b8c759.json",
+					"name" : "TermAPI",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ZERO_CHECK-RelWithDebInfo-945b1649b50b5d5a2141.json",
+					"name" : "ZERO_CHECK",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "alch::@ee3bff711d34dfdba93b",
+					"jsonFile" : "target-alch-RelWithDebInfo-2d21df2d9825043a1095.json",
+					"name" : "alch",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 8,
+					"id" : "alch-lib::@59a76424fe0ed4192274",
+					"jsonFile" : "target-alch-lib-RelWithDebInfo-aa0cc9381b2eec1f131b.json",
+					"name" : "alch-lib",
+					"projectIndex" : 8
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "file-lib::@ad493b73c8fadda8ba41",
+					"jsonFile" : "target-file-lib-RelWithDebInfo-63bcf2d5d4a7eeb30fd6.json",
+					"name" : "file-lib",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "opt-lib::@2a05774a1ce7d8553352",
+					"jsonFile" : "target-opt-lib-RelWithDebInfo-6debef8f33d8f631c881.json",
+					"name" : "opt-lib",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "shared::@8b53286333f9f62c825a",
+					"jsonFile" : "target-shared-RelWithDebInfo-bccda7d71b73795a701e.json",
+					"name" : "shared",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "str-lib::@e2a978e88270c9dd3aca",
+					"jsonFile" : "target-str-lib-RelWithDebInfo-fe340fc88e3a70a048f4.json",
+					"name" : "str-lib",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "testing::@e7f27aac6fd2c3a67710",
+					"jsonFile" : "target-testing-RelWithDebInfo-b21fe8feb274f77f1ce9.json",
+					"name" : "testing",
+					"projectIndex" : 7
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "X:/_Workspace/_repo/alch-cmake/out/build/windows-default",
+		"source" : "X:/_Workspace/_repo/alch-cmake"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}

@@ -1,0 +1,36 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"307lib/file-lib/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		},
+		{
+			"id" : "file-lib::@ad493b73c8fadda8ba41"
+		}
+	],
+	"id" : "ALL_BUILD::@ad493b73c8fadda8ba41",
+	"isGeneratorProvided" : true,
+	"name" : "ALL_BUILD",
+	"paths" : 
+	{
+		"build" : "307lib/file-lib",
+		"source" : "307lib/file-lib"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

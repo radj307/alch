@@ -1,0 +1,86 @@
+﻿{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 13,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "linux-default",
+      "displayName": "Linux Debug",
+      "description": "Target the Windows Subsystem for Linux (WSL) or a remote Linux system.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Linux" ] },
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" }
+      }
+    },
+    {
+      "name": "macos-default",
+      "displayName": "macOS Debug",
+      "description": "Target a remote macOS system with Ninja",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "macOS" ] },
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" }
+      }
+    },
+    {
+      "name": "windows-default",
+      "displayName": "Windows x64",
+      "description": "Target Windows with the Visual Studio development environment.",
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "ENABLE_TESTING": {
+          "type": "BOOL",
+          "value": "ON"
+        },
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [ "Windows" ],
+          "autoFormat": true
+        }
+      }
+    },
+    {
+      "name": "windows-debug",
+      "inherits": "windows-default",
+      "displayName": "Windows x64",
+      "description": "Target Windows with the Visual Studio development environment.",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "windows-default",
+      "configuration": "windows-default"
+    },
+    {
+      "name": "Release",
+      "configurePreset": "windows-default",
+      "configuration": "windows-release"
+    }
+  ]
+}

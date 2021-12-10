@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\alch-lib\src\DefaultObjects.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\using.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\GameConfig.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\ColorAPI.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\DefaultObjects.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\reloader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\ObjectBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\Keyword.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\Effect.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\Ingredient.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\Potion.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\IngredientCache.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\OutputFormat.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\Format.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\Alchemy.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\handle_arguments.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="X:\_Workspace\_repo\alch-cmake\alch-lib\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{03BD870E-01D1-3765-917E-B327E13AF1AC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{BA68D597-9A3E-3C5A-9D85-5A4F7A3DEE39}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

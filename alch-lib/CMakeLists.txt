@@ -1,9 +1,40 @@
-﻿# CMakeList.txt : CMake project for alch-cmake, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.15)
 
-# Add source to this project's executable.
-add_executable (alch-cmake "alch-cmake.cpp" "alch-cmake.h")
+set(CMAKE_CXX_STANDARD 20)
 
-# TODO: Add tests and install targets if needed.
+if (MSVC)
+	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+	# Fix MSVC __cplusplus macro
+	string(APPEND CMAKE_CXX_FLAGS " /Zc:__cplusplus")
+endif()
+
+project("alch-lib")
+
+set(HEADERS
+	"./include/using.h"
+	"./include/GameConfig.hpp"
+	"./include/ColorAPI.hpp"
+	"./include/DefaultObjects.hpp"
+	"./include/reloader.hpp"
+
+	"./include/ObjectBase.hpp"
+	"./include/Keyword.hpp"
+	"./include/Effect.hpp"
+	"./include/Ingredient.hpp"
+	"./include/Potion.hpp"
+	"./include/IngredientCache.hpp"
+	
+	"./include/OutputFormat.hpp"
+	"./include/Format.hpp"
+
+	"./include/Alchemy.hpp"
+
+	"./include/handle_arguments.hpp"
+)
+set(SOURCE
+	"./src/DefaultObjects.cpp"
+)
+
+add_library(alch-lib STATIC ${HEADERS} ${SOURCE})
+target_link_libraries(alch-lib PUBLIC shared str-lib TermAPI file-lib opt-lib)
+target_include_directories(opt-lib PUBLIC "./include" "./src")

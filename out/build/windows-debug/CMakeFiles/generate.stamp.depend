@@ -1,0 +1,23 @@
+# CMake generation dependency list for this directory.
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeCInformation.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeCXXInformation.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeCommonLanguageInclude.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeGenericSystem.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeInitializeConfigs.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeLanguageInformation.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeRCInformation.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeSystemSpecificInformation.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/CMakeSystemSpecificInitialize.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/Compiler/MSVC-C.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/Compiler/MSVC-CXX.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/Platform/Windows-MSVC-C.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/Platform/Windows-MSVC-CXX.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/Platform/Windows-MSVC.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/Platform/Windows.cmake
+V:/VisualStudio/2022/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.21/Modules/Platform/WindowsPaths.cmake
+X:/_Workspace/_repo/alch-cmake/CMakeLists.txt
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/CMakeFiles/3.21.21080301-MSVC_2/CMakeCCompiler.cmake
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/CMakeFiles/3.21.21080301-MSVC_2/CMakeCXXCompiler.cmake
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/CMakeFiles/3.21.21080301-MSVC_2/CMakeRCCompiler.cmake
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/CMakeFiles/3.21.21080301-MSVC_2/CMakeSystem.cmake

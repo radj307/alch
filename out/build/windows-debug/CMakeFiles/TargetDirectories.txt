@@ -1,0 +1,15 @@
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/CMakeFiles/ALL_BUILD.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/CMakeFiles/ZERO_CHECK.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/CMakeFiles/ALL_BUILD.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/shared/CMakeFiles/shared.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/shared/CMakeFiles/ALL_BUILD.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/str-lib/CMakeFiles/str-lib.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/str-lib/CMakeFiles/ALL_BUILD.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/TermAPI/CMakeFiles/TermAPI.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/TermAPI/CMakeFiles/ALL_BUILD.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/file-lib/CMakeFiles/file-lib.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/file-lib/CMakeFiles/ALL_BUILD.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/opt-lib/CMakeFiles/opt-lib.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/opt-lib/CMakeFiles/ALL_BUILD.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/testing/CMakeFiles/testing.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/testing/CMakeFiles/ALL_BUILD.dir
