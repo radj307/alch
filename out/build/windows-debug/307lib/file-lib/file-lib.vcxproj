@@ -271,10 +271,11 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\file-lib\include\fileio.hpp" />
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\file-lib\include\fileutil.hpp" />
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\file-lib\include\env.hpp" />
     <None Include="X:\_Workspace\_repo\alch-cmake\307lib\file-lib\include">
     </None>
-    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\file-lib\src\fileio.cpp" />
     <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\file-lib\src\fileutil.cpp" />
+    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\file-lib\src\env.cpp" />
     <None Include="X:\_Workspace\_repo\alch-cmake\307lib\file-lib">
     </None>
   </ItemGroup>

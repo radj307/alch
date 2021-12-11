@@ -1,4 +1,5 @@
-﻿cmake_minimum_required (VERSION 3.15)
+﻿# alch-lib
+cmake_minimum_required (VERSION 3.15)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -14,7 +15,7 @@ set(HEADERS
 	"./include/using.h"
 	"./include/GameConfig.hpp"
 	"./include/ColorAPI.hpp"
-	"./include/DefaultObjects.hpp"
+	"./include/reparse.hpp"
 	"./include/reloader.hpp"
 
 	"./include/ObjectBase.hpp"
@@ -30,11 +31,13 @@ set(HEADERS
 	"./include/Alchemy.hpp"
 
 	"./include/handle_arguments.hpp"
+	"./include/DefaultObjects.hpp"
 )
-set(SOURCE
+set(SRC
 	"./src/DefaultObjects.cpp"
 )
 
-add_library(alch-lib STATIC ${HEADERS} ${SOURCE})
+add_library(alch-lib STATIC ${HEADERS} ${SRC})
 target_link_libraries(alch-lib PUBLIC shared str-lib TermAPI file-lib opt-lib)
-target_include_directories(opt-lib PUBLIC "./include" "./src")
+target_include_directories(alch-lib PUBLIC "./include" "./src")
+target_link_directories(alch-lib PUBLIC "./src")

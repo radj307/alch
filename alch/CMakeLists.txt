@@ -15,10 +15,8 @@ set(HEADERS
 	"Instance.hpp"
 )
 
-set(SOURCE
+set(SRC
 	"main.cpp"
 )
 
-add_executable(alch ${HEADERS} ${SOURCE})
-target_link_libraries(alch PUBLIC shared str-lib TermAPI file-lib opt-lib alch-lib)
-
+add_executable(alch ${HEADERS} ${SRC})

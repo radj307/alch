@@ -1,8 +1,11 @@
 #pragma once
 #include <fileio.hpp>
+#include <fileutil.hpp>
 //#include <resolve-path.hpp>
-#include <StrToColor.hpp>
+#include <color-transform.hpp>
 #include <INI.hpp>
+
+#include <str.hpp>
 
 #include <Alchemy.hpp>
 #include <GameConfig.hpp>
@@ -93,7 +96,7 @@ namespace caco_alch {
 		 */
 		void validate(std::ostream& os, const std::streamsize indent = 20ll) const
 		{
-			os << "argv[0]" << std::setw(indent - 7) << ' ' << (file::exists(Arguments.arg0()) ? color::f::green : color::f::red) << Arguments.arg0().value_or("") << '\n';
+			os << "argv[0]" << std::setw(indent - 7) << ' ' << (file::exists(Arguments.arg0().value_or("")) ? color::f::green : color::f::red) << Arguments.arg0().value_or("") << '\n';
 			os << "directory" << std::setw(indent - 9) << ' ' << (file::exists(Paths._local) ? color::f::green : color::f::red) << Paths._local << '\n';
 			os << "registry" << std::setw(indent - 8) << ' ' << (file::exists(Paths._path_registry) ? color::f::green : color::f::red) << Paths._path_registry << color::reset << '\n';
 			os << "INI Config" << std::setw(indent - 10) << ' ' << (file::exists(Paths._path_config) ? color::f::green : color::f::red) << Paths._path_config << color::reset << '\n';

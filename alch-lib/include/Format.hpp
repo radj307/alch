@@ -1,14 +1,16 @@
 #pragma once
-#include <str.hpp>
-#include <using.h>
-#include <ColorAPI.hpp>
-#include <Potion.hpp>
-#include <Ingredient.hpp>
-//#include <ColorConfigLoader.hpp>
-#include <OutputFormat.hpp>
+#include "using.h"
+#include "ColorAPI.hpp"
+#include "Potion.hpp"
+#include "Ingredient.hpp"
+#include "OutputFormat.hpp"
 
-#include <set>
+#include <str.hpp>
+
 #include <iomanip>
+#include <utility>
+#include <unordered_map>
+#include <set>
 
 namespace caco_alch {
 	/**
@@ -362,7 +364,7 @@ namespace caco_alch {
 		};
 		PrintObject print(PrintObject::Variant obj, PrintableBase::SearchedType searched = std::nullopt) const
 		{
-			return{ std::move(obj), *this, { _indent }, searched };
+			return PrintObject{ std::move(obj), *this, Indentation{ static_cast<std::streamsize>(_indent)}, searched };
 		}
 
 		/**

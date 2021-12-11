@@ -11,9 +11,11 @@
 
 #include "Instance.hpp"
 
+#include <make_exception.hpp>
 #include <TermAPI.hpp>
 #include <ParamsAPI2.hpp>
 #include <env.hpp>
+#include <str.hpp>
 
 using namespace caco_alch;
 
@@ -36,6 +38,13 @@ int main(const int argc, char* argv[], char* envp[])
 		std::cout << sys::term::EnableANSI; // enable virtual terminal sequences
 		opt::ParamsAPI2 args(argc, argv, "color", "precision", DefaultObjects._set_gamesetting, DefaultObjects._load_config, DefaultObjects._load_gamesettings, DefaultObjects._load_registry); // parse arguments
 
+		env::PATH path;
+
+		if (args.check_any<opt::Option, opt::Flag>("help", 'h')) {
+			std::cout << Help(path.resolve_split(args.arg0().value_or("")).second.replace_extension("").generic_string()) << std::endl;
+			return 0;
+		}
+
 		const auto getOptOrDefault{ [&args](const std::string& optname, const std::string& defv) {
 			const auto val{ args.typegetv<opt::Option>(optname) };
 			if (val.has_value())
@@ -43,7 +52,6 @@ int main(const int argc, char* argv[], char* envp[])
 			return defv;
 		} };
 
-		env::PATH path;
 
 		DefaultPaths paths(
 			path.resolve_split(argv[0]).first.generic_string(),
@@ -57,12 +65,20 @@ int main(const int argc, char* argv[], char* envp[])
 		if (args.check<opt::Option>("validate")) // Process "--validate" opt
 			inst.validate();
 
-		return inst.handleArguments();
+		switch (inst.handleArguments()) {
+		case Instance::RETURN_FAILURE:
+			std::cerr << args << std::endl;
+			throw make_exception("No valid arguments found!");
+		case Instance::RETURN_SUCCESS:
+			return 0;
+		default:
+			return 1;
+		}
 	} catch (std::exception& ex) {
-		std::cout << sys::term::error << ex.what() << std::endl;
+		std::cerr << sys::term::error << ex.what() << std::endl;
 		return -1;
 	} catch (...) {
-		std::cout << sys::term::error << "An unknown exception occurred." << std::endl;
+		std::cerr << sys::term::crit << "An unknown exception occurred." << std::endl;
 		return -2;
 	}
 }

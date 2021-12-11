@@ -190,10 +190,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{DAA387B7-0D43-3BE4-8108-12CD7973B307}</Project>
       <Name>str-lib</Name>
     </ProjectReference>
-    <ProjectReference Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\testing\testing.vcxproj">
-      <Project>{D9E9F6D4-3FE2-3E5F-AA04-34CFDCF1B59C}</Project>
-      <Name>testing</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

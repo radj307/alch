@@ -15,7 +15,7 @@
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\ColorAPI.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\DefaultObjects.hpp">
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\reparse.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\reloader.hpp">
@@ -49,6 +49,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\handle_arguments.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\alch-lib\include\DefaultObjects.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

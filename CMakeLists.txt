@@ -10,11 +10,13 @@ endif()
 
 project ("alch")
 
+# Add executable
+add_subdirectory ("alch")
+
 # Add dependencies
 add_subdirectory("307lib")
 
 # Add alch-lib
-#add_subdirectory ("alch-lib")
+add_subdirectory ("alch-lib")
 
-# Add executable
-#add_subdirectory ("alch")
+target_link_libraries(alch PUBLIC shared str-lib TermAPI file-lib opt-lib alch-lib)

@@ -11,9 +11,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZERO_CHECK", "..\..\\ZERO_C
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shared", "..\shared\shared.vcxproj", "{91BF6A2A-E65C-3A45-8B7B-490F4224241A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A2CA795-5681-39CE-830D-228E92768BD1} = {6A2CA795-5681-39CE-830D-228E92768BD1}
+	EndProjectSection
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "str-lib", "str-lib.vcxproj", "{DAA387B7-0D43-3BE4-8108-12CD7973B307}"
 	ProjectSection(ProjectDependencies) = postProject
 		{6A2CA795-5681-39CE-830D-228E92768BD1} = {6A2CA795-5681-39CE-830D-228E92768BD1}
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A} = {91BF6A2A-E65C-3A45-8B7B-490F4224241A}
 	EndProjectSection
 EndProject
 Global
@@ -36,6 +42,14 @@ Global
 		{6A2CA795-5681-39CE-830D-228E92768BD1}.MinSizeRel|x64.Build.0 = MinSizeRel|x64
 		{6A2CA795-5681-39CE-830D-228E92768BD1}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
 		{6A2CA795-5681-39CE-830D-228E92768BD1}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A}.Debug|x64.ActiveCfg = Debug|x64
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A}.Debug|x64.Build.0 = Debug|x64
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A}.Release|x64.ActiveCfg = Release|x64
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A}.Release|x64.Build.0 = Release|x64
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A}.MinSizeRel|x64.ActiveCfg = MinSizeRel|x64
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A}.MinSizeRel|x64.Build.0 = MinSizeRel|x64
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
+		{91BF6A2A-E65C-3A45-8B7B-490F4224241A}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
 		{DAA387B7-0D43-3BE4-8108-12CD7973B307}.Debug|x64.ActiveCfg = Debug|x64
 		{DAA387B7-0D43-3BE4-8108-12CD7973B307}.Debug|x64.Build.0 = Debug|x64
 		{DAA387B7-0D43-3BE4-8108-12CD7973B307}.Release|x64.ActiveCfg = Release|x64

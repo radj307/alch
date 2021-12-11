@@ -4,6 +4,7 @@
 #include <TermAPI.hpp>
 
 #include "Alchemy.hpp"
+#include "reparse.hpp"
 
 #include <algorithm>
 /**
@@ -99,6 +100,6 @@ namespace caco_alch {
 			ss << "}\n";
 		}
 
-		return file::write(filename, ss, append);
+		return file::write(filename, ss.rdbuf(), append);
 	}
 }

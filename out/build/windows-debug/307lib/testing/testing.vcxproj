@@ -115,8 +115,8 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\shared\Debug\shared.lib;..\str-lib\Debug\str-lib.lib;..\TermAPI\Debug\TermAPI.lib;..\opt-lib\Debug\opt-lib.lib;..\file-lib\Debug\file-lib.lib;..\shared\Debug\shared.lib;..\str-lib\Debug\str-lib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\shared\Debug\shared.lib;..\str-lib\Debug\str-lib.lib;..\TermAPI\Debug\TermAPI.lib;..\opt-lib\Debug\opt-lib.lib;..\file-lib\Debug\file-lib.lib;..\str-lib\Debug\str-lib.lib;..\shared\Debug\shared.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>X:/_Workspace/_repo/alch-cmake/307lib/shared/./src;X:/_Workspace/_repo/alch-cmake/307lib/shared/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/str-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/str-lib/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/./src;X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/opt-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/opt-lib/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/file-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/file-lib/./src/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -159,8 +159,8 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\shared\Release\shared.lib;..\str-lib\Release\str-lib.lib;..\TermAPI\Release\TermAPI.lib;..\opt-lib\Release\opt-lib.lib;..\file-lib\Release\file-lib.lib;..\shared\Release\shared.lib;..\str-lib\Release\str-lib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\shared\Release\shared.lib;..\str-lib\Release\str-lib.lib;..\TermAPI\Release\TermAPI.lib;..\opt-lib\Release\opt-lib.lib;..\file-lib\Release\file-lib.lib;..\str-lib\Release\str-lib.lib;..\shared\Release\shared.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>X:/_Workspace/_repo/alch-cmake/307lib/shared/./src;X:/_Workspace/_repo/alch-cmake/307lib/shared/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/str-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/str-lib/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/./src;X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/opt-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/opt-lib/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/file-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/file-lib/./src/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -203,8 +203,8 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\shared\MinSizeRel\shared.lib;..\str-lib\MinSizeRel\str-lib.lib;..\TermAPI\MinSizeRel\TermAPI.lib;..\opt-lib\MinSizeRel\opt-lib.lib;..\file-lib\MinSizeRel\file-lib.lib;..\shared\MinSizeRel\shared.lib;..\str-lib\MinSizeRel\str-lib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\shared\MinSizeRel\shared.lib;..\str-lib\MinSizeRel\str-lib.lib;..\TermAPI\MinSizeRel\TermAPI.lib;..\opt-lib\MinSizeRel\opt-lib.lib;..\file-lib\MinSizeRel\file-lib.lib;..\str-lib\MinSizeRel\str-lib.lib;..\shared\MinSizeRel\shared.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>X:/_Workspace/_repo/alch-cmake/307lib/shared/./src;X:/_Workspace/_repo/alch-cmake/307lib/shared/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/str-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/str-lib/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/./src;X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/opt-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/opt-lib/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/file-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/file-lib/./src/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -246,8 +246,8 @@
       <ProxyFileName>%(Filename)_p.c</ProxyFileName>
     </Midl>
     <Link>
-      <AdditionalDependencies>..\shared\RelWithDebInfo\shared.lib;..\str-lib\RelWithDebInfo\str-lib.lib;..\TermAPI\RelWithDebInfo\TermAPI.lib;..\opt-lib\RelWithDebInfo\opt-lib.lib;..\file-lib\RelWithDebInfo\file-lib.lib;..\shared\RelWithDebInfo\shared.lib;..\str-lib\RelWithDebInfo\str-lib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>..\shared\RelWithDebInfo\shared.lib;..\str-lib\RelWithDebInfo\str-lib.lib;..\TermAPI\RelWithDebInfo\TermAPI.lib;..\opt-lib\RelWithDebInfo\opt-lib.lib;..\file-lib\RelWithDebInfo\file-lib.lib;..\str-lib\RelWithDebInfo\str-lib.lib;..\shared\RelWithDebInfo\shared.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>X:/_Workspace/_repo/alch-cmake/307lib/shared/./src;X:/_Workspace/_repo/alch-cmake/307lib/shared/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/str-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/str-lib/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/./src;X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/opt-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/opt-lib/./src/$(Configuration);X:/_Workspace/_repo/alch-cmake/307lib/file-lib/./src;X:/_Workspace/_repo/alch-cmake/307lib/file-lib/./src/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>

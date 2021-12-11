@@ -33,13 +33,27 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
-  # Include the install script for each subdirectory.
+  # Include the install script for the subdirectory.
   include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/shared/cmake_install.cmake")
-  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/str-lib/cmake_install.cmake")
-  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/TermAPI/cmake_install.cmake")
-  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/file-lib/cmake_install.cmake")
-  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/opt-lib/cmake_install.cmake")
-  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/testing/cmake_install.cmake")
+endif()
 
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/str-lib/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/TermAPI/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/file-lib/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/opt-lib/cmake_install.cmake")
 endif()
 

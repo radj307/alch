@@ -1,5 +1,6 @@
 X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/CMakeFiles/ALL_BUILD.dir
 X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/CMakeFiles/ZERO_CHECK.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/alch/CMakeFiles/alch.dir
 X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/CMakeFiles/ALL_BUILD.dir
 X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/shared/CMakeFiles/shared.dir
 X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/shared/CMakeFiles/ALL_BUILD.dir
@@ -11,5 +12,5 @@ X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/file-lib/CMakeFile
 X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/file-lib/CMakeFiles/ALL_BUILD.dir
 X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/opt-lib/CMakeFiles/opt-lib.dir
 X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/opt-lib/CMakeFiles/ALL_BUILD.dir
-X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/testing/CMakeFiles/testing.dir
-X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/testing/CMakeFiles/ALL_BUILD.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/alch-lib/CMakeFiles/alch-lib.dir
+X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/alch-lib/CMakeFiles/ALL_BUILD.dir

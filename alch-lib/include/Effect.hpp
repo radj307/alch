@@ -1,9 +1,12 @@
 #pragma once
-#include <string>
-#include <set>
-#include <var.hpp>
 #include "ObjectBase.hpp"
 #include "Keyword.hpp"
+
+#include <var.hpp>
+#include <str.hpp>
+
+#include <string>
+#include <set>
 
 namespace caco_alch {
 	using KeywordList = std::set<Keyword, _internal::less<Keyword>>;

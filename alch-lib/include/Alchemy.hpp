@@ -1,14 +1,15 @@
 #pragma once
-#include <set>
-#include <TermAPI.hpp>
-#include <strconv.hpp>
-#include <strmanip.hpp>
-#include <file.h>
 #include "using.h"
 #include "Ingredient.hpp"
 #include "Potion.hpp"
 #include "Format.hpp"
 #include "IngredientCache.hpp"
+
+#include <str.hpp>
+#include <TermAPI.hpp>
+#include <fileio.hpp>
+
+#include <set>
 
 /**
  * @namespace caco_alch
@@ -28,7 +29,7 @@ namespace caco_alch {
 		const GameConfig _GMST;
 
 	public:
-#pragma region GETTERS
+	#pragma region GETTERS
 		/**
 		 * @function is_ingr(const std::string&)
 		 * @brief Check if a given ingredient exists in the ingredient list.
@@ -50,9 +51,9 @@ namespace caco_alch {
 		 */
 		[[nodiscard]] bool is_effect(const std::string& name, const bool fuzzy_search = false)
 		{
-			for ( auto& it : _registry._ingr ) {
-				for ( const auto& fx : it._effects ) {
-					if ( str::tolower(fx._name) == name || (fuzzy_search && str::tolower(fx._name).find(name) != std::string::npos) )
+			for (auto& it : _registry._ingr) {
+				for (const auto& fx : it._effects) {
+					if (str::tolower(fx._name) == name || (fuzzy_search && str::tolower(fx._name).find(name) != std::string::npos))
 						return true;
 				}
 			}
@@ -74,12 +75,12 @@ namespace caco_alch {
 		[[nodiscard]] SortedEffectList getSortedEffectList()
 		{
 			SortedEffectList ret{ };
-			for ( auto& i : _registry._ingr )
-				for ( auto& fx : i._effects )
+			for (auto& i : _registry._ingr)
+				for (auto& fx : i._effects)
 					ret.insert(Effect{ fx._name, -0.0, 0u });
 			return ret;
 		}
-#pragma endregion GETTERS
+	#pragma endregion GETTERS
 
 		/**
 		 * @constructor Alchemy(std::pair<EffectList, IngrList>&&)
@@ -157,7 +158,7 @@ namespace caco_alch {
 							const auto lc{ str::tolower(fx._name) };
 							return lc == *name || !_fmt._flag_exact && str::pos_valid(lc.find(*name));
 							}
-						)) {
+							)) {
 							tmp.insert(it);
 						}
 					}

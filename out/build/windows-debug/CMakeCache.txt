@@ -208,7 +208,7 @@ ENABLE_TERMAPI:BOOL=ON
 
 //Enable building an executable used for testing the project. This
 // should be off when only using the library.
-ENABLE_TESTING:BOOL=ON
+ENABLE_TESTING:BOOL=OFF
 
 //Enable extensions of the file-lib library, including tokenization/parsing
 // capabilities & more. If this is disabled, only fileio & fileutil
@@ -243,13 +243,13 @@ alch-lib_IS_TOP_LEVEL:STATIC=OFF
 alch-lib_SOURCE_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/alch-lib
 
 //Value Computed by CMake
-alch_BINARY_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/out/build/windows-debug
+alch_BINARY_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/alch
 
 //Value Computed by CMake
-alch_IS_TOP_LEVEL:STATIC=ON
+alch_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-alch_SOURCE_DIR:STATIC=X:/_Workspace/_repo/alch-cmake
+alch_SOURCE_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/alch
 
 //Value Computed by CMake
 file-lib_BINARY_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/file-lib
@@ -381,7 +381,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=8
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=9
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib

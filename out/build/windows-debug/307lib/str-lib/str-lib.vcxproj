@@ -78,7 +78,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /Zc:__cplusplus /Zc:__cplusplus</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -96,10 +96,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -112,7 +112,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /Zc:__cplusplus /Zc:__cplusplus</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -130,10 +130,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -146,7 +146,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /Zc:__cplusplus /Zc:__cplusplus</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -164,10 +164,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -180,7 +180,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /Zc:__cplusplus /Zc:__cplusplus</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -197,10 +197,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -269,12 +269,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\str-lib\include\strutility.hpp" />
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\str-lib\include\strconv.hpp" />
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\str-lib\include\strmanip.hpp" />
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\str-lib\include\strlocale.hpp" />
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\str-lib\include\str.hpp" />
-    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\str-lib\src\strutility.cpp" />
+    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\str-lib\include\strutility.hpp" />
+    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\str-lib\src\str.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\ZERO_CHECK.vcxproj">
@@ -282,6 +282,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Name>ZERO_CHECK</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\shared\shared.vcxproj">
+      <Project>{91BF6A2A-E65C-3A45-8B7B-490F4224241A}</Project>
+      <Name>shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
