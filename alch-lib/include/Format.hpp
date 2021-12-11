@@ -33,7 +33,7 @@ namespace caco_alch {
 		[[nodiscard]] std::tuple<std::string, std::string, std::string> split_name(const std::string& str, const std::string& highlight) const
 		{
 			if (!str.empty())
-				if (const auto dPos{ str::tolower(str).find(highlight) }; dPos != std::string::npos)
+				if (const auto dPos{ str::tolower(str).find(str::tolower(highlight)) }; dPos != std::string::npos)
 					return { str.substr(0, dPos), str.substr(dPos, highlight.size()), str.substr(dPos + highlight.size()) };
 			return{ str, {}, {} }; // by default, return blanks for unused tuple slots. This is used to hide the text color when nothing was found.
 		}
@@ -51,7 +51,7 @@ namespace caco_alch {
 		{
 			if (!str.empty())
 				for (auto& highlight : highlights)
-					if (const auto dPos{ str::tolower(str).find(highlight) }; dPos != std::string::npos)
+					if (const auto dPos{ str::tolower(str).find(str::tolower(highlight)) }; dPos != std::string::npos)
 						return { str.substr(0, dPos), str.substr(dPos, highlight.size()), str.substr(dPos + highlight.size()) };
 			return{ str, {}, {} }; // Return blanks for unused tuple slots. This is used to hide the text color when nothing was found.
 		}

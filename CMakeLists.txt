@@ -14,6 +14,7 @@ project ("alch")
 add_subdirectory ("alch")
 
 # Add dependencies
+set(TERMAPI_VERSION_3 ON)
 add_subdirectory("307lib")
 
 # Add alch-lib

@@ -91,8 +91,7 @@ namespace caco_alch {
 		 */
 		explicit Alchemy(IngrList&& ingr, const Format& fmt, const GameConfig& gs) :
 			_fmt{ fmt },
-			_registry{ std::move(ingr), fmt },
-			_cache{ _fmt },
+			_registry{ std::move(ingr) },
 			_GMST{ gs }
 		{}
 
@@ -115,7 +114,7 @@ namespace caco_alch {
 		 */
 		std::ostream& print_search(std::ostream& os, const std::string& name) const
 		{
-			if (const auto results{ _registry.find(name) }; !results.empty()) {
+			if (const auto results{ _registry.find(name, [&](auto&& objName, auto&& searchName) { return _fmt._flag_exact ? objName == searchName : objName.find(searchName) < objName.size(); }) }; !results.empty()) {
 				const auto precision{ os.precision() };
 				os.precision(_fmt._precision);
 				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(results, std::vector<std::string>{ name }) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
@@ -134,7 +133,7 @@ namespace caco_alch {
 		 */
 		std::ostream& print_smart_search(std::ostream& os, std::vector<std::string> names) const
 		{
-			RegistryType cache{ _fmt };
+			RegistryType cache{};
 			bool init{ false };
 			os << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for " << color::reset;
 			for (auto name{ names.begin() }; name != names.end(); ++name) {
@@ -148,7 +147,7 @@ namespace caco_alch {
 			os << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n';
 			for (auto name{ names.begin() }; name != names.end(); ++name) {
 				if (!init) {
-					cache = std::move(_registry.find_and_duplicate(*name, RegistryType::FindType::EFFECT));
+					cache = _registry.find_and_duplicate(*name, [&](auto&& objName, auto&& searchName) { return _fmt._flag_exact ? objName == searchName : objName.find(searchName) < objName.size(); }, RegistryType::FindType::EFFECT);
 					init = true;
 				}
 				else {

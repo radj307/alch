@@ -1,63 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\src\setcolor.cpp">
+    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\src\TermAPI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\ANSIDefs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\color-values.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\color-transform.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\format-functions.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\FormatFlag.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\Layer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\setcolor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\setcolor-functions.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\ColorPalette.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\Message.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\Sequence.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\SequenceDefinitions.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\TermAPIQuery.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\TermAPI.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\CursorOrigin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\LineCharacter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\TermAPIWin.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\xlog.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -65,8 +14,25 @@
     <CustomBuild Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Object Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\ANSI\ANSI.dir\$(Configuration)\Sequence.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\color\color.dir\$(Configuration)\setcolor.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\color\color.dir\$(Configuration)\palette.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+    <Object Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\term\term.dir\$(Configuration)\term.obj">
+      <Filter>Object Libraries</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Header Files">
       <UniqueIdentifier>{802663C0-A4AD-3544-B223-BBBA7506AE6C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object Libraries">
+      <UniqueIdentifier>{DD0850B2-EE0E-3D75-8CEE-471F555DD7A7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{720E0538-B085-3B07-8CDF-C9453070FD6B}</UniqueIdentifier>

@@ -221,17 +221,23 @@ SHARED_DISABLE_WINDOWS_HPP:BOOL=OFF
 //Enable the xRand.hpp randomization wrapper header.
 SHARED_ENABLE_XRAND:BOOL=ON
 
+//Enable the Message.hpp header.
+TERMAPI_ENABLE_MESSAGE:BOOL=ON
+
 //Enable the xLog.hpp header.
 TERMAPI_ENABLE_XLOG:BOOL=ON
 
+//Use TermAPI version 3 instead of v4.
+TERMAPI_VERSION_3:BOOL=OFF
+
 //Value Computed by CMake
-TermAPI_BINARY_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/TermAPI
+TermAPI_BINARY_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/307lib/TermAPI/v3
 
 //Value Computed by CMake
 TermAPI_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-TermAPI_SOURCE_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/307lib/TermAPI
+TermAPI_SOURCE_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/307lib/TermAPI/v3
 
 //Value Computed by CMake
 alch-lib_BINARY_DIR:STATIC=X:/_Workspace/_repo/alch-cmake/out/build/windows-debug/alch-lib
@@ -381,7 +387,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=9
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=10
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib

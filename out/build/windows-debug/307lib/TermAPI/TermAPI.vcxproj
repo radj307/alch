@@ -78,7 +78,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /Zc:__cplusplus /Zc:__cplusplus</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -96,10 +96,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -112,7 +112,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /Zc:__cplusplus /Zc:__cplusplus</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -130,10 +130,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -146,7 +146,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /Zc:__cplusplus /Zc:__cplusplus</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -164,10 +164,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -180,7 +180,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>%(AdditionalOptions) /Zc:__cplusplus /Zc:__cplusplus</AdditionalOptions>
       <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -197,10 +197,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\ANSI\.\src;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\include;X:\_Workspace\_repo\alch-cmake\307lib\shared\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\color\.\src;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\include;X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\term\.\src;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\include;X:\_Workspace\_repo\alch-cmake\307lib\str-lib\.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -269,30 +269,29 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\ANSIDefs.h" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\color-values.h" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\color-transform.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\format-functions.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\FormatFlag.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\Layer.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\setcolor.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\setcolor-functions.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\ColorPalette.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\Message.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\Sequence.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\SequenceDefinitions.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\TermAPIQuery.hpp" />
     <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\TermAPI.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\CursorOrigin.h" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\LineCharacter.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\TermAPIWin.hpp" />
-    <ClInclude Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\include\xlog.hpp" />
-    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\src\setcolor.cpp" />
+    <ClCompile Include="X:\_Workspace\_repo\alch-cmake\307lib\TermAPI\src\TermAPI.cpp" />
+    <Object Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\ANSI\ANSI.dir\$(Configuration)\Sequence.obj" />
+    <Object Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\color\color.dir\$(Configuration)\setcolor.obj" />
+    <Object Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\color\color.dir\$(Configuration)\palette.obj" />
+    <Object Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\term\term.dir\$(Configuration)\term.obj" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\ZERO_CHECK.vcxproj">
       <Project>{6A2CA795-5681-39CE-830D-228E92768BD1}</Project>
       <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\ANSI\ANSI.vcxproj">
+      <Project>{2599B24B-1636-3C75-BFCB-20155527D9F9}</Project>
+      <Name>ANSI</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\color\color.vcxproj">
+      <Project>{3F64911D-AA1F-34FC-A537-B62DEBF51E84}</Project>
+      <Name>color</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
@@ -303,6 +302,12 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ProjectReference Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\str-lib\str-lib.vcxproj">
       <Project>{DAA387B7-0D43-3BE4-8108-12CD7973B307}</Project>
       <Name>str-lib</Name>
+    </ProjectReference>
+    <ProjectReference Include="X:\_Workspace\_repo\alch-cmake\out\build\windows-debug\307lib\TermAPI\term\term.vcxproj">
+      <Project>{FBE020E6-C2AF-3170-8A57-F1DC7835B131}</Project>
+      <Name>term</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

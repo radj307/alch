@@ -40,15 +40,25 @@ namespace caco_alch {
 			_precision{ precision }
 			//		ColorAPI{ std::move(colors) }
 		{}
-		OutputFormat(const opt::ParamsAPI2& args, const std::optional<file::ini::INI>& ini = std::nullopt) : _flag_quiet{ args.check('q') }, _flag_verbose{ args.check('v') }, _flag_exact{ args.check('e') }, _flag_all{ args.check('a') }, _flag_export{ args.check('E') }, _flag_reverse{ args.check('R') }, _flag_color{ args.check('c') }, _flag_smart{ args.check('S') }, _indent{ str::stoui(args.typegetv<opt::Option>("indent"s).value_or([&ini]() -> std::string {if (ini.has_value())if (const auto value{ ini.value().getv("format", "indent") }; !value.has_value())return value.value(); return "2"; }())) }, _precision{ str::stoui(args.typegetv<opt::Option>("precision").value_or([&ini]() -> std::string { if (ini.has_value()) if (const auto value{ ini.value().getv("format", "precision") }; !value.has_value()) return value.value(); return "2"; }())) } {}
+		OutputFormat(const opt::ParamsAPI2& args, const std::optional<file::ini::INI>& ini = std::nullopt) :
+			_flag_quiet{ args.check<opt::Flag>('q') },
+			_flag_verbose{ args.check<opt::Flag>('v') },
+			_flag_exact{ args.check<opt::Flag>('e') },
+			_flag_all{ args.check<opt::Flag>('a') },
+			_flag_export{ args.check<opt::Flag>('E') },
+			_flag_reverse{ args.check<opt::Flag>('R') },
+			_flag_color{ args.check<opt::Flag>('c') },
+			_flag_smart{ args.check<opt::Flag>('S') },
+			_indent{ str::stoui(args.typegetv<opt::Option>("indent"s).value_or([&ini]() -> std::string {if (ini.has_value())if (const auto value{ ini.value().getv("format", "indent") }; !value.has_value()) return value.value(); return "2"; }())) },
+			_precision{ str::stoui(args.typegetv<opt::Option>("precision").value_or([&ini]() -> std::string { if (ini.has_value()) if (const auto value{ ini.value().getv("format", "precision") }; !value.has_value()) return value.value(); return "2"; }())) } {}
 
 		virtual ~OutputFormat() = default;
-
+	protected:
 		[[nodiscard]] bool match(const std::string& objName, const std::string& searchName) const
 		{
 			return _flag_exact ? (objName == searchName) : (objName == searchName || objName.find(searchName) < objName.size());
 		}
-
+	public:
 		[[nodiscard]] bool quiet() const { return _flag_quiet; }
 		[[nodiscard]] bool verbose() const { return _flag_verbose; }
 		[[nodiscard]] bool all() const { return _flag_all; }

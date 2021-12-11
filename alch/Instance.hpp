@@ -124,15 +124,7 @@ namespace caco_alch {
 				return RETURN_SUCCESS;
 			}
 			else {
-				const auto params{ [this]() -> std::vector<std::string> {
-					const auto par{ Arguments.typeget_all<opt::Parameter>() };
-					std::vector<std::string> vec;
-					vec.reserve(par.size());
-					for (auto& it : par)
-						vec.emplace_back(it.name());
-					vec.shrink_to_fit();
-					return vec;
-				}() };
+				const auto params{ Arguments.typegetv_all<opt::Parameter>() };
 				if (Arguments.check<opt::Flag>('b')) {
 					Alchemy.print_build(os, params, 4u).flush();
 					return RETURN_SUCCESS;
