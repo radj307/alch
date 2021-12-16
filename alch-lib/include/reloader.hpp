@@ -71,10 +71,10 @@ namespace caco_alch {
 	 * @param filename	- Name of target file.
 	 * @returns Alchemy::IngrList
 	 */
-	inline IngrList loadFromFile(const std::string& filename)
+	inline IngrList loadFromFile(const std::filesystem::path& filename)
 	{
-		auto buffer{ file::read(filename) };
-		if (buffer.fail()) throw std::exception(("Couldn't find \"" + filename + "\"").c_str());
+		auto buffer{ file::read(filename.generic_string()) };
+		if (buffer.fail()) throw make_exception("Couldn't find \"", filename.generic_string(), "\"");
 		return parseFileContent(buffer);
 	}
 

@@ -1,27 +1,20 @@
 #pragma once
-#include <string>
-#include <vector>
 #include <ParamsAPI2.hpp>
-//#include <Help.hpp>
 #include <GameConfig.hpp>
 #include <ColorAPI.hpp>
 #include <fileutil.hpp>
 
-namespace caco_alch {
+#include <string>
+#include <filesystem>
+#include <vector>
 
-	struct DefaultPaths {
-	private:
-		static std::string combine(std::string left, std::string&& right)
-		{
-			return left.append(std::move(right));
-		}
-	public:
-		DefaultPaths(std::string local_path, std::string config, std::string gamesettings, std::string registry) : _local{ local_path }, _path_config{ combine(local_path, std::move(config)) }, _path_gamesettings{ combine(local_path, std::move(gamesettings)) }, _path_registry{ combine(local_path, std::move(registry)) } {}
-		std::string
-			_local,
-			_path_config,
-			_path_gamesettings,
-			_path_registry;
+namespace caco_alch {
+	struct ConfigPathList {
+		using PathT = std::filesystem::path;
+		PathT localDir, ini, gameconfig, ingredients;
+
+		ConfigPathList(const PathT& local_dir, const PathT& ini, const PathT& gameconfig, const PathT& ingredients)
+			: localDir{ local_dir }, ini{ ini }, gameconfig{ gameconfig }, ingredients{ ingredients } {}
 
 		/**
 		 * @brief Checks if the given paths exist, and returns the highest priority extant path, or nullopt.
@@ -46,8 +39,8 @@ namespace caco_alch {
 	 */
 	static struct {
 		const std::string
-			_default_filename_config{ "alch-Config.ini" },
-			_default_filename_gamesettings{ "alch-GameConfigBase.ini" },
+			_default_filename_config{ "alch.ini" },
+			_default_filename_gamesettings{ "alch.gamesetting.ini" },
 			_default_filename_registry{ "alch.ingredients" };
 
 		const std::string

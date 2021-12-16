@@ -17,6 +17,29 @@
 
 
 namespace caco_alch {
+	template<class T>
+	struct ModTrigger : public T {
+		bool _armed, _triggered;
+	public:
+		using ParentType = T;
+		template<class... VT>
+		ModTrigger(VT&&... args) : ParentType(std::forward<VT>(args)...) {}
+
+		bool isArmed() const { return _armed; }
+		bool isTriggered() const { return _triggered; }
+
+		void arm() { _armed = true; }
+		void disarm() { _armed = false; }
+
+		void trigger() { if (_armed) _triggered = true; }
+
+		operator T& () { trigger(); return *this; }
+		auto& get() { return operator T & (); }
+	};
+
+	struct GS : public ModTrigger<GameConfig> {
+
+	};
 	/**
 	 * @brief
 	 * @param filename
@@ -24,9 +47,11 @@ namespace caco_alch {
 	 * @param defaults	Default GameConfig Values
 	 * @returns			GameConfig
 	 */
-	inline GameConfig loadGameConfig(const std::string& filename, const opt::ParamsAPI2& args, const GameConfig::Cont& defaults)
+	inline GameConfig loadGameConfig(const std::filesystem::path& filename, const opt::ParamsAPI2& args, const GameConfig::Cont& defaults)
 	{
-		GameConfig gs(defaults); // INIT
+		//GameConfig gs(defaults); // INIT
+		GS gs{ defaults };
+
 		// check for the reset INI option
 		if (args.check<opt::Option>(DefaultObjects._reset_gamesettings)) {
 			if (file::write(filename, gs.to_stream(), false))
@@ -80,18 +105,18 @@ namespace caco_alch {
 		using ConfigType = std::optional<file::ini::INI>;
 
 		opt::ParamsAPI2 Arguments;
-		DefaultPaths Paths;
+		ConfigPathList Paths;
 		ConfigType Config;
 		Alchemy Alchemy;
 
-		Instance(opt::ParamsAPI2 args, DefaultPaths paths) :
+		Instance(opt::ParamsAPI2 args, ConfigPathList paths) :
 			Arguments{ std::move(args) },
 			Paths{ std::move(paths) },
 			Config{ [this]() -> ConfigType {
-			const auto iniPath{ (Arguments.check<opt::Option>(DefaultObjects._load_config) ? Arguments.typegetv<opt::Option>(DefaultObjects._load_config).value_or(Paths._path_config) : Paths._path_config) };
+			const auto iniPath{ (Arguments.check<opt::Option>(DefaultObjects._load_config) ? Arguments.typegetv<opt::Option>(DefaultObjects._load_config).value_or(Paths.ini.generic_string()) : Paths.ini) };
 			return file::exists(iniPath) ? file::ini::INI(iniPath) : static_cast<ConfigType>(std::nullopt);
 		}() },
-			Alchemy{ loadFromFile(Paths._path_registry), { Arguments, Config }, loadGameConfig(Paths._path_gamesettings, Arguments, DefaultObjects._settings) } {}
+			Alchemy{ loadFromFile(Paths.ingredients), { Arguments, Config }, loadGameConfig(Paths.gameconfig, Arguments, DefaultObjects._settings) } {}
 
 
 		const static int RETURN_SUCCESS{ 0 };
@@ -108,10 +133,10 @@ namespace caco_alch {
 				os << name << str::VIndent(indent, name.size()) << (file::exists(target) ? color::f::green : color::f::red) << target << color::reset << '\n';
 			} };
 			print("argv[0]", Arguments.arg0().value_or(""));
-			print("directory", Paths._local);
-			print("registry", Paths._path_registry);
-			print("INI Config", Paths._path_config);
-			print("Game Config", Paths._path_gamesettings);
+			print("directory", Paths.localDir.generic_string());
+			print("registry", Paths.ingredients.generic_string());
+			print("INI Config", Paths.ini.generic_string());
+			print("Game Config", Paths.gameconfig.generic_string());
 		}
 		/**
 		 * @brief Validate the location of the configuration files used by the program and print it to std::cout.
@@ -124,31 +149,40 @@ namespace caco_alch {
 		 */
 		int handleArguments(std::ostream& os) const
 		{
+			// i - Build from File
 			if (Arguments.check<opt::Flag>('i')) {
 				std::stringstream buffer;
 				buffer << std::cin.rdbuf();
 				Alchemy.print_build(os, parseFileContent(buffer)).flush();
 				return RETURN_SUCCESS;
 			}
+			// l - List
 			else if (Arguments.check<opt::Flag>('l')) {
 				Alchemy.print_list(os).flush();
 				return RETURN_SUCCESS;
 			}
 			else {
+				// b - Build
 				const auto params{ Arguments.typegetv_all<opt::Parameter>() };
 				if (Arguments.check<opt::Flag>('b')) {
 					Alchemy.print_build(os, params, 4u).flush();
 					return RETURN_SUCCESS;
 				}
-
+				// S - Smart Search
 				else if (Arguments.check<opt::Flag>('S')) {
 					Alchemy.print_smart_search(os, params).flush();
 					return RETURN_SUCCESS;
 				}
-
+				// s - Search
 				else if (Arguments.check<opt::Flag>('s')) {
 					for (auto& arg : params)
 						Alchemy.print_search(os, arg).flush();
+					return RETURN_SUCCESS;
+				}
+				// m - Highest Magnitude Search
+				else if (Arguments.check<opt::Flag>('m')) {
+					for (auto& arg : params)
+						Alchemy.print_best(os, arg, { "jarrin root", "chokeberries" }).flush();
 					return RETURN_SUCCESS;
 				}
 			}

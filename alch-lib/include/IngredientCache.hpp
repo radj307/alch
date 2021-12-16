@@ -21,7 +21,7 @@ namespace caco_alch {
 		explicit IngredientCache(Container&& ingr_cont) : _ingr{ std::move(ingr_cont) } {}
 		IngredientCache(IngrList&& ingr_cont) : _ingr{ sort(std::move(ingr_cont)).first } {}
 
-		IngredientCache& operator=(IngredientCache&& cache)
+		IngredientCache& operator=(IngredientCache&& cache) noexcept
 		{
 			_ingr = std::move(cache._ingr);
 			return *this;
@@ -144,7 +144,7 @@ namespace caco_alch {
 		explicit RegistryType(Container&& ingr_cont) : IngredientCache(std::move(ingr_cont)) {}
 		RegistryType(IngrList&& ingr_cont) : IngredientCache(std::move(ingr_cont)) {}
 
-		enum class FindType {
+		enum class FindType : unsigned char {
 			BOTH,
 			INGR,
 			EFFECT
@@ -253,6 +253,50 @@ namespace caco_alch {
 			if (vec.empty())
 				return _ingr.end();
 			return vec.front();
+		}
+		Container::const_iterator find_best(const std::function<bool(Ingredient, Ingredient)>& predicate) const
+		{
+			Container::const_iterator best{ _ingr.end() };
+			for (auto it{ _ingr.begin() }; it != _ingr.end(); ++it)
+				if (best == _ingr.end() || predicate(*best, *it))
+					best = it;
+			return best;
+		}
+
+		enum class FXFindType : unsigned char {
+			BOTH_OR,
+			BOTH_AND,
+			MAG,
+			DUR
+		};
+
+		Container::const_iterator find_best_fx(const std::string& fx_name, const FXFindType& ft = FXFindType::BOTH_OR, const std::vector<std::string>& excluded_ingr = {}) const
+		{
+			const auto excluded{ [&excluded_ingr](auto&& fx) {return std::any_of(excluded_ingr.begin(), excluded_ingr.end(), [&fx](auto&& it) {return str::tolower(fx._name) == str::tolower(it); }); } };
+			const auto best{ find_best([&fx_name, &ft, &excluded](auto&& l, auto&& r) {
+				const auto
+					lfx{ std::find_if(l._effects.begin(), l._effects.end(), [&fx_name](auto&& fx) { return str::tolower(fx._name) == str::tolower(fx_name); }) },
+					rfx{ std::find_if(r._effects.begin(), r._effects.end(), [&fx_name](auto&& fx) { return str::tolower(fx._name) == str::tolower(fx_name); }) };
+				if (const auto lvalid{ lfx != l._effects.end() && !excluded(l)}, rvalid{rfx != r._effects.end() && !excluded(r)}; lvalid && rvalid) {
+					switch (ft) {
+					case FXFindType::BOTH_OR:
+						return (lfx->_magnitude < rfx->_magnitude) || (lfx->_duration < rfx->_duration);
+					case FXFindType::BOTH_AND:
+						return (lfx->_magnitude < rfx->_magnitude) && (lfx->_duration < rfx->_duration);
+					case FXFindType::MAG:
+						return lfx->_magnitude < rfx->_magnitude;
+					case FXFindType::DUR:
+						return lfx->_duration < rfx->_duration;
+					default:
+						return rvalid;
+					}
+				}
+				else
+					return rvalid;
+				}) };
+			if (best->has_any_effect(fx_name))
+				return best;
+			return _ingr.end();
 		}
 
 		explicit operator Container() const { return _ingr; }

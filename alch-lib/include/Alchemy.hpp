@@ -257,5 +257,23 @@ namespace caco_alch {
 				set.insert(it);
 			return print_build(os, std::move(set));
 		}
+
+		std::ostream& print_best(std::ostream& os, const std::string& fx_name, const RegistryType::FXFindType& ft, const std::vector<std::string>& excluded = {}) const
+		{
+			if (const auto result{ _registry.find_best_fx(fx_name, ft, excluded) }; result != _registry.end()) {
+				const auto precision{ os.precision() };
+				os.precision(_fmt._precision);
+				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(*result, std::vector<std::string>{fx_name}) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				os.precision(precision);
+			}
+			else
+				os << sys::term::error << "Didn't find any effects matching \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << "\"\n";
+
+			return os;
+		}
+		std::ostream& print_best(std::ostream& os, const std::string& fx_name, const std::vector<std::string>& excluded = {}) const
+		{
+			return print_best(os, fx_name, RegistryType::FXFindType::BOTH_OR, excluded);
+		}
 	};
 }

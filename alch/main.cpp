@@ -20,17 +20,18 @@
 using namespace caco_alch;
 
 /**
- * @brief Main.
- * @param argc	- (implicit) Argument Count
- * @param argv	- (implicit) Arguments
- * @param envp	- (implicit) Environment
- * @returns int
- *			1	- No valid commandline options were found. \n
- *			0	- Successful execution. \n
- *			-1	- An exception occurred and the program performed a controlled crash. \n
- *			-2	- An unknown exception occurred and the program performed a controlled crash. \n
+ * @brief		Main.
+ * @param argc	(implicit) Argument Count
+ * @param argv	(implicit) Arguments
+ * @returns		int
+ *\n			| Return Value	| Description                                                                 |
+ *				| -------------	| --------------------------------------------------------------------------- |
+ *				| 1				| No valid commandline options received.                                      |
+ *				| 0				| Successful execution.                                                       |
+ *				| -1			| An exception occurred and the program performed a controlled crash.         |
+ *				| -2			| An unknown exception occurred and the program performed a controlled crash. |
  */
-int main(const int argc, char* argv[], char* envp[])
+int main(const int argc, char* argv[])
 {
 	// TODO: Add check & INI value for CACO's locked-duration potions. (1s, 5s, 10s)
 	// TODO: Add a "request" system to the potion-building mechanic that allows the user to request an automatically-generated potion of a certain type.
@@ -38,8 +39,10 @@ int main(const int argc, char* argv[], char* envp[])
 		std::cout << sys::term::EnableANSI; // enable virtual terminal sequences
 		opt::ParamsAPI2 args(argc, argv, "color", "precision", DefaultObjects._set_gamesetting, DefaultObjects._load_config, DefaultObjects._load_gamesettings, DefaultObjects._load_registry); // parse arguments
 
+		// initialize the path environment variable
 		env::PATH path;
 
+		// parse interrupting help argument
 		if (args.check_any<opt::Option, opt::Flag>("help", 'h')) {
 			std::cout << Help(path.resolve_split(args.arg0().value_or("")).second.replace_extension("").generic_string()) << std::endl;
 			return 0;
@@ -52,27 +55,22 @@ int main(const int argc, char* argv[], char* envp[])
 			return defv;
 		} };
 
-
-		DefaultPaths paths(
+		ConfigPathList paths(
 			path.resolve_split(argv[0]).first.generic_string(),
 			getOptOrDefault(DefaultObjects._load_config, DefaultObjects._default_filename_config),
 			getOptOrDefault(DefaultObjects._load_gamesettings, DefaultObjects._default_filename_gamesettings),
 			getOptOrDefault(DefaultObjects._load_registry, DefaultObjects._default_filename_registry)
 		);
 
-		Instance inst{ args, paths };
+		Instance inst{ args, paths }; // args are parsed further here
 
 		if (args.check<opt::Option>("validate")) // Process "--validate" opt
 			inst.validate(path);
 
-		switch (inst.handleArguments()) {
-		case Instance::RETURN_FAILURE:
+		const auto rc{ inst.handleArguments() }; // finally, runtime args are parsed here
+		if (rc == Instance::RETURN_FAILURE)
 			throw make_exception("Nothing to do.");
-		case Instance::RETURN_SUCCESS:
-			return 0;
-		default:
-			return 1;
-		}
+		return rc;
 	} catch (std::exception& ex) {
 		std::cerr << sys::term::error << ex.what() << std::endl;
 		return -1;
