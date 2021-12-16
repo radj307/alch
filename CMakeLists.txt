@@ -15,6 +15,7 @@ add_subdirectory ("alch")
 
 # Add dependencies
 set(TERMAPI_VERSION_3 ON)
+set(FILELIB_ENABLE_EXTENSIONS OFF)
 add_subdirectory("307lib")
 
 # Add alch-lib

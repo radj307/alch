@@ -80,6 +80,12 @@ namespace caco_alch {
 		bool operator>(const Effect& o) const { return _name == o._name && _magnitude > o._magnitude; }
 	};
 
+	enum class KeywordType : unsigned char {
+		NEUTRAL = 0,
+		NEGATIVE = 1,
+		POSITIVE = 2,
+	};
+
 	// KEYWORD CHECKERS
 	/**
 	 * @brief Fallback method for identifying postive/negative effects that checks the effect's lowercase name.
@@ -89,29 +95,20 @@ namespace caco_alch {
 	 *\n		1		- Negative word found, effect name indicates it is negative.
 	 *\n		2		- Positive word found, effect name indicates it is positive.
 	 */
-	inline short hasKeywordTypeFallback(const std::string& name_lc)
+	inline KeywordType fallbackGetKeywordType(const std::string& name_lc)
 	{
-		if ( // NEGATIVE EFFECTS
-			str::pos_valid(name_lc.find("damage"))
-			|| str::pos_valid(name_lc.find("ravage"))
-			|| str::pos_valid(name_lc.find("drain"))
-			|| str::pos_valid(name_lc.find("frenzy"))
-			|| str::pos_valid(name_lc.find("fear"))
-			|| str::pos_valid(name_lc.find("aversion"))
-			)
-			return 1;
-		if ( // POSITIVE EFFECTS
-			str::pos_valid(name_lc.find("restore"))
-			|| str::pos_valid(name_lc.find("fortify"))
-			|| str::pos_valid(name_lc.find("resist"))
-			|| str::pos_valid(name_lc.find("detect"))
-			|| str::pos_valid(name_lc.find("night eye"))
-			|| str::pos_valid(name_lc.find("speed"))
-			)
-			return 2;
-		return 0;
+		using enum KeywordType;
+		const auto matches_any{ [&name_lc] <var::same_or_convertible<std::string>... vT>(const vT&... searches) { return var::variadic_or(name_lc == searches...); } };
+		const auto contains_any{ [&name_lc] <var::same_or_convertible<std::string>... vT>(const vT&... searches) { return var::variadic_or(str::pos_valid(name_lc.find(searches))...); } };
+		if (matches_any("health", "stamina", "magicka", "speed", "night eye", "feather", "waterwalking", "waterbreathing", "blood") // direct matches
+			|| contains_any("restore", "regenerat", "absorption", "fortif", "resist", "detect", "invisi", "cure")) // contains
+			return POSITIVE;
+		else if (matches_any("slow", "frenzy", "fear", "silence", "fatigue") // direct matches
+			|| contains_any("damage", "ravage", "drain", "aversion", "paraly")) // contains
+			return NEGATIVE;
+		return NEUTRAL;
 	}
 
-	inline bool hasPositive(const Effect& effect) { return effect.hasKeyword(Keywords::positive) || hasKeywordTypeFallback(str::tolower(effect._name)) == 2; }
-	inline bool hasNegative(const Effect& effect) { return effect.hasKeyword(Keywords::negative) || hasKeywordTypeFallback(str::tolower(effect._name)) == 1; }
+	inline bool hasPositive(const Effect& effect) { return effect.hasKeyword(Keywords::positive) || fallbackGetKeywordType(str::tolower(effect._name)) == KeywordType::POSITIVE; }
+	inline bool hasNegative(const Effect& effect) { return effect.hasKeyword(Keywords::negative) || fallbackGetKeywordType(str::tolower(effect._name)) == KeywordType::NEGATIVE; }
 }

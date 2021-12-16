@@ -17,6 +17,13 @@
 
 
 namespace caco_alch {
+	/**
+	 * @brief
+	 * @param filename
+	 * @param args
+	 * @param defaults	Default GameConfig Values
+	 * @returns			GameConfig
+	 */
 	inline GameConfig loadGameConfig(const std::string& filename, const opt::ParamsAPI2& args, const GameConfig::Cont& defaults)
 	{
 		GameConfig gs(defaults); // INIT
@@ -46,7 +53,7 @@ namespace caco_alch {
 				const auto& [name, val] {str::split(it.getv().value(), ':')};
 				set(name, val);
 			}
-			else throw std::exception("Invalid usage of \"--set\" command!");
+			else throw make_exception("Missing argument for \"--set\" option.");
 		}
 		/*for (auto it{args.find(DefaultObjects._set_gamesetting)}; it != args.end(); it = args.find(DefaultObjects._set_gamesetting, it + 1)) {
 			if (const auto arg{}; arg.has_value() && !arg.value().empty()) {

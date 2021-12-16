@@ -202,27 +202,17 @@ namespace caco_alch {
 			}
 		}
 
+		/**
+		 * @brief			Set the value of a specified game setting.
+		 * @param target	The target game setting.
+		 * @param end		The end position of the container. This is used to check if target exists.
+		 * @param value_str	The value to set the given target to, as a string.
+		 * @returns			bool
+		 */
 		[[nodiscard]] static bool set(const Cont::iterator target, const Cont::iterator end, const std::string& value_str)
 		{
 			if (target != end) {
-				if (std::all_of(value_str.begin(), value_str.end(), [](const char c) { switch (c) {
-				case '.': [[fallthrough]];
-				case '-': [[fallthrough]];
-				case '0': [[fallthrough]];
-				case '1': [[fallthrough]];
-				case '2': [[fallthrough]];
-				case '3': [[fallthrough]];
-				case '4': [[fallthrough]];
-				case '5': [[fallthrough]];
-				case '6': [[fallthrough]];
-				case '7': [[fallthrough]];
-				case '8': [[fallthrough]];
-				case '9':
-					return true;
-				default:
-					return false;
-				}
-					}))
+				if (std::all_of(value_str.begin(), value_str.end(), [](const char c) { return isdigit(c) || c == '-' || c == '.'; }))
 					target->set(str::stod(value_str));
 				else if (str::tolower(value_str) == "true")
 					target->set(true);
@@ -490,5 +480,5 @@ namespace caco_alch {
 			ss << *this;
 			return ss;
 		}
-	};
-}
+		};
+	}

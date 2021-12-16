@@ -67,8 +67,7 @@ int main(const int argc, char* argv[], char* envp[])
 
 		switch (inst.handleArguments()) {
 		case Instance::RETURN_FAILURE:
-			std::cerr << args << std::endl;
-			throw make_exception("No valid arguments found!");
+			throw make_exception("Nothing to do.");
 		case Instance::RETURN_SUCCESS:
 			return 0;
 		default:

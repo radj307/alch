@@ -97,11 +97,12 @@ namespace caco_alch {
 				if (!effect.hasKeyword(Keywords::KYWD_MagicInfluence))
 					return ColorAPI.set(UIElement::EFFECT_NAME_NEUTRAL);
 			}
-			switch (hasKeywordTypeFallback(str::tolower(effect._name))) {
-			case 1: // negative name
+			switch (fallbackGetKeywordType(str::tolower(effect._name))) {
+			case KeywordType::NEGATIVE: // negative name
 				return ColorAPI.set(UIElement::EFFECT_NAME_NEGATIVE);
-			case 2: // positive name
+			case KeywordType::POSITIVE: // positive name
 				return ColorAPI.set(UIElement::EFFECT_NAME_POSITIVE);
+			case KeywordType::NEUTRAL: [[fallthrough]];
 			default:
 				return ColorAPI.set(UIElement::EFFECT_NAME_DEFAULT); // else return white
 			}
