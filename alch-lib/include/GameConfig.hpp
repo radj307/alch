@@ -111,7 +111,7 @@ namespace caco_alch {
 
 		/**
 		 * @function find(const std::string&)
-		 * @brief Retrieve a pointer to the game settings with a given name.
+		 * @brief Retrieve a pointer to the game setting with a given name.
 		 * @param name	- Target GameSetting name.
 		 * @returns GameConfigBase*
 		 */
@@ -144,9 +144,17 @@ namespace caco_alch {
 		 * @brief Retrieve an iterator to a given game setting based on its name.
 		 * @returns Cont::const_iterator
 		 */
-		[[nodiscard]] Cont::const_iterator find(const std::string& name, const int off = 0) const
+		[[nodiscard]] Cont::const_iterator find(const std::string& name, const int off = 0, const bool& fuzzy = false) const
 		{
-			return std::find_if(off + _settings.begin(), _settings.end(), [&name](const GameConfigBase& setting) { return setting._name == name; });
+			return std::find_if(off + _settings.begin(), _settings.end(), [&name, &fuzzy](const GameConfigBase& setting) { return setting._name == name || fuzzy && str::tolower(setting._name) == str::tolower(name); });
+		}
+		[[nodiscard]] constexpr Cont::const_iterator begin() const
+		{
+			return _settings.begin();
+		}
+		[[nodiscard]] constexpr Cont::const_iterator end() const
+		{
+			return _settings.end();
 		}
 		/**
 		 * @function getValue(const std::string&, const int = 0) const
@@ -480,5 +488,5 @@ namespace caco_alch {
 			ss << *this;
 			return ss;
 		}
-		};
-	}
+	};
+}

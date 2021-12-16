@@ -254,12 +254,23 @@ namespace caco_alch {
 				return _ingr.end();
 			return vec.front();
 		}
+
 		Container::const_iterator find_best(const std::function<bool(Ingredient, Ingredient)>& predicate) const
 		{
 			Container::const_iterator best{ _ingr.end() };
 			for (auto it{ _ingr.begin() }; it != _ingr.end(); ++it)
 				if (best == _ingr.end() || predicate(*best, *it))
 					best = it;
+			return best;
+		}
+
+		std::vector<Ingredient> find_best_ranked(const std::string& fx_name, const std::function<bool(Ingredient, Ingredient)>& sort) const
+		{
+			std::vector<Ingredient> best;
+			for (auto it{ _ingr.begin() }; it != _ingr.end(); ++it)
+				if (it->has_any_effect(fx_name))
+					best.emplace_back(*it);
+			std::sort(best.begin(), best.end(), sort);
 			return best;
 		}
 
@@ -297,6 +308,30 @@ namespace caco_alch {
 			if (best->has_any_effect(fx_name))
 				return best;
 			return _ingr.end();
+		}
+		auto find_best_fx_ranked(const std::string& fx_name, const FXFindType& ft = FXFindType::BOTH_OR, const bool& small_to_large = false) const
+		{
+			return find_best_ranked(fx_name, [&fx_name, &ft, &small_to_large](auto&& l, auto&& r) {
+				const auto
+					lfx{ std::find_if(l._effects.begin(), l._effects.end(), [&fx_name](auto&& fx) { return str::tolower(fx._name) == str::tolower(fx_name); }) },
+					rfx{ std::find_if(r._effects.begin(), r._effects.end(), [&fx_name](auto&& fx) { return str::tolower(fx._name) == str::tolower(fx_name); }) };
+				if (const auto lvalid{ lfx != l._effects.end() }, rvalid{ rfx != r._effects.end() }; lvalid && rvalid) {
+					switch (ft) {
+					case FXFindType::BOTH_OR:
+						return small_to_large ? (lfx->_magnitude < rfx->_magnitude) || (lfx->_duration < rfx->_duration) : (lfx->_magnitude > rfx->_magnitude) || (lfx->_duration > rfx->_duration); // sort by magnitude or duration
+					case FXFindType::BOTH_AND:
+						return small_to_large ? (lfx->_magnitude < rfx->_magnitude) && (lfx->_duration < rfx->_duration) : (lfx->_magnitude > rfx->_magnitude) && (lfx->_duration > rfx->_duration); // sort by magnitude and duration
+					case FXFindType::MAG:
+						return small_to_large ? lfx->_magnitude < rfx->_magnitude : lfx->_magnitude > rfx->_magnitude; // sort by magnitude
+					case FXFindType::DUR:
+						return small_to_large ? lfx->_duration < rfx->_duration : lfx->_duration > rfx->_duration; // sort by duration
+					default:
+						return small_to_large ? lfx->_name < rfx->_name : lfx->_name > rfx->_name; // sort alphabetically
+					}
+				}
+				else
+					return rvalid;
+			});
 		}
 
 		explicit operator Container() const { return _ingr; }

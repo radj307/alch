@@ -275,5 +275,18 @@ namespace caco_alch {
 		{
 			return print_best(os, fx_name, RegistryType::FXFindType::BOTH_OR, excluded);
 		}
+
+		std::ostream& print_ranked_best(std::ostream& os, const std::string& fx_name, const RegistryType::FXFindType& ft, const bool& small_to_large = false) const
+		{
+			if (const auto results{ _registry.find_best_fx_ranked(fx_name, ft, small_to_large) }; !results.empty()) {
+				const auto precision{ os.precision() };
+				os.precision(_fmt._precision);
+				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(results, std::vector<std::string>{fx_name}) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				os.precision(precision);
+			}
+			else
+				os << sys::term::error << "Didn't find any effects matching \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << "\"\n";
+			return os;
+		}
 	};
 }

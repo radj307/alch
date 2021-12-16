@@ -98,6 +98,18 @@ namespace caco_alch {
 			else
 				std::cout << sys::term::warn << "Failed to write to \"" << filename << '\"' << std::endl;
 		}
+		if (const auto get_args{ args.typeget_all<opt::Option>(DefaultObjects._get_gamesetting) }; !get_args.empty()) {
+			const bool print_all{ std::any_of(get_args.begin(), get_args.end(), [](auto&& opt) { return !opt.hasv(); }) };
+			if (print_all) for (auto& it : gs)
+				std::cout << it._name << " = " << it.safe_get() << '\n';
+			else for (auto& arg : get_args) {
+				const auto capv{ arg.getv().value() };
+				if (const auto target{ gs.find(capv, 0, true) }; target != gs.end())
+					std::cout << target->_name << " = " << target->safe_get() << '\n';
+				else
+					std::cout << sys::term::warn << "\"" << capv << "\" not found.\n";
+			}
+		}
 		return gs; // RETURN
 	}
 	/**
@@ -178,14 +190,26 @@ namespace caco_alch {
 				}
 				// s - Search
 				else if (Arguments.check<opt::Flag>('s')) {
-					for (auto& arg : params)
+					if (const auto mag{ Arguments.check<opt::Flag>('m') }, dur{ Arguments.check<opt::Flag>('d') }, ranked{ Arguments.check<opt::Flag>('r') }; mag || dur || ranked) {
+						using enum RegistryType::FXFindType;
+						RegistryType::FXFindType ft;
+						if (mag && dur)
+							ft = BOTH_AND;
+						else if (mag)
+							ft = MAG;
+						else if (dur)
+							ft = DUR;
+						else
+							ft = BOTH_OR;
+						for (auto& arg : params) {
+							if (ranked)
+								Alchemy.print_ranked_best(os, arg, ft, Arguments.check<opt::Flag>('R'));
+							else
+								Alchemy.print_best(os, arg, ft);
+						}
+					}
+					else for (auto& arg : params)
 						Alchemy.print_search(os, arg).flush();
-					return RETURN_SUCCESS;
-				}
-				// m - Highest Magnitude Search
-				else if (Arguments.check<opt::Flag>('m')) {
-					for (auto& arg : params)
-						Alchemy.print_best(os, arg).flush();
 					return RETURN_SUCCESS;
 				}
 			}

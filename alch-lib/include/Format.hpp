@@ -297,6 +297,14 @@ namespace caco_alch {
 						os << '\n';
 				}
 			}
+			void print(std::ostream& os, const std::vector<Ingredient>& vec) const
+			{
+				for (auto ingr{ vec.begin() }; ingr != vec.end(); ) {
+					os << PrintObject(*ingr, *this);
+					if (++ingr != vec.end())
+						os << '\n';
+				}
+			}
 			/**
 			 * @brief Print an object reference to the given output stream.
 			 * @param os	 - Output Stream Ref
@@ -313,7 +321,7 @@ namespace caco_alch {
 			}
 
 		public:
-			using Variant = std::variant<std::monostate, Keyword, KeywordList, Effect, EffectList, Ingredient, SortedIngrList, Potion>;
+			using Variant = std::variant<std::monostate, Keyword, KeywordList, Effect, EffectList, Ingredient, SortedIngrList, std::vector<Ingredient>, Potion>;
 			Variant obj;	///< @brief Copy of the object to be printed.
 			/**
 			 * @brief Default Constructor
@@ -357,6 +365,9 @@ namespace caco_alch {
 				// Sorted Ingredient List
 				else if (std::holds_alternative<SortedIngrList>(p.obj))
 					p.print(os, std::get<SortedIngrList>(p.obj));
+				// Ingredient Vector
+				else if (std::holds_alternative<std::vector<Ingredient>>(p.obj))
+					p.print(os, std::get<std::vector<Ingredient>>(p.obj));
 				// Potion
 				else if (std::holds_alternative<Potion>(p.obj))
 					p.print(os, std::get<Potion>(p.obj));
