@@ -63,7 +63,7 @@ int main(const int argc, char* argv[], char* envp[])
 		Instance inst{ args, paths };
 
 		if (args.check<opt::Option>("validate")) // Process "--validate" opt
-			inst.validate();
+			inst.validate(path);
 
 		switch (inst.handleArguments()) {
 		case Instance::RETURN_FAILURE:

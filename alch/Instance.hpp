@@ -5,6 +5,7 @@
 #include <color-transform.hpp>
 #include <INI.hpp>
 
+#include <env.hpp>
 #include <str.hpp>
 
 #include <Alchemy.hpp>
@@ -94,18 +95,21 @@ namespace caco_alch {
 		 * @param os	 - Target output stream.
 		 * @param indent - Maximum indentation value, from which the length of all prefixes are subtracted to create uniform aligned values.
 		 */
-		void validate(std::ostream& os, const std::streamsize indent = 20ll) const
+		void validate(std::ostream& os, const env::PATH& path, const std::streamsize indent = 20ll) const
 		{
-			os << "argv[0]" << std::setw(indent - 7) << ' ' << (file::exists(Arguments.arg0().value_or("")) ? color::f::green : color::f::red) << Arguments.arg0().value_or("") << '\n';
-			os << "directory" << std::setw(indent - 9) << ' ' << (file::exists(Paths._local) ? color::f::green : color::f::red) << Paths._local << '\n';
-			os << "registry" << std::setw(indent - 8) << ' ' << (file::exists(Paths._path_registry) ? color::f::green : color::f::red) << Paths._path_registry << color::reset << '\n';
-			os << "INI Config" << std::setw(indent - 10) << ' ' << (file::exists(Paths._path_config) ? color::f::green : color::f::red) << Paths._path_config << color::reset << '\n';
-			os << "Game Config" << std::setw(indent - 11) << ' ' << (file::exists(Paths._path_gamesettings) ? color::f::green : color::f::red) << Paths._path_gamesettings << color::reset << '\n';
+			const auto print{ [&os, &indent](const std::string& name, const std::string& target) {
+				os << name << str::VIndent(indent, name.size()) << (file::exists(target) ? color::f::green : color::f::red) << target << color::reset << '\n';
+			} };
+			print("argv[0]", Arguments.arg0().value_or(""));
+			print("directory", Paths._local);
+			print("registry", Paths._path_registry);
+			print("INI Config", Paths._path_config);
+			print("Game Config", Paths._path_gamesettings);
 		}
 		/**
 		 * @brief Validate the location of the configuration files used by the program and print it to std::cout.
 		 */
-		void validate() const { validate(std::cout); }
+		void validate(const env::PATH& path) const { validate(std::cout, path); }
 		/**
 		 * @brief Handle the received commandline arguments and call the relevant functions with the remaining parameters.
 		 * @param os	- Target output stream.
