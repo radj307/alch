@@ -18,12 +18,12 @@
 
 namespace caco_alch {
 	template<class T>
-	struct ModTrigger : public T {
-		bool _armed, _triggered;
+	struct Stub : public T {
+		bool _armed{ false }, _triggered{ false };
 	public:
 		using ParentType = T;
 		template<class... VT>
-		ModTrigger(VT&&... args) : ParentType(std::forward<VT>(args)...) {}
+		Stub(VT&&... args) : ParentType(std::forward<VT>(args)...) {}
 
 		bool isArmed() const { return _armed; }
 		bool isTriggered() const { return _triggered; }
@@ -37,7 +37,7 @@ namespace caco_alch {
 		auto& get() { return operator T & (); }
 	};
 
-	struct GS : public ModTrigger<GameConfig> {
+	struct GS : public Stub<GameConfig> {
 
 	};
 	/**
@@ -60,11 +60,13 @@ namespace caco_alch {
 				std::cout << sys::term::error << "Failed to reset Game Config \"" << filename << "\" (Check write permissions)\n";
 		}
 		bool update_ini_before_return{ false };
-		const auto set{ [&gs, &update_ini_before_return](const std::string& name, const std::string& value) {
+		gs.arm();
+		const auto set{ [&gs/*, &update_ini_before_return*/](const std::string& name, const std::string& value) {
 			try {
 				if (gs.set(name, value)) {
 					std::cout << sys::term::msg << "\'" << name << "\' = \'" << value << "\'\n";
-					update_ini_before_return = true;
+					//update_ini_before_return = true;
+					gs.trigger();
 				}
 				else
 					std::cout << sys::term::warn << "Set operation failed without exception.\n";
@@ -89,7 +91,8 @@ namespace caco_alch {
 			}
 		}*/
 		// if the INI configuration has changed, write it to file
-		if (update_ini_before_return) {
+		//if (update_ini_before_return) {
+		if (gs.isTriggered()) {
 			if (file::write(filename, gs.to_stream(), false))
 				std::cout << sys::term::msg << "Successfully wrote to \"" << filename << '\"' << std::endl;
 			else
@@ -182,7 +185,7 @@ namespace caco_alch {
 				// m - Highest Magnitude Search
 				else if (Arguments.check<opt::Flag>('m')) {
 					for (auto& arg : params)
-						Alchemy.print_best(os, arg, { "jarrin root", "chokeberries" }).flush();
+						Alchemy.print_best(os, arg).flush();
 					return RETURN_SUCCESS;
 				}
 			}

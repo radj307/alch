@@ -70,6 +70,7 @@ int main(const int argc, char* argv[])
 		const auto rc{ inst.handleArguments() }; // finally, runtime args are parsed here
 		if (rc == Instance::RETURN_FAILURE)
 			throw make_exception("Nothing to do.");
+
 		return rc;
 	} catch (std::exception& ex) {
 		std::cerr << sys::term::error << ex.what() << std::endl;
