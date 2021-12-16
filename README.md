@@ -1,9 +1,6 @@
 # Skyrim CLI Alchemy Utility
 Allows you to browse, search, and combine various ingredients to fully simulate the alchemy process from the commandline.
 
-Use `alch -h` to see a list of commands.
-
-See the [wiki](https://github.com/radj307/caco-alch-potion-builder/wiki) for a *slightly* more detailed usage guide.
-
-To build your own ingredient list from your load order, see this related project:
-[Ingredient Registry Generator](https://github.com/radj307/alch-registry-generator)
+### [Setup](https://github.com/radj307/alch/wiki/Installation-&-Setup)
+### [Arguments](https://github.com/radj307/alch/wiki)
+### [Usage Examples](https://github.com/radj307/alch/wiki/Basic-Usage-&-Examples)
