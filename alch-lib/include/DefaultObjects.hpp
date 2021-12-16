@@ -82,7 +82,7 @@ namespace caco_alch {
 				{ "--" + _set_gamesetting + " <setting>:<value>", "Set the value of the specified game config setting." },
 				{ "--" + _get_gamesetting + " [setting]", "Retrieve the value of a game config setting. If no setting is specified, all settings are shown." },
 				{ "-h  --" + _help, "Shows this help display." },
-				{ "-c", "Enables colorization of effect names based on whether they have positive/negative/neutral keywords." },
+				{ "-c", "Disables colorization of effect names based on whether they have positive/negative/neutral keywords." },
 				{ "--precision <uint>", "Set the number of digits after the decimal point that should be shown. Default is 2." },
 				{ "--validate", "Shows debug information including filepaths, and whether they were found (green) or not (red)." },
 			} },

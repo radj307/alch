@@ -66,17 +66,5 @@
         "CMAKE_BUILD_TYPE": "Debug"
       }
     }
-  ],
-  "buildPresets": [
-    {
-      "name": "Debug",
-      "configurePreset": "windows-default",
-      "configuration": "windows-default"
-    },
-    {
-      "name": "Release",
-      "configurePreset": "windows-default",
-      "configuration": "windows-release"
-    }
   ]
 }
