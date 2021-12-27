@@ -20,3 +20,5 @@ set(SRC
 )
 
 add_executable(alch ${HEADERS} ${SRC})
+
+target_link_libraries(alch PUBLIC shared strlib optlib filelib TermAPI alch-lib)

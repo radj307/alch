@@ -38,6 +38,6 @@ set(SRC
 )
 
 add_library(alch-lib STATIC ${HEADERS} ${SRC})
-target_link_libraries(alch-lib PUBLIC shared str-lib TermAPI file-lib opt-lib)
+target_link_libraries(alch-lib PUBLIC shared TermAPI strlib filelib optlib)
 target_include_directories(alch-lib PUBLIC "./include" "./src")
-target_link_directories(alch-lib PUBLIC "./src")
+
