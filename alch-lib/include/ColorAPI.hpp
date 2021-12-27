@@ -1,6 +1,6 @@
 #pragma once
 #include <TermAPI.hpp>
-#include <ColorPalette.hpp>
+#include <palette.hpp>
 #include <vector>
 #include <optional>
 #include <functional>
@@ -75,10 +75,10 @@ namespace caco_alch {
 	 * @brief Wrapper for variable TermAPI color that have integrated bold formatting support and an operator<<.
 	 */
 	struct Color : public color::setcolor {
-		Color(const short color = color::white, const bool bold = false, const bool foreground = true) : color::setcolor(color, foreground ? Layer::FOREGROUND : Layer::BACKGROUND, bold ? color::FormatFlag::BOLD : color::FormatFlag::NONE) {}
+		Color(const short color = color::white, const bool bold = false, const bool foreground = true) : color::setcolor(color, foreground ? color::Layer::F : color::Layer::B, bold ? color::format::BOLD : color::format::NONE) {}
 	};
 
-	using PaletteType = color::ColorPalette<UIElement>;
+	using PaletteType = color::palette<UIElement>;
 
 	static PaletteType ColorAPI{ {
 		{ UIElement::BRACKET, Color{ color::red, true } },

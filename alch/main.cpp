@@ -33,10 +33,13 @@ using namespace caco_alch;
  */
 int main(const int argc, char* argv[])
 {
+	// TODO: Implement unit tests using the following framework:
+	//		base:	{ Keyword, Effect, Ingredient, Potion },
+	//		io:		{ reparse,  }
 	// TODO: Add check & INI value for CACO's locked-duration potions. (1s, 5s, 10s)
 	// TODO: Add a "request" system to the potion-building mechanic that allows the user to request an automatically-generated potion of a certain type.
 	try {
-		std::cout << sys::term::EnableANSI; // enable virtual terminal sequences
+		std::cout << term::EnableANSI; // enable virtual terminal sequences
 		opt::ParamsAPI2 args(argc, argv, "color", "precision", DefaultObjects._set_gamesetting, DefaultObjects._get_gamesetting, DefaultObjects._load_config, DefaultObjects._load_gamesettings, DefaultObjects._load_registry); // parse arguments
 
 		// initialize the path environment variable
@@ -73,10 +76,10 @@ int main(const int argc, char* argv[])
 
 		return rc;
 	} catch (std::exception& ex) {
-		std::cerr << sys::term::error << ex.what() << std::endl;
+		std::cerr << term::error << ex.what() << std::endl;
 		return -1;
 	} catch (...) {
-		std::cerr << sys::term::crit << "An unknown exception occurred." << std::endl;
+		std::cerr << term::crit << "An unknown exception occurred." << std::endl;
 		return -2;
 	}
 }

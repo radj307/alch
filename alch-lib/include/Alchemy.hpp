@@ -121,7 +121,7 @@ namespace caco_alch {
 				os.precision(precision);
 			}
 			else
-				os << sys::term::error << "Didn't find any ingredients or effects matching \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << "\"\n";
+				os << term::error << "Didn't find any ingredients or effects matching \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << "\"\n";
 			return os;
 		}
 
@@ -171,7 +171,7 @@ namespace caco_alch {
 					os.precision(precision);
 				}
 				if (init && cache.empty()) {
-					os << sys::term::error << "Didn't find anything after applying filter for \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << *name << color::reset << "\"\n";
+					os << term::error << "Didn't find anything after applying filter for \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << *name << color::reset << "\"\n";
 					break;
 				}
 			}
@@ -257,7 +257,14 @@ namespace caco_alch {
 				set.insert(it);
 			return print_build(os, std::move(set));
 		}
-
+		/**
+		 * @brief			Print the ingredient with the strongest effect, according to the given criteria.
+		 * @param os		Target Output Stream.
+		 * @param fx_name	Target Effect Name.
+		 * @param ft		Effect Find Type. Determines how effects are considered "better".
+		 * @param excluded	A list of ingredient names to exclude, even if they have a stronger effect.
+		 * @returns			std::ostream&
+		 */
 		std::ostream& print_best(std::ostream& os, const std::string& fx_name, const RegistryType::FXFindType& ft, const std::vector<std::string>& excluded = {}) const
 		{
 			if (const auto result{ _registry.find_best_fx(fx_name, ft, excluded) }; result != _registry.end()) {
@@ -267,25 +274,39 @@ namespace caco_alch {
 				os.precision(precision);
 			}
 			else
-				os << sys::term::error << "Didn't find any effects matching \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << "\"\n";
+				os << term::error << "Didn't find any effects matching \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << "\"\n";
 
 			return os;
 		}
+		/**
+		 * @brief			Print the ingredient with the strongest effect, according to the given criteria.
+		 * @param os		Target Output Stream.
+		 * @param fx_name	Target Effect Name.
+		 * @param excluded	A list of ingredient names to exclude, even if they have a stronger effect.
+		 * @returns			std::ostream&
+		 */
 		std::ostream& print_best(std::ostream& os, const std::string& fx_name, const std::vector<std::string>& excluded = {}) const
 		{
 			return print_best(os, fx_name, RegistryType::FXFindType::BOTH_OR, excluded);
 		}
-
-		std::ostream& print_ranked_best(std::ostream& os, const std::string& fx_name, const RegistryType::FXFindType& ft, const bool& small_to_large = false) const
+		/**
+		 * @brief
+		 * @param os
+		 * @param fx_name
+		 * @param ft
+		 * @param small_to_large	When true
+		 * @returns					std::ostream&
+		 */
+		std::ostream& print_ranked_best(std::ostream& os, const std::string& fx_name, const RegistryType::FXFindType& ft) const
 		{
-			if (const auto results{ _registry.find_best_fx_ranked(fx_name, ft, small_to_large) }; !results.empty()) {
+			if (const auto results{ _registry.find_best_fx_ranked(fx_name, ft) }; !results.empty()) {
 				const auto precision{ os.precision() };
 				os.precision(_fmt._precision);
 				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(results, std::vector<std::string>{fx_name}) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				os.precision(precision);
 			}
 			else
-				os << sys::term::error << "Didn't find any effects matching \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << "\"\n";
+				os << term::error << "Didn't find any effects matching \"" << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << "\"\n";
 			return os;
 		}
 	};

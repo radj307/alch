@@ -255,6 +255,11 @@ namespace caco_alch {
 			return vec.front();
 		}
 
+		/**
+		 * @brief			Find the single best ingredient according to the given predicate.
+		 * @param predicate	Predicate functor where left is the current best.
+		 * @returns			Container::const_iterator
+		 */
 		Container::const_iterator find_best(const std::function<bool(Ingredient, Ingredient)>& predicate) const
 		{
 			Container::const_iterator best{ _ingr.end() };
@@ -264,6 +269,12 @@ namespace caco_alch {
 			return best;
 		}
 
+		/**
+		 * @brief			Retrieve a list of ingredients with a given effect in an order determined by the given sorting functor.
+		 * @param fx_name	An effect name.
+		 * @param sort		A sorting functor to pass to std::sort.
+		 * @returns			std::vector<Ingredient>
+		 */
 		std::vector<Ingredient> find_best_ranked(const std::string& fx_name, const std::function<bool(Ingredient, Ingredient)>& sort) const
 		{
 			std::vector<Ingredient> best;
@@ -274,13 +285,23 @@ namespace caco_alch {
 			return best;
 		}
 
+		/**
+		 * @enum	FXFindType
+		 * @brief	Used by the find_best_fx functions to determine which criteria to sort by.
+		*/
 		enum class FXFindType : unsigned char {
-			BOTH_OR,
-			BOTH_AND,
-			MAG,
-			DUR
+			BOTH_OR,	///< @brief	Magnitude || Duration
+			BOTH_AND,	///< @brief Magnitude && Duration
+			MAG,		///< @brief Magnitude
+			DUR			///< @brief Duration
 		};
 
+		/**
+		 * @brief			Retrieve a list of ingredients with the given effect, in ascending order of that effect's magnitude and/or duration.
+		 * @param fx_name	Target Effect Name.
+		 * @param ft		Find Type.
+		 * @returns			std::vector<Ingredient>
+		 */
 		Container::const_iterator find_best_fx(const std::string& fx_name, const FXFindType& ft = FXFindType::BOTH_OR, const std::vector<std::string>& excluded_ingr = {}) const
 		{
 			const auto excluded{ [&excluded_ingr](auto&& fx) {return std::any_of(excluded_ingr.begin(), excluded_ingr.end(), [&fx](auto&& it) {return str::tolower(fx._name) == str::tolower(it); }); } };
@@ -309,24 +330,30 @@ namespace caco_alch {
 				return best;
 			return _ingr.end();
 		}
-		auto find_best_fx_ranked(const std::string& fx_name, const FXFindType& ft = FXFindType::BOTH_OR, const bool& small_to_large = false) const
+		/**
+		 * @brief			Retrieve a list of ingredients with the given effect, in ascending order of that effect's magnitude and/or duration.
+		 * @param fx_name	Target Effect Name.
+		 * @param ft		Find Type.
+		 * @returns			std::vector<Ingredient>
+		 */
+		auto find_best_fx_ranked(const std::string& fx_name, const FXFindType& ft = FXFindType::BOTH_OR) const
 		{
-			return find_best_ranked(fx_name, [&fx_name, &ft, &small_to_large](auto&& l, auto&& r) {
+			return find_best_ranked(fx_name, [&fx_name, &ft](auto&& l, auto&& r) {
 				const auto
 					lfx{ std::find_if(l._effects.begin(), l._effects.end(), [&fx_name](auto&& fx) { return str::tolower(fx._name) == str::tolower(fx_name); }) },
 					rfx{ std::find_if(r._effects.begin(), r._effects.end(), [&fx_name](auto&& fx) { return str::tolower(fx._name) == str::tolower(fx_name); }) };
 				if (const auto lvalid{ lfx != l._effects.end() }, rvalid{ rfx != r._effects.end() }; lvalid && rvalid) {
 					switch (ft) {
 					case FXFindType::BOTH_OR:
-						return small_to_large ? (lfx->_magnitude < rfx->_magnitude) || (lfx->_duration < rfx->_duration) : (lfx->_magnitude > rfx->_magnitude) || (lfx->_duration > rfx->_duration); // sort by magnitude or duration
+						return (lfx->_magnitude < rfx->_magnitude) || (lfx->_duration < rfx->_duration); // sort by magnitude OR duration
 					case FXFindType::BOTH_AND:
-						return small_to_large ? (lfx->_magnitude < rfx->_magnitude) && (lfx->_duration < rfx->_duration) : (lfx->_magnitude > rfx->_magnitude) && (lfx->_duration > rfx->_duration); // sort by magnitude and duration
+						return (lfx->_magnitude < rfx->_magnitude) && (lfx->_duration < rfx->_duration); // sort by magnitude AND duration
 					case FXFindType::MAG:
-						return small_to_large ? lfx->_magnitude < rfx->_magnitude : lfx->_magnitude > rfx->_magnitude; // sort by magnitude
+						return lfx->_magnitude < rfx->_magnitude; // sort by magnitude
 					case FXFindType::DUR:
-						return small_to_large ? lfx->_duration < rfx->_duration : lfx->_duration > rfx->_duration; // sort by duration
+						return lfx->_duration < rfx->_duration; // sort by duration
 					default:
-						return small_to_large ? lfx->_name < rfx->_name : lfx->_name > rfx->_name; // sort alphabetically
+						return lfx->_name < rfx->_name; // sort alphabetically
 					}
 				}
 				else

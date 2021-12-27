@@ -6,6 +6,7 @@
 #include "OutputFormat.hpp"
 
 #include <str.hpp>
+#include <iter.hpp>
 
 #include <iomanip>
 #include <utility>
@@ -186,13 +187,13 @@ namespace caco_alch {
 			 * @param os	- Output Stream Ref
 			 * @param kwda	- KeywordList
 			 */
-			void print(std::ostream& os, const KeywordList& list) const
+			void print(std::ostream& os, const KeywordList& list, const bool& allow_reverse = false) const
 			{
-				for (auto kywd{ list.begin() }; kywd != list.end(); ) {
-					os << PrintObject(*kywd, *this);
-					if (++kywd != list.end())
-						os << '\n';
-				}
+				const auto func{ [this, &os](const auto& kywd, const bool& is_last) { os << PrintObject(kywd, *this); if (!is_last) os << '\n'; } };
+				if (allow_reverse && fmt.reverse_output())
+					iter::for_each(list.rbegin(), list.rend(), func);
+				else
+					iter::for_each(list.begin(), list.end(), func);
 			}
 			/**
 			 * @brief Print an object reference to the given output stream.
@@ -239,25 +240,28 @@ namespace caco_alch {
 			 * @param os	- Output Stream Ref
 			 * @param list	- EffectList
 			 */
-			void print(std::ostream& os, const EffectList& list) const
+			void print(std::ostream& os, const EffectList& list, const bool& allow_reverse = false) const
 			{
-				for (auto fx{ list.begin() }; fx != list.end(); ++fx) {
+				const auto func{ [this, &os](const auto& fx, const bool& is_last) {
 					if (!fmt.quiet()) {
-						os << PrintObject(*fx, *this);
-						if (fx + 1 != list.end())
+						os << PrintObject(fx, *this);
+						if (!is_last)
 							os << '\n';
 					}
 					else if (searched.has_value()) {
-						if (const auto lc_name{ str::tolower(fx->_name) }; std::any_of(searched.value().begin(), searched.value().end(), [&lc_name, this](std::string searched) {
-							searched = str::tolower(searched);
-							return lc_name == searched || !fmt._flag_exact && str::pos_valid(lc_name.find(searched));
-							})) {
-							os << PrintObject(*fx, *this);
-							if (fx + 1 != list.end())
-								os << '\n';
-						}
+						if (const auto lc_name{ str::tolower(fx._name) }; std::any_of(searched.value().begin(), searched.value().end(), [&lc_name, this](auto search) {
+							search = str::tolower(search);
+							return lc_name == search || !fmt._flag_exact && str::pos_valid(lc_name.find(search));
+							}))
+							os << PrintObject(fx, *this);
+						if (!is_last)
+							os << '\n';
 					}
-				}
+				} };
+				if (allow_reverse && fmt.reverse_output())
+					iter::for_each(list.rbegin(), list.rend(), func);
+				else
+					iter::for_each(list.begin(), list.end(), func);
 			}
 			/**
 			 * @brief Print an object reference to the given output stream.
@@ -289,21 +293,29 @@ namespace caco_alch {
 			 * @param os	- Output Stream Ref
 			 * @param list	- SortedIngrList
 			 */
-			void print(std::ostream& os, const SortedIngrList& list) const
+			void print(std::ostream& os, const SortedIngrList& list, const bool& allow_reverse = true) const
 			{
-				for (auto ingr{ list.begin() }; ingr != list.end(); ) {
-					os << PrintObject(*ingr, *this);
-					if (++ingr != list.end())
+				const auto func{ [&os, this](const auto& ingr, const bool& is_last) {
+					os << PrintObject(ingr, *this);
+					if (!is_last)
 						os << '\n';
-				}
+				} };
+				if (allow_reverse && fmt.reverse_output())
+					iter::for_each(list.rbegin(), list.rend(), func);
+				else
+					iter::for_each(list.begin(), list.end(), func);
 			}
-			void print(std::ostream& os, const std::vector<Ingredient>& vec) const
+			void print(std::ostream& os, const std::vector<Ingredient>& vec, const bool& allow_reverse = true) const
 			{
-				for (auto ingr{ vec.begin() }; ingr != vec.end(); ) {
-					os << PrintObject(*ingr, *this);
-					if (++ingr != vec.end())
+				const auto func{ [&os, this](const auto& ingr, const bool& is_last) {
+					os << PrintObject(ingr, *this);
+					if (!is_last)
 						os << '\n';
-				}
+				} };
+				if (allow_reverse && fmt.reverse_output())
+					iter::for_each(vec.rbegin(), vec.rend(), func);
+				else
+					iter::for_each(vec.begin(), vec.end(), func);
 			}
 			/**
 			 * @brief Print an object reference to the given output stream.

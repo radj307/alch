@@ -49,8 +49,8 @@ namespace caco_alch {
 			_flag_reverse{ args.check<opt::Flag>('R') },
 			_flag_color{ args.check<opt::Flag>('c') },
 			_flag_smart{ args.check<opt::Flag>('S') },
-			_indent{ str::stoui(args.typegetv<opt::Option>("indent"s).value_or([&ini]() -> std::string {if (ini.has_value())if (const auto value{ ini.value().getv("format", "indent") }; !value.has_value()) return value.value(); return "2"; }())) },
-			_precision{ str::stoui(args.typegetv<opt::Option>("precision").value_or([&ini]() -> std::string { if (ini.has_value()) if (const auto value{ ini.value().getv("format", "precision") }; !value.has_value()) return value.value(); return "2"; }())) } {}
+			_indent{ str::stoui(args.typegetv<opt::Option>("indent"s).value_or([&ini]() -> std::string {if (ini.has_value())if (const auto value{ ini.value().getvs("format", "indent") }; !value.has_value()) return value.value(); return "2"; }())) },
+			_precision{ str::stoui(args.typegetv<opt::Option>("precision").value_or([&ini]() -> std::string { if (ini.has_value()) if (const auto value{ ini.value().getvs("format", "precision") }; !value.has_value()) return value.value(); return "2"; }())) } {}
 
 		virtual ~OutputFormat() = default;
 	protected:

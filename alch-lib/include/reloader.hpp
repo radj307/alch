@@ -58,7 +58,7 @@ namespace caco_alch {
 		for (auto& elem : reparse::parse(std::forward<std::stringstream>(ss))) {
 			if (!push(elem.name(), get_fx(elem))) {
 			#ifdef ENABLE_DEBUG
-				std::cout << sys::term::warn << "Found duplicate element: \'" << elem.name() << '\'' << std::endl;
+				std::cout << term::warn << "Found duplicate element: \'" << elem.name() << '\'' << std::endl;
 			#endif
 			}
 		}

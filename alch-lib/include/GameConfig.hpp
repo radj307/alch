@@ -250,12 +250,12 @@ namespace caco_alch {
 						const auto val{ str::strip_line(ln.substr(dPos + 1), "") };
 						if (set(std::find_if(settings.begin(), settings.end(), [&var](const Cont::value_type& e) { return e._name == var; }), settings.end(), val)) {  // NOLINT(bugprone-branch-clone)
 						#ifdef ENABLE_DEBUG
-							std::cout << sys::term::debug << "Successfully read INI variable \'" << var << "\' = \'" << val << '\'' << std::endl;
+							std::cout << term::debug << "Successfully read INI variable \'" << var << "\' = \'" << val << '\'' << std::endl;
 						#endif
 						}
 						else {
 						#ifdef ENABLE_DEBUG
-							std::cout << sys::term::debug << "Skipped unknown INI variable \'" << var << "\' = \'" << val << '\'' << std::endl;
+							std::cout << term::debug << "Skipped unknown INI variable \'" << var << "\' = \'" << val << '\'' << std::endl;
 						#endif
 						}
 					}

@@ -17,29 +17,6 @@
 
 
 namespace caco_alch {
-	template<class T>
-	struct Stub : public T {
-		bool _armed{ false }, _triggered{ false };
-	public:
-		using ParentType = T;
-		template<class... VT>
-		Stub(VT&&... args) : ParentType(std::forward<VT>(args)...) {}
-
-		bool isArmed() const { return _armed; }
-		bool isTriggered() const { return _triggered; }
-
-		void arm() { _armed = true; }
-		void disarm() { _armed = false; }
-
-		void trigger() { if (_armed) _triggered = true; }
-
-		operator T& () { trigger(); return *this; }
-		auto& get() { return operator T & (); }
-	};
-
-	struct GS : public Stub<GameConfig> {
-
-	};
 	/**
 	 * @brief
 	 * @param filename
@@ -49,29 +26,28 @@ namespace caco_alch {
 	 */
 	inline GameConfig loadGameConfig(const std::filesystem::path& filename, const opt::ParamsAPI2& args, const GameConfig::Cont& defaults)
 	{
-		//GameConfig gs(defaults); // INIT
-		GS gs{ defaults };
+		GameConfig gs{ defaults };
 
 		// check for the reset INI option
 		if (args.check<opt::Option>(DefaultObjects._reset_gamesettings)) {
 			if (file::write(filename, gs.to_stream(), false))
-				std::cout << sys::term::msg << "Successfully reset Game Config \"" << filename << "\"\n";
+				std::cout << term::msg << "Successfully reset Game Config \"" << filename << "\"\n";
 			else
-				std::cout << sys::term::error << "Failed to reset Game Config \"" << filename << "\" (Check write permissions)\n";
+				std::cout << term::error << "Failed to reset Game Config \"" << filename << "\" (Check write permissions)\n";
 		}
 		bool update_ini_before_return{ false };
-		gs.arm();
-		const auto set{ [&gs/*, &update_ini_before_return*/](const std::string& name, const std::string& value) {
+		bool modified{ false };
+		const auto set{ [&gs, &modified](const std::string& name, const std::string& value) {
 			try {
 				if (gs.set(name, value)) {
-					std::cout << sys::term::msg << "\'" << name << "\' = \'" << value << "\'\n";
+					std::cout << term::msg << "\'" << name << "\' = \'" << value << "\'\n";
 					//update_ini_before_return = true;
-					gs.trigger();
+					modified = true;
 				}
 				else
-					std::cout << sys::term::warn << "Set operation failed without exception.\n";
+					std::cout << term::warn << "Set operation failed without exception.\n";
 			} catch (std::exception& ex) {
-				std::cout << sys::term::error << "Setting \"" << name << "\" to \"" << value << "\" caused an exception: \"" << ex.what() << '\"' << std::endl;
+				std::cout << term::error << "Setting \"" << name << "\" to \"" << value << "\" caused an exception: \"" << ex.what() << '\"' << std::endl;
 			}
 		} };
 		// iterate through all --set arguments
@@ -92,11 +68,11 @@ namespace caco_alch {
 		}*/
 		// if the INI configuration has changed, write it to file
 		//if (update_ini_before_return) {
-		if (gs.isTriggered()) {
+		if (modified) {
 			if (file::write(filename, gs.to_stream(), false))
-				std::cout << sys::term::msg << "Successfully wrote to \"" << filename << '\"' << std::endl;
+				std::cout << term::msg << "Successfully wrote to \"" << filename << '\"' << std::endl;
 			else
-				std::cout << sys::term::warn << "Failed to write to \"" << filename << '\"' << std::endl;
+				std::cout << term::warn << "Failed to write to \"" << filename << '\"' << std::endl;
 		}
 		if (const auto get_args{ args.typeget_all<opt::Option>(DefaultObjects._get_gamesetting) }; !get_args.empty()) {
 			const bool print_all{ std::any_of(get_args.begin(), get_args.end(), [](auto&& opt) { return !opt.hasv(); }) };
@@ -107,7 +83,7 @@ namespace caco_alch {
 				if (const auto target{ gs.find(capv, 0, true) }; target != gs.end())
 					std::cout << target->_name << " = " << target->safe_get() << '\n';
 				else
-					std::cout << sys::term::warn << "\"" << capv << "\" not found.\n";
+					std::cout << term::warn << "\"" << capv << "\" not found.\n";
 			}
 		}
 		return gs; // RETURN
@@ -145,7 +121,7 @@ namespace caco_alch {
 		void validate(std::ostream& os, const env::PATH& path, const std::streamsize indent = 20ll) const
 		{
 			const auto print{ [&os, &indent](const std::string& name, const std::string& target) {
-				os << name << str::VIndent(indent, name.size()) << (file::exists(target) ? color::f::green : color::f::red) << target << color::reset << '\n';
+				os << name << str::VIndent(indent, name.size()) << (file::exists(target) ? color::setcolor::green : color::setcolor::red) << target << color::reset << '\n';
 			} };
 			print("argv[0]", Arguments.arg0().value_or(""));
 			print("directory", Paths.localDir.generic_string());
@@ -203,7 +179,7 @@ namespace caco_alch {
 							ft = BOTH_OR;
 						for (auto& arg : params) {
 							if (ranked)
-								Alchemy.print_ranked_best(os, arg, ft, Arguments.check<opt::Flag>('R'));
+								Alchemy.print_ranked_best(os, arg, ft);
 							else
 								Alchemy.print_best(os, arg, ft);
 						}
