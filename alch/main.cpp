@@ -9,6 +9,7 @@
 #define ENABLE_DEBUG
 #endif
 
+#include "rc/version.h"
 #include "Instance.hpp"
 
 #include <make_exception.hpp>
@@ -56,6 +57,10 @@ int main(const int argc, char* argv[])
 		// parse interrupting help argument
 		if (args.check_any<opt3::Option, opt3::Flag>("help", 'h')) {
 			std::cout << Help(programName.generic_string()) << std::endl;
+			return 0;
+		}
+		else if (args.check<opt3::Option>("version")) {
+			std::cout << alch_VERSION_EXTENDED << std::endl;
 			return 0;
 		}
 

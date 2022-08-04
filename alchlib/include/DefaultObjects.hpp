@@ -2,6 +2,7 @@
 #include "GameConfig.hpp"
 #include "ColorAPI.hpp"
 
+#include <TermAPI.hpp>
 #include <fileutil.hpp>
 
 #include <string>

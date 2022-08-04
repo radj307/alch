@@ -10,5 +10,5 @@ GET_VERSION_TAG("${CMAKE_CURRENT_SOURCE_DIR}" "alch")
 project ("alch" VERSION "${alch_VERSION}" LANGUAGES CXX)
 
 add_subdirectory("307lib")
-add_subdirectory ("alch-lib")
+add_subdirectory ("alchlib")
 add_subdirectory ("alch")
