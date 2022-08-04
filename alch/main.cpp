@@ -81,9 +81,6 @@ struct Help {
 int main(const int argc, char* argv[])
 {
 	using namespace caco_alch;
-	// TODO: Implement unit tests using the following framework:
-	//		base:	{ Keyword, Effect, Ingredient, Potion },
-	//		io:		{ reparse,  }
 	// TODO: Add check & INI value for CACO's locked-duration potions. (1s, 5s, 10s)
 	// TODO: Add a "request" system to the potion-building mechanic that allows the user to request an automatically-generated potion of a certain type.
 	try {
@@ -97,7 +94,7 @@ int main(const int argc, char* argv[])
 			"config"_reqcap,
 			"gamesettings"_reqcap,
 			"ingredients"_reqcap
-		}; // parse arguments
+		};
 
 		auto path{ env::PATH() };
 		const auto& [programPath, programName] {path.resolve_split(argv[0])};
@@ -112,12 +109,11 @@ int main(const int argc, char* argv[])
 			return 0;
 		}
 
-
 		ConfigPathList paths{
 			programPath,
-			args.getv<opt3::Option>("config").value_or((programPath / DefaultObjects._default_filename_config).generic_string()),
-			args.getv<opt3::Option>("gamesettings").value_or((programPath / DefaultObjects._default_filename_gamesettings).generic_string()),
-			args.getv<opt3::Option>("ingredients").value_or((programPath / DefaultObjects._default_filename_registry).generic_string())
+			args.castgetv<std::filesystem::path, opt3::Option>("config").value_or(programPath / DefaultObjects._default_filename_config),
+			args.castgetv<std::filesystem::path, opt3::Option>("gamesettings").value_or(programPath / DefaultObjects._default_filename_gamesettings),
+			args.castgetv<std::filesystem::path, opt3::Option>("ingredients").value_or(programPath / DefaultObjects._default_filename_registry)
 		};
 
 		Instance inst{ argv[0], args, paths }; // args are parsed further here
