@@ -217,13 +217,13 @@ namespace caco_alch {
 				// Print output
 
 				if (const auto potion{ build(ingr) }; potion.effects().empty())
-					throw std::exception("Potion Creation Failed.");
+					throw make_exception("Potion Creation Failed.");
 				else
 					os << ColorAPI.set(UIElement::SEARCH_HEADER) << "Output:" << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(potion) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				os.precision(precision); // reset precision
 			}
 			else
-				throw std::exception("Build failed! At least two valid ingredients must be specified.");
+				throw make_exception("Build failed! At least two valid ingredients must be specified.");
 			return os;
 		}
 		/**

@@ -25,11 +25,11 @@ namespace caco_alch {
 					return pos->value();
 				return {};
 			} };
-			if (elem.isVar()) throw std::exception("Unrecognized File Format");
+			if (elem.isVar()) throw make_exception("Unrecognized File Format");
 			const auto vec{ elem.getVec() };
 			std::array<Effect, 4> arr;
 			for (size_t i{ 0 }; i < vec.size() && i < 4u; ++i) {
-				if (vec.at(i).isVar()) throw std::exception("Unrecognized File Format");
+				if (vec.at(i).isVar()) throw make_exception("Unrecognized File Format");
 				if (const auto traits{ vec.at(i).getVec() }; traits.size() >= 2) {
 					const double mag{ str::stod(find_var(traits, "magnitude")) };
 					const unsigned dur{ str::stoui(find_var(traits, "duration")) };

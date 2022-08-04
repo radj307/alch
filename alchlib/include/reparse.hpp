@@ -111,7 +111,7 @@ namespace reparse {
 				else
 					return _val.value_or("");
 			}
-			throw std::exception("INVALID_OPERATION");
+			throw make_exception("INVALID_OPERATION");
 		}
 		/**
 		 * @function getVec()
@@ -119,14 +119,14 @@ namespace reparse {
 		 * @returns Cont&
 		 * @throws std::exception("INVALID_OPERATION") - Element type is a variable, and does not have a subvector to retrieve.
 		 */
-		Cont& getVec() { if (!_is_var && _vec.has_value()) return _vec.value(); throw std::exception("INVALID_OPERATION"); }
+		Cont& getVec() { if (!_is_var && _vec.has_value()) return _vec.value(); throw make_exception("INVALID_OPERATION"); }
 		/**
 		 * @function getVec() const
 		 * @brief Retrieve a reference of this element's section.
 		 * @returns Cont&
 		 * @throws std::exception("INVALID_OPERATION") - Element type is a variable, and does not have a subvector to retrieve.
 		 */
-		[[nodiscard]] Cont& getVec() const { if (!_is_var && _vec.has_value()) return const_cast<Cont&>(_vec.value()); throw std::exception("INVALID_OPERATION"); }
+		[[nodiscard]] Cont& getVec() const { if (!_is_var && _vec.has_value()) return const_cast<Cont&>(_vec.value()); throw make_exception("INVALID_OPERATION"); }
 		/**
 		 * @function vec() const
 		 * @brief Retrieve a copy of this elements section, if it has one, else returns an empty Cont.
@@ -273,7 +273,7 @@ namespace reparse {
 	 */
 	inline Elem::Cont parse(std::stringstream ss, const Param cfg = { })
 	{
-		if (ss.fail()) throw std::exception("INVALID_STRINGSTREAM"); ///< @brief sstream failbit was set
+		if (ss.fail()) throw make_exception("INVALID_STRINGSTREAM"); ///< @brief sstream failbit was set
 		std::stringstream sb;
 		for (std::string s{ }; str::getline(ss, s, cfg._line_delims); sb << s << '\n') { // move data to buffer, replace all occurrences of line delims with a newline.
 			std::replace_if(s.begin(), s.end(), [&cfg](const char c) { return cfg._setters.find(c) != std::string::npos; }, '=');
@@ -320,11 +320,11 @@ namespace reparse {
 						push_elem(Elem(header, sub));
 					else if (!bracket.second) // is closing bracket
 						queue_bracket_close = true;
-					else if (!cfg._fuzzy_brackets) throw std::exception(("INVALID_BRACKETS_AT_LN_[" + std::to_string(line_count) + "]").c_str());
+					else if (!cfg._fuzzy_brackets) throw make_exception(("INVALID_BRACKETS_AT_LN_[" + std::to_string(line_count) + "]").c_str());
 				}
 				// find variables
 				if (const auto eqPos{ ln.find('=') }; eqPos != std::string::npos) { // check for equals sign on line
-					if (!cfg._multiple_setters && ln.find('=', eqPos + 1) != std::string::npos) throw std::exception(("INVALID_SYNTAX_AT_LN_[" + std::to_string(line_count) + "]").c_str());
+					if (!cfg._multiple_setters && ln.find('=', eqPos + 1) != std::string::npos) throw make_exception(("INVALID_SYNTAX_AT_LN_[" + std::to_string(line_count) + "]").c_str());
 					const auto var{ _internal::strip_line(ln.substr(0, eqPos), cfg, true) }, val{ _internal::strip_line(ln.substr(eqPos + 1), cfg, true) };
 					push_elem(Elem(var, val, sub));
 				}

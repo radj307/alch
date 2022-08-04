@@ -50,19 +50,19 @@ namespace caco_alch {
 		void set(const std::string& value)
 		{
 			if (_type != _internal::GMST_T::STRING)
-				throw std::exception("INVALID_TYPE");
+				throw make_exception("INVALID_TYPE");
 			_value = Tuple{ value, std::nullopt, std::nullopt };
 		}
 		void set(const double value)
 		{
 			if (_type != _internal::GMST_T::DOUBLE)
-				throw std::exception("INVALID_TYPE");
+				throw make_exception("INVALID_TYPE");
 			_value = Tuple{ std::nullopt, value, std::nullopt };
 		}
 		void set(const bool value)
 		{
 			if (_type != _internal::GMST_T::BOOL)
-				throw std::exception("INVALID_TYPE");
+				throw make_exception("INVALID_TYPE");
 			_value = Tuple{ std::nullopt, std::nullopt, value };
 		}
 
@@ -148,11 +148,11 @@ namespace caco_alch {
 		{
 			return std::find_if(off + _settings.begin(), _settings.end(), [&name, &fuzzy](const GameConfigBase& setting) { return setting._name == name || fuzzy && str::tolower(setting._name) == str::tolower(name); });
 		}
-		[[nodiscard]] constexpr Cont::const_iterator begin() const
+		[[nodiscard]] WINCONSTEXPR Cont::const_iterator begin() const
 		{
 			return _settings.begin();
 		}
-		[[nodiscard]] constexpr Cont::const_iterator end() const
+		[[nodiscard]] WINCONSTEXPR Cont::const_iterator end() const
 		{
 			return _settings.end();
 		}
@@ -178,7 +178,7 @@ namespace caco_alch {
 			try {
 				return std::get<GameConfigBase::BOOL>(find(name, off)->_value).value();
 			} catch (std::exception&) {
-				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
+				throw make_exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
 		}
 		/**
@@ -192,7 +192,7 @@ namespace caco_alch {
 			try {
 				return std::get<GameConfigBase::DOUBLE>(find(name, off)->_value).value();
 			} catch (std::exception&) {
-				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
+				throw make_exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
 		}
 		/**
@@ -206,7 +206,7 @@ namespace caco_alch {
 			try {
 				return std::get<GameConfigBase::STRING>(find(name, off)->_value).value();
 			} catch (std::exception&) {
-				throw std::exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
+				throw make_exception(std::string("Failed to retrieve \'" + name + '\'').c_str());
 			}
 		}
 
@@ -240,7 +240,7 @@ namespace caco_alch {
 		 */
 		[[nodiscard]] static Cont set(Cont settings, std::stringstream&& ss)
 		{
-			if (ss.fail()) throw std::exception("INVALID_FILE_FORMAT");
+			if (ss.fail()) throw make_exception("INVALID_FILE_FORMAT");
 			ss << '\n';
 			for (std::string ln{}; std::getline(ss, ln, '\n'); ) {
 				ln = str::strip_line(ln);

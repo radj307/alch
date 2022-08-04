@@ -76,12 +76,16 @@ namespace caco_alch {
 		 * @param only_effects	- When true, only returns ingredients with an effect matching the given search, else only returns ingredients with names matching the given search.
 		 * @returns Container::iterator
 		 */
-		[[nodiscard]] typename Container::iterator get(const std::string& name, const typename Container::iterator& off, const bool only_effects = false)
+		[[nodiscard]] typename Container::iterator get(std::string name, const typename Container::iterator& off, const bool only_effects = false)
 		{
-			return std::find_if(off, _ingr.end(), [&name, &only_effects](const Ingredient& i) -> bool {
-				if (only_effects)
-					return std::any_of(i._effects.begin(), i._effects.end(), [&name, this](const Effect& fx) { return pred(str::tolower(fx._name), name); });
-				return i._name == name;
+			name = str::tolower(name);
+			return std::find_if(off, _ingr.end(), [&name, &only_effects](const Ingredient& i) {
+				if (only_effects) {
+					return std::any_of(i._effects.begin(), i._effects.end(), [&name](const Effect& fx) {
+						return str::tolower(fx._name) == name;
+					});
+				}
+				else return str::tolower(i._name) == name;
 			});
 		}
 

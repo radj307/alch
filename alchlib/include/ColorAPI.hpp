@@ -38,33 +38,32 @@ namespace caco_alch {
 	 */
 	inline std::string getColorIdentifier(const UIElement& ui)
 	{
-		using enum UIElement;
 		switch (ui) {
-		case BRACKET:
+		case UIElement::BRACKET:
 			return "bracket";
-		case SEARCH_HIGHLIGHT:
+		case UIElement::SEARCH_HIGHLIGHT:
 			return "search";
-		case SEARCH_HEADER:
+		case UIElement::SEARCH_HEADER:
 			return "header";
-		case INGREDIENT_NAME:
+		case UIElement::INGREDIENT_NAME:
 			return "ingredient";
-		case POTION_NAME:
+		case UIElement::POTION_NAME:
 			return "potion";
-		case ALCHEMY_SKILL:
+		case UIElement::ALCHEMY_SKILL:
 			return "alchemy_skill";
-		case EFFECT_NAME_DEFAULT:
+		case UIElement::EFFECT_NAME_DEFAULT:
 			return "effect_name";
-		case EFFECT_NAME_POSITIVE:
+		case UIElement::EFFECT_NAME_POSITIVE:
 			return "effect_positive";
-		case EFFECT_NAME_NEGATIVE:
+		case UIElement::EFFECT_NAME_NEGATIVE:
 			return "effect_negative";
-		case EFFECT_NAME_NEUTRAL:
+		case UIElement::EFFECT_NAME_NEUTRAL:
 			return "effect_neutral";
-		case EFFECT_MAGNITUDE:
+		case UIElement::EFFECT_MAGNITUDE:
 			return "magnitude";
-		case EFFECT_DURATION:
+		case UIElement::EFFECT_DURATION:
 			return "duration";
-		case KEYWORD:
+		case UIElement::KEYWORD:
 			return "keyword";
 		}
 		return{};

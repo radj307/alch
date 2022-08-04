@@ -100,17 +100,17 @@ namespace caco_alch {
 		opt3::ArgManager Arguments;
 		ConfigPathList Paths;
 		ConfigType Config;
-		Alchemy Alchemy;
+		Alchemy alchemy;
 
 		Instance(std::string argv0, opt3::ArgManager args, ConfigPathList paths) :
 			argv0{ argv0 },
 			Arguments{ std::move(args) },
 			Paths{ std::move(paths) },
 			Config{ [this]() -> ConfigType {
-			const auto iniPath{ (Arguments.check<opt3::Option>(DefaultObjects._load_config) ? Arguments.getv<opt3::Option>(DefaultObjects._load_config).value_or(Paths.ini.generic_string()) : Paths.ini) };
+			const auto iniPath{ (Arguments.check<opt3::Option>(DefaultObjects._load_config) ? Arguments.getv<opt3::Option>(DefaultObjects._load_config).value_or(Paths.ini.generic_string()) : Paths.ini.generic_string()) };
 			return file::exists(iniPath) ? file::ini::INI(iniPath) : static_cast<ConfigType>(std::nullopt);
 		}() },
-			Alchemy{ loadFromFile(Paths.ingredients), { Arguments, Config }, loadGameConfig(Paths.gameconfig, Arguments, DefaultObjects._settings) } {}
+			alchemy{ loadFromFile(Paths.ingredients), { Arguments, Config }, loadGameConfig(Paths.gameconfig, Arguments, DefaultObjects._settings) } {}
 
 
 		const static int RETURN_SUCCESS{ 0 };
@@ -147,48 +147,47 @@ namespace caco_alch {
 			if (Arguments.check<opt3::Flag>('i')) {
 				std::stringstream buffer;
 				buffer << std::cin.rdbuf();
-				Alchemy.print_build(os, parseFileContent(buffer)).flush();
+				alchemy.print_build(os, parseFileContent(buffer)).flush();
 				return RETURN_SUCCESS;
 			}
 			// l - List
 			else if (Arguments.check<opt3::Flag>('l')) {
-				Alchemy.print_list(os).flush();
+				alchemy.print_list(os).flush();
 				return RETURN_SUCCESS;
 			}
 			else {
 				// b - Build
 				const auto params{ Arguments.getv_all<opt3::Parameter>() };
 				if (Arguments.check<opt3::Flag>('b')) {
-					Alchemy.print_build(os, params, 4u).flush();
+					alchemy.print_build(os, params, 4u).flush();
 					return RETURN_SUCCESS;
 				}
 				// S - Smart Search
 				else if (Arguments.check<opt3::Flag>('S')) {
-					Alchemy.print_smart_search(os, params).flush();
+					alchemy.print_smart_search(os, params).flush();
 					return RETURN_SUCCESS;
 				}
 				// s - Search
 				else if (Arguments.check<opt3::Flag>('s')) {
 					if (const auto mag{ Arguments.check<opt3::Flag>('m') }, dur{ Arguments.check<opt3::Flag>('d') }, ranked{ Arguments.check<opt3::Flag>('r') }; mag || dur || ranked) {
-						using enum RegistryType::FXFindType;
 						RegistryType::FXFindType ft;
 						if (mag && dur)
-							ft = BOTH_AND;
+							ft = RegistryType::FXFindType::BOTH_AND;
 						else if (mag)
-							ft = MAG;
+							ft = RegistryType::FXFindType::MAG;
 						else if (dur)
-							ft = DUR;
+							ft = RegistryType::FXFindType::DUR;
 						else
-							ft = BOTH_OR;
+							ft = RegistryType::FXFindType::BOTH_OR;
 						for (auto& arg : params) {
 							if (ranked)
-								Alchemy.print_ranked_best(os, arg, ft);
+								alchemy.print_ranked_best(os, arg, ft);
 							else
-								Alchemy.print_best(os, arg, ft);
+								alchemy.print_best(os, arg, ft);
 						}
 					}
 					else for (auto& arg : params)
-						Alchemy.print_search(os, arg).flush();
+						alchemy.print_search(os, arg).flush();
 					return RETURN_SUCCESS;
 				}
 			}

@@ -55,7 +55,7 @@ namespace caco_alch {
 		{
 			size_t i{ 0ull };
 			for (auto& it : _effects)
-				if (var::variadic_or(str::tolower(it.name()) == str::tolower(effects)...))
+				if (var::variadic_or(str::tolower(it._name) == str::tolower(effects)...))
 					++i;
 			return i;
 		}
@@ -67,12 +67,12 @@ namespace caco_alch {
 		bool operator!=(const Ingredient& o) const { return (_name != o._name) && !array_match(_effects, o._effects); }
 		bool operator<(const Ingredient& o)
 		{
-			if (_name.empty() || o._name.empty()) throw std::exception("INVALID_OPERATION");
+			if (_name.empty() || o._name.empty()) throw make_exception("INVALID_OPERATION");
 			return static_cast<short>(_name.at(0)) < static_cast<short>(o._name.at(0));
 		}
 		bool operator>(const Ingredient& o)
 		{
-			if (_name.empty() || o._name.empty()) throw std::exception("INVALID_OPERATION");
+			if (_name.empty() || o._name.empty()) throw make_exception("INVALID_OPERATION");
 			return static_cast<short>(_name.at(0)) > static_cast<short>(o._name.at(0));
 		}
 	};

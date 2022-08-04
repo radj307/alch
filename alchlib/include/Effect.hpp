@@ -97,16 +97,15 @@ namespace caco_alch {
 	 */
 	inline KeywordType fallbackGetKeywordType(const std::string& name_lc)
 	{
-		using enum KeywordType;
 		const auto matches_any{ [&name_lc] <var::same_or_convertible<std::string>... vT>(const vT&... searches) { return var::variadic_or(name_lc == searches...); } };
 		const auto contains_any{ [&name_lc] <var::same_or_convertible<std::string>... vT>(const vT&... searches) { return var::variadic_or(str::pos_valid(name_lc.find(searches))...); } };
 		if (matches_any("health", "stamina", "magicka", "speed", "night eye", "feather", "waterwalking", "waterbreathing", "blood") // direct matches
 			|| contains_any("restore", "regenerat", "absorption", "fortif", "resist", "detect", "invisi", "cure")) // contains
-			return POSITIVE;
+			return KeywordType::POSITIVE;
 		else if (matches_any("slow", "frenzy", "fear", "silence", "fatigue") // direct matches
 			|| contains_any("damage", "ravage", "drain", "aversion", "paraly")) // contains
-			return NEGATIVE;
-		return NEUTRAL;
+			return KeywordType::NEGATIVE;
+		return KeywordType::NEUTRAL;
 	}
 
 	inline bool hasPositive(const Effect& effect) { return effect.hasKeyword(Keywords::positive) || fallbackGetKeywordType(str::tolower(effect._name)) == KeywordType::POSITIVE; }
