@@ -1,7 +1,9 @@
-// ReSharper disable CppClangTidyClangDiagnosticExitTimeDestructors
 #pragma once
-#include <vector>
 #include "ObjectBase.hpp"
+
+#include <strconv.hpp>
+
+#include <vector>
 
 namespace caco_alch {
 	/**

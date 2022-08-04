@@ -13,7 +13,7 @@
 
 #include <make_exception.hpp>
 #include <TermAPI.hpp>
-#include <ParamsAPI2.hpp>
+#include <opt3.hpp>
 #include <env.hpp>
 #include <str.hpp>
 
@@ -40,34 +40,36 @@ int main(const int argc, char* argv[])
 	// TODO: Add a "request" system to the potion-building mechanic that allows the user to request an automatically-generated potion of a certain type.
 	try {
 		std::cout << term::EnableANSI; // enable virtual terminal sequences
-		opt::ParamsAPI2 args(argc, argv, "color", "precision", DefaultObjects._set_gamesetting, DefaultObjects._get_gamesetting, DefaultObjects._load_config, DefaultObjects._load_gamesettings, DefaultObjects._load_registry); // parse arguments
+		opt3::ArgManager args{ argc, argv,
+			"color",
+			"precision",
+			DefaultObjects._set_gamesetting,
+			DefaultObjects._get_gamesetting,
+			DefaultObjects._load_config,
+			DefaultObjects._load_gamesettings,
+			DefaultObjects._load_registry
+		}; // parse arguments
 
-		// initialize the path environment variable
-		env::PATH path;
+		auto path{ env::PATH() };
+		const auto& [programPath, programName] {path.resolve_split(argv[0])};
 
 		// parse interrupting help argument
-		if (args.check_any<opt::Option, opt::Flag>("help", 'h')) {
-			std::cout << Help(path.resolve_split(args.arg0().value_or("")).second.replace_extension("").generic_string()) << std::endl;
+		if (args.check_any<opt3::Option, opt3::Flag>("help", 'h')) {
+			std::cout << Help(programName.generic_string()) << std::endl;
 			return 0;
 		}
 
-		const auto getOptOrDefault{ [&args](const std::string& optname, const std::string& defv) {
-			const auto val{ args.typegetv<opt::Option>(optname) };
-			if (val.has_value())
-				return val.value();
-			return defv;
-		} };
 
-		ConfigPathList paths(
-			path.resolve_split(argv[0]).first.generic_string(),
-			getOptOrDefault(DefaultObjects._load_config, DefaultObjects._default_filename_config),
-			getOptOrDefault(DefaultObjects._load_gamesettings, DefaultObjects._default_filename_gamesettings),
-			getOptOrDefault(DefaultObjects._load_registry, DefaultObjects._default_filename_registry)
-		);
+		ConfigPathList paths{
+			programPath,
+			args.getv<opt3::Option>(DefaultObjects._load_config).value_or((programPath / DefaultObjects._default_filename_config).generic_string()),
+			args.getv<opt3::Option>(DefaultObjects._load_gamesettings).value_or((programPath / DefaultObjects._default_filename_gamesettings).generic_string()),
+			args.getv<opt3::Option>(DefaultObjects._load_registry).value_or((programPath / DefaultObjects._default_filename_registry).generic_string())
+		};
 
-		Instance inst{ args, paths }; // args are parsed further here
+		Instance inst{ argv[0], args, paths }; // args are parsed further here
 
-		if (args.check<opt::Option>("validate")) // Process "--validate" opt
+		if (args.check<opt3::Option>("validate")) // Process "--validate" opt
 			inst.validate(path);
 
 		const auto rc{ inst.handleArguments() }; // finally, runtime args are parsed here

@@ -1,24 +1,46 @@
-# alch executable
-cmake_minimum_required(VERSION 3.15)
+# alch/alch
+cmake_minimum_required(VERSION 3.20)
 
-set(CMAKE_CXX_STANDARD 20)
+file(GLOB HEADERS
+	RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+	CONFIGURE_DEPENDS
+	"*.h*"
+)
+file(GLOB SRCS
+	RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+	CONFIGURE_DEPENDS
+	"*.c*"
+)
 
-if (MSVC)
-	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-	# Fix MSVC __cplusplus macro
-	string(APPEND CMAKE_CXX_FLAGS " /Zc:__cplusplus")
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/rc")
+
+if (WIN32)
+	include(ResourceMaker)
+	set(alch_rc_path "${CMAKE_CURRENT_SOURCE_DIR}/rc/alch.rc")
+
+	MAKE_STRINGRC_VERSIONINFO(alch_stringrc_versioninfo
+		"${alch_VERSION}"
+		"GNU General Public License v3 @ radj307"
+		"radj307"
+		"alch"
+		"Skyrim SE alchemy commandline utility."
+	)
+
+	MAKE_RESOURCE("${alch_rc_path}" "${alch_stringrc_versioninfo}")
 endif()
 
-project("alch")
+include(VersionTag)
+MAKE_VERSION_HEADER("${CMAKE_CURRENT_SOURCE_DIR}/rc/version.h" "alch" "${alch_VERSION}")
 
-set(HEADERS
-	"Instance.hpp"
-)
+add_executable(alch "${SRCS}" "rc/version.h" "${alch_rc_path}")
 
-set(SRC
-	"main.cpp"
-)
+set_property(TARGET alch PROPERTY CXX_STANDARD 20)
+set_property(TARGET alch PROPERTY CXX_STANDARD_REQUIRED ON)
 
-add_executable(alch ${HEADERS} ${SRC})
+if (MSVC)
+	target_compile_options(alch PRIVATE "/Zc:__cplusplus" "/Zc:preprocessor")
+endif()
 
-target_link_libraries(alch PUBLIC shared strlib optlib filelib TermAPI alch-lib)
+target_sources(alch PRIVATE "${HEADERS}")
+
+target_link_libraries(alch PUBLIC alchlib TermAPI optlib)

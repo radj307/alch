@@ -1,19 +1,14 @@
-﻿cmake_minimum_required (VERSION 3.15)
+﻿# alch/
+cmake_minimum_required (VERSION 3.20)
 
-set(CMAKE_CXX_STANDARD 20)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/307lib/307modules")
 
-if (MSVC)
-	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-	# Fix MSVC __cplusplus macro
-	string(APPEND CMAKE_CXX_FLAGS " /Zc:__cplusplus")
-endif()
+set(ENV{alch_VERSION} "0.0.0")
+include(VersionTag)
+GET_VERSION_TAG("${CMAKE_CURRENT_SOURCE_DIR}" "alch")
 
-project ("alch")
+project ("alch" VERSION "${alch_VERSION}" LANGUAGES CXX)
 
 add_subdirectory("307lib")
-
-# Add alch-lib
 add_subdirectory ("alch-lib")
-
-# Add executable
 add_subdirectory ("alch")

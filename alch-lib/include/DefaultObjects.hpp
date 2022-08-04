@@ -1,7 +1,7 @@
 #pragma once
-#include <ParamsAPI2.hpp>
-#include <GameConfig.hpp>
-#include <ColorAPI.hpp>
+#include "GameConfig.hpp"
+#include "ColorAPI.hpp"
+
 #include <fileutil.hpp>
 
 #include <string>
@@ -117,7 +117,7 @@ namespace caco_alch {
 				os << name << "\n";
 				const auto longest{ str::longest<0ull>(section)->first.size() + 2ull };
 				for (auto& [opt, desc] : section) {
-					os << "  " << opt << str::VIndent(longest, opt.size()) << desc << '\n';
+					os << "  " << opt << indent(longest, opt.size()) << desc << '\n';
 				}
 				os << '\n';
 			}

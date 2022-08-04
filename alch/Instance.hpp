@@ -1,12 +1,13 @@
 #pragma once
 #include <fileio.hpp>
 #include <fileutil.hpp>
-//#include <resolve-path.hpp>
 #include <color-transform.hpp>
 #include <INI.hpp>
 
 #include <env.hpp>
+#include <envpath.hpp>
 #include <str.hpp>
+#include <opt3.hpp>
 
 #include <Alchemy.hpp>
 #include <GameConfig.hpp>
@@ -24,13 +25,13 @@ namespace caco_alch {
 	 * @param defaults	Default GameConfig Values
 	 * @returns			GameConfig
 	 */
-	inline GameConfig loadGameConfig(const std::filesystem::path& filename, const opt::ParamsAPI2& args, const GameConfig::Cont& defaults)
+	inline GameConfig loadGameConfig(const std::filesystem::path& filename, const opt3::ArgManager& args, const GameConfig::Cont& defaults)
 	{
 		GameConfig gs{ defaults };
 
 		// check for the reset INI option
-		if (args.check<opt::Option>(DefaultObjects._reset_gamesettings)) {
-			if (file::write(filename, gs.to_stream(), false))
+		if (args.check<opt3::Option>(DefaultObjects._reset_gamesettings)) {
+			if (file::write_to(filename, gs.to_stream(), false))
 				std::cout << term::msg << "Successfully reset Game Config \"" << filename << "\"\n";
 			else
 				std::cout << term::error << "Failed to reset Game Config \"" << filename << "\" (Check write permissions)\n";
@@ -51,9 +52,9 @@ namespace caco_alch {
 			}
 		} };
 		// iterate through all --set arguments
-		for (auto& it : args.typeget_all<opt::Option>(DefaultObjects._set_gamesetting)) {
-			if (it.hasv()) {
-				const auto& [name, val] {str::split(it.getv().value(), ':')};
+		for (auto& it : args.get_all<opt3::Option>(DefaultObjects._set_gamesetting)) {
+			if (it.has_value()) {
+				const auto& [name, val] {str::split(it.value(), ':')};
 				set(name, val);
 			}
 			else throw make_exception("Missing argument for \"--set\" option.");
@@ -69,17 +70,17 @@ namespace caco_alch {
 		// if the INI configuration has changed, write it to file
 		//if (update_ini_before_return) {
 		if (modified) {
-			if (file::write(filename, gs.to_stream(), false))
+			if (file::write_to(filename, gs.to_stream(), false))
 				std::cout << term::msg << "Successfully wrote to \"" << filename << '\"' << std::endl;
 			else
 				std::cout << term::warn << "Failed to write to \"" << filename << '\"' << std::endl;
 		}
-		if (const auto get_args{ args.typeget_all<opt::Option>(DefaultObjects._get_gamesetting) }; !get_args.empty()) {
-			const bool print_all{ std::any_of(get_args.begin(), get_args.end(), [](auto&& opt) { return !opt.hasv(); }) };
+		if (const auto get_args{ args.get_all<opt3::Option>(DefaultObjects._get_gamesetting) }; !get_args.empty()) {
+			const bool print_all{ std::any_of(get_args.begin(), get_args.end(), [](auto&& opt) { return !opt.has_value(); }) };
 			if (print_all) for (auto& it : gs)
 				std::cout << it._name << " = " << it.safe_get() << '\n';
 			else for (auto& arg : get_args) {
-				const auto capv{ arg.getv().value() };
+				const auto capv{ arg.value() };
 				if (const auto target{ gs.find(capv, 0, true) }; target != gs.end())
 					std::cout << target->_name << " = " << target->safe_get() << '\n';
 				else
@@ -95,16 +96,18 @@ namespace caco_alch {
 	struct Instance {
 		using ConfigType = std::optional<file::ini::INI>;
 
-		opt::ParamsAPI2 Arguments;
+		std::string argv0;
+		opt3::ArgManager Arguments;
 		ConfigPathList Paths;
 		ConfigType Config;
 		Alchemy Alchemy;
 
-		Instance(opt::ParamsAPI2 args, ConfigPathList paths) :
+		Instance(std::string argv0, opt3::ArgManager args, ConfigPathList paths) :
+			argv0{ argv0 },
 			Arguments{ std::move(args) },
 			Paths{ std::move(paths) },
 			Config{ [this]() -> ConfigType {
-			const auto iniPath{ (Arguments.check<opt::Option>(DefaultObjects._load_config) ? Arguments.typegetv<opt::Option>(DefaultObjects._load_config).value_or(Paths.ini.generic_string()) : Paths.ini) };
+			const auto iniPath{ (Arguments.check<opt3::Option>(DefaultObjects._load_config) ? Arguments.getv<opt3::Option>(DefaultObjects._load_config).value_or(Paths.ini.generic_string()) : Paths.ini) };
 			return file::exists(iniPath) ? file::ini::INI(iniPath) : static_cast<ConfigType>(std::nullopt);
 		}() },
 			Alchemy{ loadFromFile(Paths.ingredients), { Arguments, Config }, loadGameConfig(Paths.gameconfig, Arguments, DefaultObjects._settings) } {}
@@ -121,9 +124,9 @@ namespace caco_alch {
 		void validate(std::ostream& os, const env::PATH& path, const std::streamsize indent = 20ll) const
 		{
 			const auto print{ [&os, &indent](const std::string& name, const std::string& target) {
-				os << name << str::VIndent(indent, name.size()) << (file::exists(target) ? color::setcolor::green : color::setcolor::red) << target << color::reset << '\n';
+				os << name << format::indent(indent, name.size()) << (file::exists(target) ? color::setcolor::green : color::setcolor::red) << target << color::reset << '\n';
 			} };
-			print("argv[0]", Arguments.arg0().value_or(""));
+			print("argv[0]", argv0);
 			print("directory", Paths.localDir.generic_string());
 			print("registry", Paths.ingredients.generic_string());
 			print("INI Config", Paths.ini.generic_string());
@@ -141,32 +144,32 @@ namespace caco_alch {
 		int handleArguments(std::ostream& os) const
 		{
 			// i - Build from File
-			if (Arguments.check<opt::Flag>('i')) {
+			if (Arguments.check<opt3::Flag>('i')) {
 				std::stringstream buffer;
 				buffer << std::cin.rdbuf();
 				Alchemy.print_build(os, parseFileContent(buffer)).flush();
 				return RETURN_SUCCESS;
 			}
 			// l - List
-			else if (Arguments.check<opt::Flag>('l')) {
+			else if (Arguments.check<opt3::Flag>('l')) {
 				Alchemy.print_list(os).flush();
 				return RETURN_SUCCESS;
 			}
 			else {
 				// b - Build
-				const auto params{ Arguments.typegetv_all<opt::Parameter>() };
-				if (Arguments.check<opt::Flag>('b')) {
+				const auto params{ Arguments.getv_all<opt3::Parameter>() };
+				if (Arguments.check<opt3::Flag>('b')) {
 					Alchemy.print_build(os, params, 4u).flush();
 					return RETURN_SUCCESS;
 				}
 				// S - Smart Search
-				else if (Arguments.check<opt::Flag>('S')) {
+				else if (Arguments.check<opt3::Flag>('S')) {
 					Alchemy.print_smart_search(os, params).flush();
 					return RETURN_SUCCESS;
 				}
 				// s - Search
-				else if (Arguments.check<opt::Flag>('s')) {
-					if (const auto mag{ Arguments.check<opt::Flag>('m') }, dur{ Arguments.check<opt::Flag>('d') }, ranked{ Arguments.check<opt::Flag>('r') }; mag || dur || ranked) {
+				else if (Arguments.check<opt3::Flag>('s')) {
+					if (const auto mag{ Arguments.check<opt3::Flag>('m') }, dur{ Arguments.check<opt3::Flag>('d') }, ranked{ Arguments.check<opt3::Flag>('r') }; mag || dur || ranked) {
 						using enum RegistryType::FXFindType;
 						RegistryType::FXFindType ft;
 						if (mag && dur)

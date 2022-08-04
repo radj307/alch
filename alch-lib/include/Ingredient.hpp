@@ -1,6 +1,7 @@
 #pragma once
-#include <array>
 #include "Effect.hpp"
+
+#include <array>
 
 namespace caco_alch {
 	/**

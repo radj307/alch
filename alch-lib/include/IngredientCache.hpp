@@ -1,8 +1,9 @@
 #pragma once
-#include <set>
 #include "using.h"
 #include "Ingredient.hpp"
 #include "Format.hpp"
+
+#include <set>
 
 namespace caco_alch {
 
@@ -309,7 +310,7 @@ namespace caco_alch {
 				const auto
 					lfx{ std::find_if(l._effects.begin(), l._effects.end(), [&fx_name](auto&& fx) { return str::tolower(fx._name) == str::tolower(fx_name); }) },
 					rfx{ std::find_if(r._effects.begin(), r._effects.end(), [&fx_name](auto&& fx) { return str::tolower(fx._name) == str::tolower(fx_name); }) };
-				if (const auto lvalid{ lfx != l._effects.end() && !excluded(l)}, rvalid{rfx != r._effects.end() && !excluded(r)}; lvalid && rvalid) {
+				if (const auto lvalid{ lfx != l._effects.end() && !excluded(l) }, rvalid{ rfx != r._effects.end() && !excluded(r) }; lvalid && rvalid) {
 					switch (ft) {
 					case FXFindType::BOTH_OR:
 						return (lfx->_magnitude < rfx->_magnitude) || (lfx->_duration < rfx->_duration);

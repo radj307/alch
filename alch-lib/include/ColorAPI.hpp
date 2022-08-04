@@ -75,7 +75,10 @@ namespace caco_alch {
 	 * @brief Wrapper for variable TermAPI color that have integrated bold formatting support and an operator<<.
 	 */
 	struct Color : public color::setcolor {
-		Color(const short color = color::white, const bool bold = false, const bool foreground = true) : color::setcolor(color, foreground ? color::Layer::F : color::Layer::B, bold ? color::format::BOLD : color::format::NONE) {}
+		Color(const short color = color::white, const bool bold = false, const bool foreground = true) : color::setcolor(color, foreground ? color::Layer::F : color::Layer::B)
+		{
+			if (bold) this->operator+=(color::FormatFlag::Bold);
+		}
 	};
 
 	using PaletteType = color::palette<UIElement>;

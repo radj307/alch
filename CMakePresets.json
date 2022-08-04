@@ -1,70 +1,189 @@
 ﻿{
-  "version": 3,
-  "cmakeMinimumRequired": {
-    "major": 3,
-    "minor": 13,
-    "patch": 0
-  },
+  "version": 2,
   "configurePresets": [
     {
-      "name": "linux-default",
-      "displayName": "Linux Debug",
-      "description": "Target the Windows Subsystem for Linux (WSL) or a remote Linux system.",
+      "name": "default",
+      "hidden": true,
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
         "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
       },
+      "warnings": {
+        "deprecated": true,
+        "unusedCli": true,
+        "uninitialized": true
+      }
+    },
+    {
+      "name": "Debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "RelWithDebInfo",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "Release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "MinSizeRel",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "MinSizeRel"
+      }
+    },
+
+
+
+    {
+      "name": "linux-default",
+      "hidden": true,
+      "inherits": "default",
+      "displayName": "LINUX DEFAULT PRESET",
+      "description": "Target the Windows Subsystem for Linux (WSL) or a remote Linux system.",
+      "generator": "Ninja",
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Linux" ] },
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" }
       }
     },
     {
+      "name": "linux-debug",
+      "inherits": [ "linux-default", "Debug" ],
+      "hidden": false,
+      "displayName": "Linux Debug"
+    },
+    {
+      "name": "linux-relwithdebinfo",
+      "inherits": [ "linux-default", "RelWithDebInfo" ],
+      "hidden": false,
+      "displayName": "Linux Release w/ Debugging Symbols"
+    },
+    {
+      "name": "linux-release",
+      "inherits": [ "linux-default", "Release" ],
+      "hidden": false,
+      "displayName": "Linux Release"
+    },
+    {
+      "name": "linux-minsizerel",
+      "inherits": [ "linux-default", "MinSizeRel" ],
+      "hidden": false,
+      "displayName": "Linux Minimal Release"
+    },
+
+
+
+    {
       "name": "macos-default",
-      "displayName": "macOS Debug",
+      "hidden": true,
+      "inherits": "default",
+      "displayName": "MACOS DEFAULT PRESET",
       "description": "Target a remote macOS system with Ninja",
       "generator": "Ninja",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
-      },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "macOS" ] },
         "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" }
       }
     },
     {
+      "name": "macos-debug",
+      "hidden": false,
+      "inherits": [ "macos-default", "Debug" ],
+      "displayName": "macOS Debug"
+    },
+    {
+      "name": "macos-relwithdebinfo",
+      "inherits": [ "macos-default", "RelWithDebInfo" ],
+      "hidden": false,
+      "displayName": "macOS Release w/ Debugging Symbols"
+    },
+    {
+      "name": "macos-release",
+      "hidden": false,
+      "inherits": [ "macos-default", "Release" ],
+      "displayName": "macOS Release"
+    },
+    {
+      "name": "macos-minsizerel",
+      "inherits": [ "macos-default", "MinSizeRel" ],
+      "hidden": false,
+      "displayName": "macOS Minimal Release"
+    },
+
+
+
+    {
       "name": "windows-default",
-      "displayName": "Windows x64",
+      "hidden": true,
+      "inherits": "default",
+      "displayName": "WINDOWS 64-BIT DEFAULT PRESET",
       "description": "Target Windows with the Visual Studio development environment.",
-      "generator": "Visual Studio 17 2022",
-      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "generator": "Ninja",
       "architecture": {
         "value": "x64",
         "strategy": "external"
       },
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "MinSizeRel",
-        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}"
-      },
-      "vendor": {
-        "microsoft.com/VisualStudioSettings/CMake/1.0": {
-          "hostOS": [ "Windows" ],
-          "autoFormat": true
-        }
-      }
+      "vendor": { "microsoft.com/VisualStudioSettings/CMake/1.0": { "hostOS": [ "Windows" ] } }
     },
     {
       "name": "windows-debug",
-      "inherits": "windows-default",
-      "displayName": "Windows x64",
-      "description": "Target Windows with the Visual Studio development environment.",
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug"
-      }
+      "inherits": [ "windows-default", "Debug" ],
+      "hidden": false,
+      "displayName": "Windows x64 Debug"
+    },
+    {
+      "name": "windows-relwithdebinfo",
+      "inherits": [ "windows-default", "RelWithDebInfo" ],
+      "hidden": false,
+      "displayName": "Windows x64 Release w/ Debugging Symbols"
+    },
+    {
+      "name": "windows-release",
+      "inherits": [ "windows-default", "Release" ],
+      "hidden": false,
+      "displayName": "Windows x64 Release"
+    },
+    {
+      "name": "windows-minsizerel",
+      "inherits": [ "windows-default", "MinSizeRel" ],
+      "hidden": false,
+      "displayName": "Windows x64 Minimal Release"
+    }
+  ],
+
+
+
+  "buildPresets": [
+    {
+      "name": "release-clean",
+      "hidden": true,
+      "cleanFirst": true,
+      "verbose": false,
+      "jobs": 4
+    },
+    {
+      "name": "linux-release",
+      "inherits": "release-clean",
+      "configurePreset": "linux-release",
+      "displayName": "Clean Release"
+    },
+    {
+      "name": "windows-x64-release",
+      "inherits": "release-clean",
+      "configurePreset": "windows-release",
+      "displayName": "Clean Release"
     }
   ]
 }

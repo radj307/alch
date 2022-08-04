@@ -1,43 +1,38 @@
-﻿# alch-lib
-cmake_minimum_required (VERSION 3.15)
+﻿# alch/alchlib
+cmake_minimum_required (VERSION 3.20)
 
-set(CMAKE_CXX_STANDARD 20)
+file(GLOB HEADERS
+	RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+	CONFIGURE_DEPENDS
+	"include/*.h*"
+)
+file(GLOB SRCS
+	RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+	CONFIGURE_DEPENDS
+	"src/*.c*"
+)
+
+add_library(alchlib STATIC "${SRCS}")
+
+set_property(TARGET alchlib PROPERTY CXX_STANDARD 20)
+set_property(TARGET alchlib PROPERTY CXX_STANDARD_REQUIRED ON)
+set_property(TARGET alchlib PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 if (MSVC)
-	set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-	# Fix MSVC __cplusplus macro
-	string(APPEND CMAKE_CXX_FLAGS " /Zc:__cplusplus")
+	target_compile_options(alchlib PRIVATE "/Zc:__cplusplus" "/Zc:preprocessor")
 endif()
 
-project("alch-lib")
+include(PrependEach)
+PREPEND_EACH(HEADERS_ABS "${HEADERS}" "${CMAKE_CURRENT_SOURCE_DIR}/")
 
-set(HEADERS
-	"./include/using.h"
-	"./include/GameConfig.hpp"
-	"./include/ColorAPI.hpp"
-	"./include/reparse.hpp"
-	"./include/reloader.hpp"
-
-	"./include/ObjectBase.hpp"
-	"./include/Keyword.hpp"
-	"./include/Effect.hpp"
-	"./include/Ingredient.hpp"
-	"./include/Potion.hpp"
-	"./include/IngredientCache.hpp"
-	
-	"./include/OutputFormat.hpp"
-	"./include/Format.hpp"
-
-	"./include/Alchemy.hpp"
-
-	"./include/handle_arguments.hpp"
-	"./include/DefaultObjects.hpp"
-)
-set(SRC
-	"./src/DefaultObjects.cpp"
+target_sources(alchlib PUBLIC
+	"$<BUILD_INTERFACE:${HEADERS_ABS}>"
+	"$<INSTALL_INTERFACE:${HEADERS}>"
 )
 
-add_library(alch-lib STATIC ${HEADERS} ${SRC})
-target_link_libraries(alch-lib PUBLIC shared TermAPI strlib filelib optlib)
-target_include_directories(alch-lib PUBLIC "./include" "./src")
+target_link_libraries(alchlib PUBLIC TermAPI optlib strlib filelib)
 
+target_include_directories(alchlib PUBLIC
+	"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include;${CMAKE_CURRENT_SOURCE_DIR}/src>"
+	"$<INSTALL_INTERFACE:include;src>"
+)

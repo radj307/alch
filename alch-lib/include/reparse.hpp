@@ -177,7 +177,7 @@ namespace reparse {
 				os << " = " << value(false) << '\n';
 			else { // this element is a section, recurse into it.
 				os << '\n' << tabs << "{\n";
-				for (auto it : getVec()) {
+				for (auto& it : getVec()) {
 					it._indent = _indent + 1; // set each sub-elements indent value to this elements indent value + 1.
 					os << const_cast<Elem*>(&it);
 				}
@@ -258,7 +258,7 @@ namespace reparse {
 	 * @return true		- Successfully wrote to the given file.
 	 * @return false	- Failed to write to the specified file.
 	 */
-	inline bool writeElemContainer(const std::string& filename, Elem::Cont& data) { return file::write(filename, _internal::build_stream(data), false); }
+	inline bool writeElemContainer(const std::string& filename, Elem::Cont& data) { return file::write_to(filename, _internal::build_stream(data), false); }
 
 	/**
 	 * TODO: Implement arrays of elements with only names, designated with square brackets. []

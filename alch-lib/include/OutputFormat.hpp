@@ -1,9 +1,9 @@
 #pragma once
+#include "ColorAPI.hpp"
+
 #include <sysarch.h>
 #include <INI.hpp>
-#include <ParamsAPI2.hpp>
-
-#include "ColorAPI.hpp"
+#include <opt3.hpp>
 
 #include <optional>
 
@@ -40,17 +40,17 @@ namespace caco_alch {
 			_precision{ precision }
 			//		ColorAPI{ std::move(colors) }
 		{}
-		OutputFormat(const opt::ParamsAPI2& args, const std::optional<file::ini::INI>& ini = std::nullopt) :
-			_flag_quiet{ args.check<opt::Flag>('q') },
-			_flag_verbose{ args.check<opt::Flag>('v') },
-			_flag_exact{ args.check<opt::Flag>('e') },
-			_flag_all{ args.check<opt::Flag>('a') },
-			_flag_export{ args.check<opt::Flag>('E') },
-			_flag_reverse{ args.check<opt::Flag>('R') },
-			_flag_color{ args.check<opt::Flag>('c') },
-			_flag_smart{ args.check<opt::Flag>('S') },
-			_indent{ str::stoui(args.typegetv<opt::Option>("indent"s).value_or([&ini]() -> std::string {if (ini.has_value())if (const auto value{ ini.value().getvs("format", "indent") }; !value.has_value()) return value.value(); return "2"; }())) },
-			_precision{ str::stoui(args.typegetv<opt::Option>("precision").value_or([&ini]() -> std::string { if (ini.has_value()) if (const auto value{ ini.value().getvs("format", "precision") }; !value.has_value()) return value.value(); return "2"; }())) } {}
+		OutputFormat(const opt3::ArgManager& args, const std::optional<file::ini::INI>& ini = std::nullopt) :
+			_flag_quiet{ args.check<opt3::Flag>('q') },
+			_flag_verbose{ args.check<opt3::Flag>('v') },
+			_flag_exact{ args.check<opt3::Flag>('e') },
+			_flag_all{ args.check<opt3::Flag>('a') },
+			_flag_export{ args.check<opt3::Flag>('E') },
+			_flag_reverse{ args.check<opt3::Flag>('R') },
+			_flag_color{ args.check<opt3::Flag>('c') },
+			_flag_smart{ args.check<opt3::Flag>('S') },
+			_indent{ str::stoui(args.getv<opt3::Option>("indent"s).value_or([&ini]() -> std::string {if (ini.has_value())if (const auto value{ ini.value().getvs("format", "indent") }; !value.has_value()) return value.value(); return "2"; }())) },
+			_precision{ str::stoui(args.getv<opt3::Option>("precision").value_or([&ini]() -> std::string { if (ini.has_value()) if (const auto value{ ini.value().getvs("format", "precision") }; !value.has_value()) return value.value(); return "2"; }())) } {}
 
 		virtual ~OutputFormat() = default;
 	protected:
