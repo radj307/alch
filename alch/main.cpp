@@ -41,7 +41,7 @@ struct Help {
 			<< "      --ingredients          Specifies the location of the ingredients registry.     (Default is 'alch.ingredients')" << '\n'
 			<< "      --config               Specifies the location of the INI config file.          (Default is 'alch.ini')" << '\n'
 			<< "      --gamesettings         Specifies the location of the GameSetting config file.  (Default is 'alch.gamesettings')" << '\n'
-			<< "      --reset                Resets the GameSettings config file to default, or creates a new one if it doesn't exist." << '\n'
+			<< "      --reset-gamesettings   Resets the GameSettings config file to default, or creates a new one if it doesn't exist." << '\n'
 			<< "      --set <SETTING:VALUE>  Set the specified GameSetting to the given value." << '\n'
 			<< "      --get <SETTING>        Gets the current value of the specified GameSetting" << '\n'
 			<< '\n'

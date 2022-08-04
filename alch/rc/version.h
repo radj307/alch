@@ -3,12 +3,12 @@
  */
 #pragma once
 #define alch_VERSION_MAJOR			3
-#define alch_VERSION_MINOR			0
+#define alch_VERSION_MINOR			2
 #define alch_VERSION_PATCH			0
 #define alch_VERSION_EXTRA			
 
 // Current alch version number as a string.
-#define alch_VERSION				"3.0.0"
+#define alch_VERSION				"3.2.0"
 
 // Current alch extended version number as a string.
-#define alch_VERSION_EXTENDED		"3.0.0"
+#define alch_VERSION_EXTENDED		"3.2.0"

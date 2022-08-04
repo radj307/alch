@@ -30,7 +30,7 @@ namespace caco_alch {
 		GameConfig gs{ defaults };
 
 		// check for the reset INI option
-		if (args.check<opt3::Option>(DefaultObjects._reset_gamesettings)) {
+		if (args.check<opt3::Option>("reset-gamesettings")) {
 			if (file::write_to(filename, gs.to_stream(), false))
 				std::cout << term::msg << "Successfully reset Game Config \"" << filename << "\"\n";
 			else
@@ -41,25 +41,23 @@ namespace caco_alch {
 		const auto set{ [&gs, &modified](const std::string& name, const std::string& value) {
 			try {
 				if (gs.set(name, value)) {
-					std::cout << term::msg << "\'" << name << "\' = \'" << value << "\'\n";
+					std::cout << term::msg << name << " = " << value << "\n";
 					//update_ini_before_return = true;
 					modified = true;
 				}
-				else
-					std::cout << term::warn << "Set operation failed without exception.\n";
+				else std::cout << term::warn << "Couldn't set the value of '" << name << "'; does that key exist?" << std::endl;
 			} catch (std::exception& ex) {
 				std::cout << term::error << "Setting \"" << name << "\" to \"" << value << "\" caused an exception: \"" << ex.what() << '\"' << std::endl;
 			}
 		} };
 		// iterate through all --set arguments
-		for (auto& it : args.get_all<opt3::Option>(DefaultObjects._set_gamesetting)) {
+		for (auto& it : args.get_all<opt3::Option>("set")) {
 			if (it.has_value()) {
 				const auto& [name, val] {str::split(it.value(), ':')};
 				set(name, val);
 			}
-			else throw make_exception("Missing argument for \"--set\" option.");
 		}
-		/*for (auto it{args.find(DefaultObjects._set_gamesetting)}; it != args.end(); it = args.find(DefaultObjects._set_gamesetting, it + 1)) {
+		/*for (auto it{args.find("set")}; it != args.end(); it = args.find("set", it + 1)) {
 			if (const auto arg{}; arg.has_value() && !arg.value().empty()) {
 				if (const auto pos{ arg.value().find(':') }; str::pos_valid(pos) && !str::pos_valid(arg.value().find(':', pos + 1)))
 					set(arg.value().substr(0u, pos), arg.value().substr(pos + 1));
@@ -75,7 +73,7 @@ namespace caco_alch {
 			else
 				std::cout << term::warn << "Failed to write to \"" << filename << '\"' << std::endl;
 		}
-		if (const auto get_args{ args.get_all<opt3::Option>(DefaultObjects._get_gamesetting) }; !get_args.empty()) {
+		if (const auto get_args{ args.get_all<opt3::Option>("get")}; !get_args.empty()) {
 			const bool print_all{ std::any_of(get_args.begin(), get_args.end(), [](auto&& opt) { return !opt.has_value(); }) };
 			if (print_all) for (auto& it : gs)
 				std::cout << it._name << " = " << it.safe_get() << '\n';
@@ -107,7 +105,7 @@ namespace caco_alch {
 			Arguments{ std::move(args) },
 			Paths{ std::move(paths) },
 			Config{ [this]() -> ConfigType {
-			const auto iniPath{ (Arguments.check<opt3::Option>(DefaultObjects._load_config) ? Arguments.getv<opt3::Option>(DefaultObjects._load_config).value_or(Paths.ini.generic_string()) : Paths.ini.generic_string()) };
+			const auto iniPath{ Arguments.getv<opt3::Option>("config").value_or(Paths.ini.generic_string()) };
 			return file::exists(iniPath) ? file::ini::INI(iniPath) : static_cast<ConfigType>(std::nullopt);
 		}() },
 			alchemy{ loadFromFile(Paths.ingredients), { Arguments, Config }, loadGameConfig(Paths.gameconfig, Arguments, DefaultObjects._settings) } {}
