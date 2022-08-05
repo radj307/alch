@@ -5,7 +5,7 @@
  */
  //#define DEBUG_SWITCH ///< @brief Define this in debug configuration to switch to debug mode.
  // must be in debug configuration, and have DEBUG_SWITCH defined.
-#if defined(DEBUG_SWITCH) && defined(_DEBUG)
+#if defined(DEBUG_SWITCH) && (!defined(OS_WIN) || defined(_DEBUG))
 #define ENABLE_DEBUG
 #endif
 
@@ -78,7 +78,7 @@ struct Help {
  *				| -1			| An exception occurred and the program performed a controlled crash.         |
  *				| -2			| An unknown exception occurred and the program performed a controlled crash. |
  */
-int main(const int argc, char* argv[])
+int main(const int argc, char** argv)
 {
 	using namespace caco_alch;
 	// TODO: Add check & INI value for CACO's locked-duration potions. (1s, 5s, 10s)
