@@ -2,7 +2,7 @@
 #include "ColorAPI.hpp"
 
 #include <sysarch.h>
-#include <INI.hpp>
+#include <INIRedux.hpp>
 #include <opt3.hpp>
 
 #include <optional>

@@ -2,7 +2,7 @@
 #include <fileio.hpp>
 #include <fileutil.hpp>
 #include <color-transform.hpp>
-#include <INI.hpp>
+#include <INIRedux.hpp>
 
 #include <env.hpp>
 #include <envpath.hpp>
@@ -52,8 +52,8 @@ namespace caco_alch {
 		} };
 		// iterate through all --set arguments
 		for (auto& it : args.get_all<opt3::Option>("set")) {
-			if (it.has_value()) {
-				const auto& [name, val] {str::split(it.value(), ':')};
+			if (it.has_capture()) {
+				const auto& [name, val] {str::split(it.capture(), ':')};
 				set(name, val);
 			}
 		}
@@ -74,11 +74,11 @@ namespace caco_alch {
 				std::cout << term::warn << "Failed to write to \"" << filename << '\"' << std::endl;
 		}
 		if (const auto get_args{ args.get_all<opt3::Option>("get")}; !get_args.empty()) {
-			const bool print_all{ std::any_of(get_args.begin(), get_args.end(), [](auto&& opt) { return !opt.has_value(); }) };
+			const bool print_all{ std::any_of(get_args.begin(), get_args.end(), [](auto&& opt) { return !opt.has_capture(); }) };
 			if (print_all) for (auto& it : gs)
 				std::cout << it._name << " = " << it.safe_get() << '\n';
 			else for (auto& arg : get_args) {
-				const auto capv{ arg.value() };
+				const auto capv{ arg.capture() };
 				if (const auto target{ gs.find(capv, 0, true) }; target != gs.end())
 					std::cout << target->_name << " = " << target->safe_get() << '\n';
 				else
@@ -122,7 +122,7 @@ namespace caco_alch {
 		void validate(std::ostream& os, const env::PATH& path, const std::streamsize indent = 20ll) const
 		{
 			const auto print{ [&os, &indent](const std::string& name, const std::string& target) {
-				os << name << format::indent(indent, name.size()) << (file::exists(target) ? color::setcolor::green : color::setcolor::red) << target << color::reset << '\n';
+				os << name << shared::indent(indent, name.size()) << (file::exists(target) ? color::setcolor::green : color::setcolor::red) << target << color::reset << '\n';
 			} };
 			print("argv[0]", argv0);
 			print("directory", Paths.localDir.generic_string());

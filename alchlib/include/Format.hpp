@@ -6,7 +6,6 @@
 #include "OutputFormat.hpp"
 
 #include <str.hpp>
-#include <iter.hpp>
 
 #include <iomanip>
 #include <utility>
@@ -189,11 +188,13 @@ namespace caco_alch {
 			 */
 			void print(std::ostream& os, const KeywordList& list, const bool& allow_reverse = false) const
 			{
-				const auto func{ [this, &os](const auto& kywd, const bool& is_last) { os << PrintObject(kywd, *this); if (!is_last) os << '\n'; } };
+				const auto func{ [&os, this](const auto& kywd) {
+					os << '\n' << PrintObject(kywd, *this);
+				} };
 				if (allow_reverse && fmt.reverse_output())
-					iter::for_each(list.rbegin(), list.rend(), func);
+					std::for_each(list.rbegin(), list.rend(), func);
 				else
-					iter::for_each(list.begin(), list.end(), func);
+					std::for_each(list.begin(), list.end(), func);
 			}
 			/**
 			 * @brief Print an object reference to the given output stream.
@@ -242,26 +243,24 @@ namespace caco_alch {
 			 */
 			void print(std::ostream& os, const EffectList& list, const bool& allow_reverse = false) const
 			{
-				const auto func{ [this, &os](const auto& fx, const bool& is_last) {
+				const auto func{ [&os, this](const auto& fx) {
+					if (fx.isNullEffect())
+						return;
 					if (!fmt.quiet()) {
-						os << PrintObject(fx, *this);
-						if (!is_last)
-							os << '\n';
+						os << '\n' << PrintObject(fx, *this);
 					}
 					else if (searched.has_value()) {
 						if (const auto lc_name{ str::tolower(fx._name) }; std::any_of(searched.value().begin(), searched.value().end(), [&lc_name, this](auto search) {
 							search = str::tolower(search);
 							return lc_name == search || !fmt._flag_exact && str::pos_valid(lc_name.find(search));
 							}))
-							os << PrintObject(fx, *this);
-						if (!is_last)
-							os << '\n';
+							os << '\n' << PrintObject(fx, *this);
 					}
 				} };
 				if (allow_reverse && fmt.reverse_output())
-					iter::for_each(list.rbegin(), list.rend(), func);
+					std::for_each(list.rbegin(), list.rend(), func);
 				else
-					iter::for_each(list.begin(), list.end(), func);
+					std::for_each(list.begin(), list.end(), func);
 			}
 			/**
 			 * @brief Print an object reference to the given output stream.
@@ -276,7 +275,7 @@ namespace caco_alch {
 					os << "\n}";
 				}
 				else {
-					// print objedient name
+					// print ingredient name
 					os << ind;
 					if (searched.has_value()) {
 						const auto [pre, highlight, post] { fmt.split_name(obj._name, searched.value()) };
@@ -285,7 +284,7 @@ namespace caco_alch {
 					else
 						os << ColorAPI.set(UIElement::INGREDIENT_NAME) << obj._name << color::reset;
 					if (const auto effects{ getEffects(obj) }; !effects.empty())
-						os << '\n' << PrintObject(effects, *this, true);
+						os << PrintObject(effects, *this, true);
 				}
 			}
 			/**
@@ -295,27 +294,23 @@ namespace caco_alch {
 			 */
 			void print(std::ostream& os, const SortedIngrList& list, const bool& allow_reverse = true) const
 			{
-				const auto func{ [&os, this](const auto& ingr, const bool& is_last) {
-					os << PrintObject(ingr, *this);
-					if (!is_last)
-						os << '\n';
+				const auto func{ [&os, this](const auto& ingr) {
+					os << '\n' << PrintObject(ingr, *this);
 				} };
 				if (allow_reverse && fmt.reverse_output())
-					iter::for_each(list.rbegin(), list.rend(), func);
+					std::for_each(list.rbegin(), list.rend(), func);
 				else
-					iter::for_each(list.begin(), list.end(), func);
+					std::for_each(list.begin(), list.end(), func);
 			}
 			void print(std::ostream& os, const std::vector<Ingredient>& vec, const bool& allow_reverse = true) const
 			{
-				const auto func{ [&os, this](const auto& ingr, const bool& is_last) {
-					os << PrintObject(ingr, *this);
-					if (!is_last)
-						os << '\n';
+				const auto func{ [&os, this](const auto& ingr) {
+					os << '\n' << PrintObject(ingr, *this);
 				} };
 				if (allow_reverse && fmt.reverse_output())
-					iter::for_each(vec.rbegin(), vec.rend(), func);
+					std::for_each(vec.rbegin(), vec.rend(), func);
 				else
-					iter::for_each(vec.begin(), vec.end(), func);
+					std::for_each(vec.begin(), vec.end(), func);
 			}
 			/**
 			 * @brief Print an object reference to the given output stream.
@@ -388,7 +383,7 @@ namespace caco_alch {
 		};
 		PrintObject print(PrintObject::Variant obj, PrintableBase::SearchedType searched = std::nullopt) const
 		{
-			return PrintObject{ std::move(obj), *this, Indentation{ static_cast<std::streamsize>(_indent)}, searched };
+			return PrintObject{ std::move(obj), *this, Indentation{ static_cast<std::streamsize>(_indent) }, searched };
 		}
 
 		/**

@@ -27,6 +27,15 @@ namespace caco_alch {
 		Effect(const std::string& name, KeywordList&& keywords) : ObjectBase(name), _magnitude{ -0.0 }, _duration{ 0u }, _keywords{ std::move(keywords) } {}
 		Effect(const std::string& name, const double magnitude, const unsigned duration, KeywordList&& keywords) : ObjectBase(name), _magnitude{ magnitude }, _duration{ duration }, _keywords{ std::move(keywords) } {}
 
+		/**
+		 * @brief	Checks whether the effect is null or not. A null effect has a magnitude of -0.0 and a duration of 0.
+		 * @returns	true when this effect is null; otherwise false.
+		 */
+		[[nodiscard]] CONSTEXPR bool isNullEffect() const
+		{
+			return _magnitude == -0.0 && _duration == 0u;
+		}
+
 		/** // Working Variadic Template Example
 		 * @function hasKeyword(const T&...) const
 		 * @brief Check if this effect has any of a number of keywords.

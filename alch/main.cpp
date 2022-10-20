@@ -38,9 +38,9 @@ struct Help {
 			<< "  -c                         Disables colorization of effect names based on their keywords." << '\n'
 			<< "      --precision <#>        Sets the floating-point printing precision to the specified number of digits." << '\n'
 			<< "      --validate             Shows debug information including filepaths, and whether they were found or not." << '\n'
-			<< "      --ingredients          Specifies the location of the ingredients registry.     (Default is 'alch.ingredients')" << '\n'
-			<< "      --config               Specifies the location of the INI config file.          (Default is 'alch.ini')" << '\n'
-			<< "      --gamesettings         Specifies the location of the GameSetting config file.  (Default is 'alch.gamesettings')" << '\n'
+			<< "      --ingredients <path>   Specifies the location of the ingredients registry.     (Default is 'alch.ingredients')" << '\n'
+			<< "      --config <path>        Specifies the location of the INI config file.          (Default is 'alch.ini')" << '\n'
+			<< "      --gamesettings <path>  Specifies the location of the GameSetting config file.  (Default is 'alch.gamesettings')" << '\n'
 			<< "      --reset-gamesettings   Resets the GameSettings config file to default, or creates a new one if it doesn't exist." << '\n'
 			<< "      --set <SETTING:VALUE>  Set the specified GameSetting to the given value." << '\n'
 			<< "      --get <SETTING>        Gets the current value of the specified GameSetting" << '\n'
@@ -93,7 +93,7 @@ int main(const int argc, char** argv)
 			"get"_reqcap,
 			"config"_reqcap,
 			"gamesettings"_reqcap,
-			"ingredients"_reqcap
+			opt3::make_template(opt3::CaptureStyle::Required, opt3::ConflictStyle::Conflict, "ingredients", "registry"),
 		};
 
 		auto path{ env::PATH() };
@@ -113,13 +113,15 @@ int main(const int argc, char** argv)
 			programPath,
 			args.castgetv<std::filesystem::path, opt3::Option>("config").value_or(programPath / DefaultObjects._default_filename_config),
 			args.castgetv<std::filesystem::path, opt3::Option>("gamesettings").value_or(programPath / DefaultObjects._default_filename_gamesettings),
-			args.castgetv<std::filesystem::path, opt3::Option>("ingredients").value_or(programPath / DefaultObjects._default_filename_registry)
+			args.castgetv_any<std::filesystem::path, opt3::Option>("ingredients", "registry").value_or(programPath / DefaultObjects._default_filename_registry)
 		};
 
 		Instance inst{ argv[0], args, paths }; // args are parsed further here
 
-		if (args.check<opt3::Option>("validate")) // Process "--validate" opt
+		if (args.check<opt3::Option>("validate")) {// Process "--validate" opt
 			inst.validate(path);
+			return 0;
+		}
 
 		const auto rc{ inst.handleArguments() }; // finally, runtime args are parsed here
 		if (rc == Instance::RETURN_FAILURE)
