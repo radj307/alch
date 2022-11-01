@@ -270,7 +270,7 @@ namespace caco_alch {
 			void print(std::ostream& os, const Ingredient& obj) const
 			{
 				if (fmt.file_export()) {
-					os << ind << obj._name << "\n{\n";
+					os << ind << obj._name << "\n{";
 					os << PrintObject(getEffects(obj), *this, true);
 					os << "\n}";
 				}
