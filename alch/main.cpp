@@ -11,6 +11,7 @@
 
 #include "rc/version.h"
 #include "Instance.hpp"
+#include "Colors.hpp"
 
 #include <make_exception.hpp>
 #include <TermAPI.hpp>

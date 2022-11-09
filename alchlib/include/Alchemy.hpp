@@ -117,7 +117,7 @@ namespace caco_alch {
 			if (const auto results{ _registry.find(name, [&](auto&& objName, auto&& searchName) { return _fmt._flag_exact ? objName == searchName : objName.find(searchName) < objName.size(); }) }; !results.empty()) {
 				const auto precision{ os.precision() };
 				os.precision(_fmt._precision);
-				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(results, std::vector<std::string>{ name }) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << _fmt.print(results, std::vector<std::string>{ name }) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				os.precision(precision);
 			}
 			else
@@ -189,7 +189,7 @@ namespace caco_alch {
 			os << std::fixed;
 			const auto precision{ os.precision() };
 			os.precision(_fmt._precision);
-			os << ColorAPI.set(UIElement::SEARCH_HEADER) << "Ingredients" << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(_registry._ingr, std::nullopt) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+			os << ColorAPI.set(UIElement::SEARCH_HEADER) << "Ingredients" << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << _fmt.print(_registry._ingr, std::nullopt) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 			os.precision(precision);
 			return os;
 		}
@@ -213,13 +213,13 @@ namespace caco_alch {
 					os << '(' << static_cast<unsigned>(std::round(static_cast<double>(skill_base) + skill_mod)) << ')';
 				os << color::reset << "]\n";
 				// Print input
-				os << ColorAPI.set(UIElement::SEARCH_HEADER) << "Input:" << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(ingr) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				os << ColorAPI.set(UIElement::SEARCH_HEADER) << "Input:" << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << _fmt.print(ingr) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				// Print output
 
 				if (const auto potion{ build(ingr) }; potion.effects().empty())
 					throw make_exception("Potion Creation Failed.");
 				else
-					os << ColorAPI.set(UIElement::SEARCH_HEADER) << "Output:" << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(potion) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+					os << ColorAPI.set(UIElement::SEARCH_HEADER) << "Output:" << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << _fmt.print(potion) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				os.precision(precision); // reset precision
 			}
 			else
@@ -270,7 +270,7 @@ namespace caco_alch {
 			if (const auto result{ _registry.find_best_fx(fx_name, ft, excluded) }; result != _registry.end()) {
 				const auto precision{ os.precision() };
 				os.precision(_fmt._precision);
-				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(*result, std::vector<std::string>{fx_name}) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << _fmt.print(*result, std::vector<std::string>{fx_name}) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				os.precision(precision);
 			}
 			else
@@ -302,7 +302,7 @@ namespace caco_alch {
 			if (const auto results{ _registry.find_best_fx_ranked(fx_name, ft) }; !results.empty()) {
 				const auto precision{ os.precision() };
 				os.precision(_fmt._precision);
-				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << '\n' << _fmt.print(results, std::vector<std::string>{fx_name}) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
+				os << std::fixed << ColorAPI.set(UIElement::SEARCH_HEADER) << "Search results for: \"" << color::reset << ColorAPI.set(UIElement::SEARCH_HIGHLIGHT) << fx_name << color::reset << ColorAPI.set(UIElement::SEARCH_HEADER) << '\"' << color::reset << '\n' << ColorAPI.set(UIElement::BRACKET) << '{' << color::reset << _fmt.print(results, std::vector<std::string>{fx_name}) << '\n' << ColorAPI.set(UIElement::BRACKET) << '}' << color::reset << '\n';
 				os.precision(precision);
 			}
 			else

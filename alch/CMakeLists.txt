@@ -43,4 +43,4 @@ endif()
 
 target_sources(alch PRIVATE "${HEADERS}")
 
-target_link_libraries(alch PUBLIC alchlib TermAPI optlib)
+target_link_libraries(alch PUBLIC alchlib alchlib2 TermAPI optlib)

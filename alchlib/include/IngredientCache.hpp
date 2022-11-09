@@ -3,9 +3,83 @@
 #include "Ingredient.hpp"
 #include "Format.hpp"
 
+#include <var.hpp>
+
 #include <set>
 
 namespace caco_alch {
+
+	template<typename T>
+	class cache {
+		using value_type = T;
+		using container_type = std::vector<typename value_type>;
+
+		container_type container;
+
+		template<var::same_or_convertible<T>... Ts>
+		cache(Ts&&... items) : container{ std::forward<Ts>(items)... } {}
+
+		cache(container_type&& container) : container{ std::move(container) } {}
+		cache(const container_type& container) : container{ container } {}
+
+		CONSTEXPR auto begin() noexcept { return container.begin(); }
+		CONSTEXPR auto end() noexcept { return container.begin(); }
+		CONSTEXPR auto rbegin() noexcept { return container.rbegin(); }
+		CONSTEXPR auto rend() noexcept { return container.rbegin(); }
+		CONSTEXPR auto empty() const noexcept { return container.empty(); }
+		CONSTEXPR auto size() const noexcept { return container.size(); }
+		CONSTEXPR auto at(const size_t& idx) const noexcept { return container.at(idx); }
+		CONSTEXPR auto& at(const size_t& idx) noexcept { return container.at(idx); }
+
+
+		/**
+		 * @brief				Retrieve an iterator to the first position in the cache matching a given name.
+		 * @param name			The name to search for.
+		 * @param off			The position to begin searching at.
+		 * @param only_effects	When true, only returns ingredients with an effect matching the given search, else only returns ingredients with names matching the given search.
+		 * @returns				container_type::const_iterator
+		 */
+		[[nodiscard]] typename container_type::const_iterator get(std::string name, const typename container_type::const_iterator& off, const bool only_effects = false)
+		{
+			name = str::tolower(name);
+			const auto& pred{
+				only_effects
+				? [&name](Ingredient&& ingr) { return std::any_of(ingr._effects.begin(), ingr._effects.end(), [&name](Effect&& fx) { return str::tolower(fx._name) == name; }); }
+			: [&name](Ingredient&& ingr) { return str::tolower(ingr._name) == name; }
+			};
+			return std::find_if(off, container.end(), pred);
+		}
+
+		/**
+		 * @function clear()
+		 * @brief Clears the internal cache by moving it to a Container that is returned from this function.
+		 * @returns Container
+		 */
+		container_type clear() const
+		{
+			auto tmp{ std::move(container) };
+			container = container_type{};
+			return tmp;
+		}
+		/**
+		 * @brief Copy the cache to an IngrList and return it.
+		 * @returns IngrList
+		 */
+		[[nodiscard]] IngrList getList() const requires (std::same_as<T, Ingredient>)
+		{
+			return IngrList{ container };
+		}
+		/**
+		 * @brief Copy the cache to a SortedIngrList and return it.
+		 * @returns SortedIngrList
+		 */
+		[[nodiscard]] SortedIngrList getSortedList() const requires (std::same_as<T, Ingredient>)
+		{
+			SortedIngrList set;
+			std::copy(container.begin(), container.end(), set.end());
+			return set;
+		}
+	};
 
 	/**
 	 * @struct IngredientCache
@@ -69,27 +143,6 @@ namespace caco_alch {
 		}
 
 		/**
-		 * @function get(const std::string&, const bool = false)
-		 * @brief Retrieve an iterator to the first position in the cache matching a given name.
-		 * @param name			- The name to search for
-		 * @param off			- The position to begin searching at.
-		 * @param only_effects	- When true, only returns ingredients with an effect matching the given search, else only returns ingredients with names matching the given search.
-		 * @returns Container::iterator
-		 */
-		[[nodiscard]] typename Container::iterator get(std::string name, const typename Container::iterator& off, const bool only_effects = false)
-		{
-			name = str::tolower(name);
-			return std::find_if(off, _ingr.end(), [&name, &only_effects](const Ingredient& i) {
-				if (only_effects) {
-					return std::any_of(i._effects.begin(), i._effects.end(), [&name](const Effect& fx) {
-						return str::tolower(fx._name) == name;
-					});
-				}
-				else return str::tolower(i._name) == name;
-			});
-		}
-
-		/**
 		 * @function clear()
 		 * @brief Clears the internal cache by moving it to a Container that is returned from this function.
 		 * @returns Container
@@ -117,13 +170,13 @@ namespace caco_alch {
 		 * @brief Copy the cache to a SortedIngrList and return it.
 		 * @returns SortedIngrList
 		 */
-		[[nodiscard]] SortedIngrList getSortedList() const
+		/*[[nodiscard]] SortedIngrList getSortedList() const
 		{
 			SortedIngrList vec;
 			for (auto& it : _ingr)
 				vec.insert(it);
 			return vec;
-		}
+		}*/
 		/**
 		 * @brief Check if the ingredient cache is empty.
 		 * @returns bool

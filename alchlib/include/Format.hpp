@@ -115,16 +115,16 @@ namespace caco_alch {
 		struct Indentation {
 			std::streamsize rep, incr;
 
-			Indentation() : rep{ 0llu }, incr{ 0llu } {}
-			Indentation(std::streamsize repeat) : rep{ std::move(repeat) }, incr{ rep } {}
-			Indentation(std::streamsize repeat, std::streamsize increment) : rep{ std::move(repeat) }, incr{ std::move(increment) } {}
+			CONSTEXPR Indentation() : rep{ 0llu }, incr{ 0llu } {}
+			CONSTEXPR Indentation(std::streamsize repeat) : rep{ std::move(repeat) }, incr{ rep } {}
+			CONSTEXPR Indentation(std::streamsize repeat, std::streamsize increment) : rep{ std::move(repeat) }, incr{ std::move(increment) } {}
 
-			Indentation getNext() const
+			CONSTEXPR Indentation getNext() const
 			{
 				return{ rep + incr, incr };
 			}
 
-			Indentation operator()() const { return getNext(); }
+			CONSTEXPR Indentation operator()() const { return getNext(); }
 
 			friend std::ostream& operator<<(std::ostream& os, const Indentation& obj)
 			{
@@ -270,7 +270,7 @@ namespace caco_alch {
 			void print(std::ostream& os, const Ingredient& obj) const
 			{
 				if (fmt.file_export()) {
-					os << ind << obj._name << "\n{";
+					os << ind << obj._name << "\n{\n";
 					os << PrintObject(getEffects(obj), *this, true);
 					os << "\n}";
 				}
@@ -321,7 +321,7 @@ namespace caco_alch {
 			{
 				if (fmt.file_export()) {
 					const auto nextIndent{ ind.getNext() };
-					os << ind << obj._name << '\n' << ind << "{\n" << PrintObject(obj.effects(), *this, true) << "\n}";
+					os << ind << obj._name << '\n' << ind << "{" << PrintObject(obj.effects(), *this, true) << "\n}";
 				}
 				else
 					os << ind << ColorAPI.set(UIElement::POTION_NAME) << obj._name << color::reset << '\n' << PrintObject(obj.effects(), *this, true);

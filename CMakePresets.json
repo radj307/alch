@@ -62,27 +62,30 @@
       "name": "linux-debug",
       "inherits": [ "linux-default", "Debug" ],
       "hidden": false,
-      "displayName": "Linux Debug"
-    },
-    {
-      "name": "linux-relwithdebinfo",
-      "inherits": [ "linux-default", "RelWithDebInfo" ],
-      "hidden": false,
-      "displayName": "Linux Release w/ Debugging Symbols"
+      "displayName": "Linux Debug (alch2)"
     },
     {
       "name": "linux-release",
       "inherits": [ "linux-default", "Release" ],
       "hidden": false,
-      "displayName": "Linux Release"
+      "displayName": "Linux Release (alch2)"
     },
     {
-      "name": "linux-minsizerel",
-      "inherits": [ "linux-default", "MinSizeRel" ],
-      "hidden": false,
-      "displayName": "Linux Minimal Release"
+      "name": "linux-debug-old",
+      "inherits": "linux-debug",
+      "displayName": "Linux Debug (alch)",
+      "cacheVariables": {
+        "BUILD_ALCH2": false
+      }
     },
-
+    {
+      "name": "linux-release-old",
+      "inherits": "linux-release",
+      "displayName": "Linux Release (alch)",
+      "cacheVariables": {
+        "BUILD_ALCH2": false
+      }
+    },
 
 
     {
@@ -101,27 +104,30 @@
       "name": "macos-debug",
       "hidden": false,
       "inherits": [ "macos-default", "Debug" ],
-      "displayName": "macOS Debug"
-    },
-    {
-      "name": "macos-relwithdebinfo",
-      "inherits": [ "macos-default", "RelWithDebInfo" ],
-      "hidden": false,
-      "displayName": "macOS Release w/ Debugging Symbols"
+      "displayName": "macOS Debug (alch2)"
     },
     {
       "name": "macos-release",
       "hidden": false,
       "inherits": [ "macos-default", "Release" ],
-      "displayName": "macOS Release"
+      "displayName": "macOS Release (alch2)"
     },
     {
-      "name": "macos-minsizerel",
-      "inherits": [ "macos-default", "MinSizeRel" ],
-      "hidden": false,
-      "displayName": "macOS Minimal Release"
+      "name": "macos-debug-old",
+      "inherits": "macos-debug",
+      "displayName": "macOS Debug (alch)",
+      "cacheVariables": {
+        "BUILD_ALCH2": false
+      }
     },
-
+    {
+      "name": "macos-release-old",
+      "inherits": "macos-release",
+      "displayName": "macOS Release (alch)",
+      "cacheVariables": {
+        "BUILD_ALCH2": false
+      }
+    },
 
 
     {
@@ -141,25 +147,29 @@
       "name": "windows-debug",
       "inherits": [ "windows-default", "Debug" ],
       "hidden": false,
-      "displayName": "Windows x64 Debug"
-    },
-    {
-      "name": "windows-relwithdebinfo",
-      "inherits": [ "windows-default", "RelWithDebInfo" ],
-      "hidden": false,
-      "displayName": "Windows x64 Release w/ Debugging Symbols"
+      "displayName": "Windows x64 Debug (alch2)"
     },
     {
       "name": "windows-release",
       "inherits": [ "windows-default", "Release" ],
       "hidden": false,
-      "displayName": "Windows x64 Release"
+      "displayName": "Windows x64 Release (alch2)"
     },
     {
-      "name": "windows-minsizerel",
-      "inherits": [ "windows-default", "MinSizeRel" ],
-      "hidden": false,
-      "displayName": "Windows x64 Minimal Release"
+      "name": "windows-debug-old",
+      "inherits": "windows-debug",
+      "displayName": "Windows x64 Debug (alch)",
+      "cacheVariables": {
+        "BUILD_ALCH2": false
+      }
+    },
+    {
+      "name": "windows-release-old",
+      "inherits": "windows-release",
+      "displayName": "Windows x64 Release (alch)",
+      "cacheVariables": {
+        "BUILD_ALCH2": false
+      }
     }
   ],
 
