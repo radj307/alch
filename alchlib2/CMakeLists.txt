@@ -5,6 +5,8 @@ file(GLOB HEADERS
 	RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
 	CONFIGURE_DEPENDS
 	"include/*.h*"
+	"include/perks/*.h*"
+	"include/keywords/*.h*"
 )
 file(GLOB SRCS
 	RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"

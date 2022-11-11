@@ -39,10 +39,10 @@ namespace alchlib2 {
 			const auto lc_inname{ str::tolower(keyword.name) }, lc_infid{ str::tolower(keyword.formID) }, lc_name{ str::tolower(name) }, lc_fid{ str::tolower(formID) };
 			return operator==(*this, lc_inname) || operator==(*this, lc_infid) || lc_name.find(lc_inname) != std::string::npos || lc_fid.find(lc_infid) != std::string::npos;
 		}
-		STRCONSTEXPR bool IsSimilarTo(std::string name_or_id) const
+		STRCONSTEXPR bool IsSimilarTo(std::string name_or_id, const bool requireExactMatch) const
 		{
 			name_or_id = str::tolower(name_or_id);
-			return operator==(*this, name_or_id) || str::tolower(name).find(name_or_id) != std::string::npos || str::tolower(formID).find(name_or_id) != std::string::npos;
+			return operator==(*this, name_or_id) || (!requireExactMatch && (str::tolower(name).find(name_or_id) != std::string::npos || str::tolower(formID).find(name_or_id) != std::string::npos));
 		}
 	};
 }

@@ -6,7 +6,7 @@
 
 namespace alchlib2 {
 	// this matches the definition in the alch-registry-generator project
-	enum EKeywordDisposition : std::uint8_t {
+	enum class EKeywordDisposition : std::uint8_t {
 		Unknown = 0,
 		Neutral = 1,
 		Positive = 2,
@@ -16,4 +16,13 @@ namespace alchlib2 {
 		InfluenceOther = 32,
 	};
 	$make_bitfield_operators(EKeywordDisposition, std::uint8_t);
+
+	inline CONSTEXPR std::uint8_t GetHighestBit(EKeywordDisposition const& disposition)
+	{
+		auto n{ $c(std::uint8_t, disposition) };
+		n |= (n >> 1);
+		n |= (n >> 2);
+		n |= (n >> 4);
+		return n ^ (n >> 1);
+	}
 }

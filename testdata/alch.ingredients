@@ -28,7 +28,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -118,7 +118,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -292,7 +292,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -331,7 +331,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -858,7 +858,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         }
@@ -875,7 +875,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -1055,7 +1055,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -1096,7 +1096,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -1125,7 +1125,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -1164,7 +1164,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -1298,7 +1298,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -1349,7 +1349,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -1660,7 +1660,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -1716,7 +1716,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -1789,7 +1789,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -1825,7 +1825,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -2334,7 +2334,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -2356,7 +2356,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -2390,7 +2390,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -2441,7 +2441,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -2514,7 +2514,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -2628,7 +2628,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -2737,7 +2737,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -2868,7 +2868,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -2912,7 +2912,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -3162,7 +3162,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -3242,7 +3242,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -3419,7 +3419,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -3710,7 +3710,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -3911,7 +3911,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -3950,7 +3950,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -4023,7 +4023,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -4118,7 +4118,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -4244,7 +4244,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -4300,7 +4300,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -4317,7 +4317,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -4351,7 +4351,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -4431,7 +4431,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -4572,7 +4572,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -5029,7 +5029,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -5097,7 +5097,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -5221,7 +5221,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -5260,7 +5260,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -5362,7 +5362,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -5520,7 +5520,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         }
@@ -5549,7 +5549,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -5704,7 +5704,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         }
@@ -5721,7 +5721,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -5794,7 +5794,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -5930,7 +5930,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -6010,7 +6010,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -6119,7 +6119,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -6165,7 +6165,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -6262,7 +6262,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -6401,7 +6401,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -6437,7 +6437,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -6500,7 +6500,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -6624,7 +6624,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -6796,7 +6796,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -7010,7 +7010,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -7112,7 +7112,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -7270,7 +7270,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -7389,7 +7389,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -7462,7 +7462,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -7496,7 +7496,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -7666,7 +7666,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -7785,7 +7785,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -8042,7 +8042,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -8054,7 +8054,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -8076,7 +8076,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -8185,7 +8185,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -8292,7 +8292,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -8326,7 +8326,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -8348,7 +8348,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -8634,7 +8634,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -8787,7 +8787,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -8809,7 +8809,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -9245,7 +9245,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -9318,7 +9318,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -9381,7 +9381,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -9590,7 +9590,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -9716,7 +9716,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -9745,7 +9745,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -9830,7 +9830,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -10182,7 +10182,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -10296,7 +10296,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -10347,7 +10347,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -10415,7 +10415,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -10636,7 +10636,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -10750,7 +10750,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -10915,7 +10915,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -10983,7 +10983,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -11170,7 +11170,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -11192,7 +11192,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -11323,7 +11323,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -11755,7 +11755,7 @@
             {
               "name": "MagicParalysis",
               "formID": "01EA70",
-              "disposition": 1
+              "disposition": 16
             },
             {
               "name": "MagicAlchHarmful",
@@ -11811,7 +11811,7 @@
             {
               "name": "MagicAlchResistMagic",
               "formID": "065A3A",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -11879,7 +11879,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -11952,7 +11952,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -12032,7 +12032,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -12192,7 +12192,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -12306,7 +12306,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -12328,7 +12328,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },
@@ -12435,7 +12435,7 @@
             {
               "name": "MagicSlow",
               "formID": "0B729E",
-              "disposition": 1
+              "disposition": 16
             }
           ]
         },
@@ -12481,7 +12481,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -12590,7 +12590,7 @@
             {
               "name": "MagicAlchResistFire",
               "formID": "065A37",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -12624,7 +12624,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -12641,7 +12641,7 @@
             {
               "name": "MagicAlchResistShock",
               "formID": "065A39",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -12663,7 +12663,7 @@
             {
               "name": "MagicAlchResistFrost",
               "formID": "065A38",
-              "disposition": 1
+              "disposition": 2
             },
             {
               "name": "MagicAlchBeneficial",
@@ -12692,7 +12692,7 @@
             {
               "name": "MagicAlchResistPoison",
               "formID": "10EB5F",
-              "disposition": 1
+              "disposition": 2
             }
           ]
         },

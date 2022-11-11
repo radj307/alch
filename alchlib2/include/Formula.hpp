@@ -1,5 +1,6 @@
 #pragma once
 #include "GameSetting.hpp"
+#include "PerkBase.hpp"
 
 namespace alchlib2 {
 	template<typename TReturn, typename... TArgs>

@@ -17,8 +17,8 @@
 // Create serializer definitions
 namespace alchlib2 {
 	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(INamedObject, name);
-	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Keyword, name, formID);
-	NLOHMANN_JSON_SERIALIZE_ENUM(EKeywordDisposition, {
+	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Keyword, name, formID, disposition);
+	/*NLOHMANN_JSON_SERIALIZE_ENUM(EKeywordDisposition, {
 								 { Unknown, "Unknown" },
 								 { Neutral, "Neutral" },
 								 { Positive, "Positive" },
@@ -26,8 +26,8 @@ namespace alchlib2 {
 								 { FortifyStat, "FortifyStat" },
 								 { Negative, "Negative" },
 								 { InfluenceOther, "InfluenceOther" }
-								 });
+								 });*/
 	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Effect, name, magnitude, duration, keywords);
 	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Ingredient, name, effects);
-	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Potion, name, ingredients);
+	NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(Potion, name, effects);
 }

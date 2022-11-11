@@ -4,6 +4,7 @@
 #include <sysarch.h>
 #include <var.hpp>
 #include <make_exception.hpp>
+#include <fileio.hpp>
 
 #include <nlohmann/json.hpp>
 
@@ -68,7 +69,7 @@ namespace alchlib2 {
 
 		T value;
 
-		CONSTEXPR operator T&() noexcept { return value; }
+		CONSTEXPR operator T& () noexcept { return value; }
 		CONSTEXPR operator T() const noexcept { return value; }
 
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(GameSetting, name, value);
@@ -80,10 +81,25 @@ namespace alchlib2 {
 		GameSetting<float> fAlchemyAV{ "fAlchemyAV", 15.0f };
 		GameSetting<float> fAlchemyMod{ "fAlchemyMod", 0.0f };
 
+		STRCONSTEXPR AlchemyCoreGameSettings() = default;
+
 		NLOHMANN_DEFINE_TYPE_INTRUSIVE(AlchemyCoreGameSettings,
 									   fAlchemyIngredientInitMult,
 									   fAlchemySkillFactor,
 									   fAlchemyAV,
-									   fAlchemyMod)
+									   fAlchemyMod);
+
+		[[nodiscard]] static AlchemyCoreGameSettings ReadFrom(const std::filesystem::path& path)
+		{
+			nlohmann::json j;
+			file::read(path) >> j;
+			return j.get<AlchemyCoreGameSettings>();
+		}
+		static bool WriteTo(const std::filesystem::path& path, const AlchemyCoreGameSettings& coreGameSettings)
+		{
+			std::stringstream ss;
+			ss << nlohmann::json{ coreGameSettings };
+			return file::write_to(path, std::move(ss), false);
+		}
 	};
 }
