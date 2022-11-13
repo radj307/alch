@@ -4,7 +4,6 @@
 #include <indentor.hpp>
 #include <TermAPI.hpp>
 #include <color-sync.hpp>
-#include <color-palette.hpp>
 #include <palette.hpp>
 
 #include <ostream>
