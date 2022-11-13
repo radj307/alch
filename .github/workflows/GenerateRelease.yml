@@ -40,7 +40,7 @@ env:
   # Currently this is used for the following scenarios:
   # - Build Subdirectory Name
   # - Archive Name Prefix
-  PROJECT_NAME: 'alch'
+  PROJECT_NAME: 'alch2'
   # [BINARY_NAME]
   # The name of the binary executable file, excluding extensions.
   # If this is blank, the value specified by '$PROJECT_NAME' is used instead. (See the 'Configure Environment' step.)
