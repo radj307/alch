@@ -50,11 +50,7 @@ env:
 
 jobs:
   create-binaries:
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os:         [ ubuntu-latest, windows-latest, macos-11 ]
-      fail-fast:    true
+    runs-on: windows-latest
 
     steps:
       # Check out the repository
