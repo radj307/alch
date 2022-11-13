@@ -46,7 +46,7 @@ env:
   # If this is blank, the value specified by '$PROJECT_NAME' is used instead. (See the 'Configure Environment' step.)
   BINARY_NAME: ''
   BUILD_TYPE: Release
-  GET_VERSION_NUMBER_ARGS: "--version"
+  GET_VERSION_NUMBER_ARGS: "--quiet --version"
 
 jobs:
   create-binaries:
